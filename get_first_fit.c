@@ -10,9 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-t_bool	node_fits(struct s_free_node const *node, size_t size)
+void	carve_new_node(
+		struct s_free_node *origin,
+		size_t size)
 {
-	return (node->size >= size);
+	struct s_free_node	*new_node;
+
+	size_of_rest = origin->size - size;
+	new_node = (char*)get_public_address(origin) + size;
+	new_node->size = origin->size - size; // TODO: get s_free_node size + padding.
+	new_node->next = origin->next;
+	origin->size = size;
+	origin->next = new_node;
+}
+
+t_bool	node_fits(struct s_free_node *node, size_t size)
+{
+	if (node->size < size)
+		return (false);
+	else if (node->size > size)
+		carve_new_node(node, size);
+	return (true);
 }
 
 void	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
