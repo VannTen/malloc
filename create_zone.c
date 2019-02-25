@@ -12,6 +12,19 @@
 
 #include <sys/mman.h>
 
+static struct s_free_node	*get_first_node(void *start)
+{
+	char				*addr;
+	struct s_free_node	*node;
+
+	addr = start;
+	addr += sizeof(struct s_alloc_zone);
+	addr += fixed_offset();
+	addr = align_addr(addr);
+	node = addr - fixed_offset(); // TODO : how do I determine it ?
+	return (node);
+}
+
 struct s_alloc_zone	*create_zone(size_t	size)
 {
 	void				*zone_start;
@@ -27,9 +40,7 @@ struct s_alloc_zone	*create_zone(size_t	size)
 	{
 		alloc_zone = zone_start;
 		alloc_zone->type = get_zone_type(size);
-		node = &alloc_zone->first_node;
-		node->next = NULL;
-		node->size = size - sizeof(struct s_alloc_zone);
+		node = get_first_node(zone_start);
 	}
 	return (zone_start);
 }

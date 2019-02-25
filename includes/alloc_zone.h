@@ -16,7 +16,7 @@
 struct s_alloc_zone {
 
 	enum {TINY, SMALL}	type;
-	struct	s_free_node	first_node;
+	struct	s_free_node	first_node; // will be a sentinel.
 }
 
 #endif
