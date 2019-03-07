@@ -17,7 +17,6 @@
 struct s_free_node	{
 
 	struct s_free_node	*next;
-	size_t				size;
 	t_bool				free;
 }
 
