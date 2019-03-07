@@ -25,23 +25,48 @@
 ** the same.
 */
 
-struct s_alloc_zone	*create_zone(size_t	size)
+size_t				pow(size_t n, size_t pow)
 {
-	void				*zone_start;
-	struct s_alloc_zone	*alloc_zone;
-	struct s_free_node	*first_node;
-	void				*first_client_address;
+	result = 1;
+	while (pow != 0)
+	{
+		result *= n;
+		pow--;
+	}
+	return (result);
+}
 
-	zone_start = mmap(NULL, size,
-			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE,
-			VM_MAKE_TAG(get_zone_type(size)), 0);
-	if (zone_start == MAP_FAILED)
-		return (NULL);
-	first_client_address = zone_start + sizeof *alloc_zone + sizeof *first_node;
-	align(&first_client_address);
+size_t				round_up_to_multiple(size_t n, size_t log_2)
+{
+	return (((n | pow(2, log_2)) + 1);
+}
+
+void				write_initial_metadata(struct s_alloc_zone *zone)
+{
+	struct s_free_node	*first_node;
+	void * const		first_client_address = zone + round_up_to_multiple(
+			sizeof *alloc_zone + sizeof *first_node,
+			LOG_2_ALIGN);
+
 	first_node = first_client_address - sizeof *first_node;
 	first_node->next = first_node;
 	first_node->free = true;
-	alloc_zone->biggest_size = compute_size(first_node, /* type */ );
+}
+
+struct s_alloc_zone	*create_zone(size_t	size)
+{
+	void * const				zone_start = mmap(
+			NULL, size,
+			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE,
+			VM_MAKE_TAG(get_zone_type(size)), 0);
+	struct s_alloc_zone	* const	alloc_zone = (*(&alloc_zone))zone_start;
+
+	if (zone_start == MAP_FAILED)
+		return (NULL);
+	write_initial_metadata(alloc_zone);
+	alloc_zone->biggest_size = size
+		- round_up_to_multiple(
+			sizeof *alloc_zone + sizeof struct s_free_node,
+			LOG_2_ALIGN);
 	return (zone_start);
 }
