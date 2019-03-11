@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_zone.h                                       :+:      :+:    :+:   */
+/*   bool.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/25 13:11:17 by                   #+#    #+#             */
-/*   Updated: 2019/02/25 13:11:17 by                  ###   ########.fr       */
+/*   Created: 2019/03/11 14:56:11 by                   #+#    #+#             */
+/*   Updated: 2019/03/11 14:56:11 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ALLOC_ZONE_H
-# define ALLOC_ZONE_H
-# include <stddef.h>
+#ifndef BOOL_H
+# define BOOL_H
 
-struct s_alloc_zone {
-
-//	t_rb_node	node; // TODO
-	size_t		biggest_size;
+enum	e_bool
+{
+	FALSE = (0 == 1),
+	TRUE = !FALSE
 };
+
+typedef enum e_bool t_bool;
+
 
 #endif

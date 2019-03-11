@@ -13,11 +13,15 @@
 #ifndef FREE_NODE_H
 # define FREE_NODE_H
 # include <stddef.h>
+# include "bool.h"
+# define LOG_2_ALIGN 4
 
 struct s_free_node	{
 
 	struct s_free_node	*next;
 	t_bool				free;
-}
+};
+
+
 
 #endif

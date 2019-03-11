@@ -13,19 +13,21 @@
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
+MKDIR := mkdir
 INCLUDES_DIR := includes
 #######
 
 NAME := malloc
 
+OBJ_DIR := objs
 SRCS := create_zone.c test.c
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+
 $(OBJS): $(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	$(MKDIR) $@
-
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@

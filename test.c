@@ -13,6 +13,7 @@
 #include "alloc_zone.h"
 
 struct s_alloc_zone	*create_zone(size_t	size);
+
 int main( void )
 {
 	struct s_alloc_zone * zone;
