@@ -33,7 +33,7 @@ static size_t				ft_pow(size_t n, size_t pow)
 	return (pow == 0 ? 1 : n * ft_pow(n, pow - 1));
 }
 
-static size_t				round_up_to_multiple(size_t n, size_t log_2)
+size_t				round_up_to_multiple(size_t n, size_t log_2)
 {
 	return (((n | ft_pow(2, log_2))) + 1);
 }
@@ -41,7 +41,7 @@ static size_t				round_up_to_multiple(size_t n, size_t log_2)
 void				write_initial_metadata(struct s_alloc_zone *zone)
 {
 	struct s_free_node	*first_node;
-	void * const		first_client_address = zone + round_up_to_multiple(
+	void * const		first_client_address = ((char*)zone) + round_up_to_multiple(
 			sizeof *zone + sizeof *first_node,
 			LOG_2_ALIGN);
 

@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   assert_create_zone.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/11 14:25:31 by                   #+#    #+#             */
-/*   Updated: 2019/03/11 14:25:31 by                  ###   ########.fr       */
+/*   Created: 2019/03/11 16:25:53 by                   #+#    #+#             */
+/*   Updated: 2019/03/11 16:25:53 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alloc_zone.h"
-#include <stdio.h>
-#include <sys/mman.h>
-#include <assert.h>
+#include "free_node.h"
+#include "bool.h"
 
-struct s_alloc_zone	*create_zone(size_t	size);
-
-int main( void )
+t_bool	assert_create_zone(struct s_alloc_zone const *zone)
 {
-	struct s_alloc_zone * zone;
+	struct s_free_node	const * const first_node =
+		(struct s_free_node const * const)(((char*)zone) +  round_up_to_multiple(
+			sizeof *zone + sizeof *first_node,
+			LOG_2_ALIGN) - sizeof *first_node);
 
-	zone = create_zone(4096);
-	printf("%p\n", zone);
-	assert(assert_create_zone(zone));
-	munmap(zone, 4096);
-	return (0);
+	return (first_node->next == first_node && first_node->free);
 }
