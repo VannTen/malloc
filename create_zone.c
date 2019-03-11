@@ -38,14 +38,15 @@ size_t				round_up_to_multiple(size_t n, size_t log_2)
 	return (((n | ft_pow(2, log_2))) + 1);
 }
 
+#include <stdio.h>
 void				write_initial_metadata(struct s_alloc_zone *zone)
 {
 	struct s_free_node	*first_node;
-	void * const		first_client_address = ((char*)zone) + round_up_to_multiple(
+	void * 		first_client_address = ((char*)zone) + round_up_to_multiple(
 			sizeof *zone + sizeof *first_node,
 			LOG_2_ALIGN);
 
-	first_node = first_client_address - sizeof *first_node;
+	first_node = (void*)((char*)first_client_address - sizeof *first_node);
 	first_node->next = first_node;
 	first_node->free = TRUE;
 }

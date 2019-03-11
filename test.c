@@ -22,7 +22,7 @@ int main( void )
 	struct s_alloc_zone * zone;
 
 	zone = create_zone(4096);
-	printf("%p\n", zone);
+	printf("%p\n", (void*)zone);
 	assert(assert_create_zone(zone));
 	munmap(zone, 4096);
 	return (0);

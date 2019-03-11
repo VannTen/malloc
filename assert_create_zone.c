@@ -17,7 +17,7 @@
 t_bool	assert_create_zone(struct s_alloc_zone const *zone)
 {
 	struct s_free_node	const * const first_node =
-		(struct s_free_node const * const)(((char*)zone) +  round_up_to_multiple(
+		(struct s_free_node const * const)((char*)zone +  round_up_to_multiple(
 			sizeof *zone + sizeof *first_node,
 			LOG_2_ALIGN) - sizeof *first_node);
 
