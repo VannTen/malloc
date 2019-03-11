@@ -20,7 +20,7 @@ INCLUDES_DIR := includes
 NAME := malloc
 
 OBJ_DIR := objs
-SRCS := create_zone.c test.c assert_create_zone.c
+SRCS := create_zone.c test.c assert_create_zone.c alloc_zone_get.c
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 
 $(NAME): $(OBJS)

@@ -12,6 +12,7 @@
 
 #ifndef ALLOC_ZONE_H
 # define ALLOC_ZONE_H
+# include "free_node.h"
 # include "bool.h"
 # include <stddef.h>
 
@@ -24,5 +25,11 @@ struct s_alloc_zone {
 size_t				round_up_to_multiple(size_t n, size_t log_2);
 struct s_alloc_zone	*create_zone(size_t	size);
 t_bool		assert_create_zone(struct s_alloc_zone const *);
+
+/*
+** Get
+*/
+
+struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone);
 
 #endif
