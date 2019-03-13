@@ -35,9 +35,10 @@ t_bool	node_fits(struct s_free_node *node, size_t size)
 
 void	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
-	struct s_free_node *node;
+	struct s_free_node * const first_node = get_first_node(zone);
+	struct s_free_node * current_node;
 
-	node = zone->first_node;
+	current_node = first_node;
 	while (node != NULL && node_fits(node, size_required))
 		node = node->next;
 

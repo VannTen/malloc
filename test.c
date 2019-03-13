@@ -25,5 +25,7 @@ int main( void )
 	printf("%p\n", (void*)zone);
 	assert(assert_create_zone(zone));
 	munmap(zone, 4096);
+
+	get_first_fit(zone, 13);
 	return (0);
 }
