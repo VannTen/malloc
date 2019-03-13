@@ -16,8 +16,17 @@
 struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
 {
 	return ((void*)((char*)zone
-			+ round_up_to_multiple(
-				sizeof *zone + sizeof (struct s_free_node),
-				LOG_2_ALIGN)
-			- sizeof (struct s_free_node)));
+			+ offset_zone_start_first_free_node()));
+}
+
+size_t	offset_zone_start_first_address( void )
+{
+	return (round_up_to_multiple(
+				sizeof (struct s_alloc_zone) + sizeof(struct s_free_node),
+				LOG_2_ALIGN));
+}
+
+size_t	offset_zone_start_first_free_node( void )
+{
+	return (offset_zone_start_first_address() - sizeof(struct s_free_node));
 }
