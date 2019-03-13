@@ -14,39 +14,47 @@
 #include "free_node.h"
 #include "bool.h"
 #include <stddef.h>
-
+#include <assert.h>
 
 static t_bool	is_last_node(struct s_free_node const * node)
 {
 	return (node->next <= node);
 }
-t_bool	node_fits(struct s_free_node *node, size_t size)
+
+static t_bool	node_has_enough_space(struct s_free_node const * const node,
+		size_t space)
 {
-	if (node_size(node) < size)
-		return (FALSE);
-	else if (node_size(node) > size)
-		carve_new_node(node, size);
-	return (TRUE);
+	return (node_size(node) >= space && node->free);
 }
 
+
+static void	carve_node(struct s_free_node * node, size_t size_required)
+{
+	struct s_free_node * new_node;
+
+	assert(node_has_enough_space(node, size_required)
+			&& node_size(node)
+				>= size_required + sizeof *node + MIN_ALLOC_SPACE);
+	new_node = (void*)((char*)node
+			+ round_up_to_multiple(size_required, LOG_2_ALIGN));
+	new_node->next = node->next;
+	new_node->free = TRUE;
+	node->next = new_node;
+}
 
 void	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
 	struct s_free_node *	node;
-	t_bool					found_fitting_node;
 
 	node = get_first_node(zone);
-	found_fitting_node = FALSE;
-	while (!node_fits(node, size_required))
+	while (!node_has_enough_space(node, size_required))
 	{
 		node = node->next;
 		if (is_last_node(node))
 			break ;
 	}
-	if (node_fits(node, size_required))
-	{
+	if (node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE)
 		carve_node(node, size_required);
-		found_fitting_node = TRUE;
-	}
-	return (found_fitting_node ? get_public_address(node) : NULL);
+	return (node_has_enough_space(node, size_required)
+			? get_public_address(node) : NULL);
 }
