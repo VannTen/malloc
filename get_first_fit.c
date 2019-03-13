@@ -42,7 +42,7 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 	node->next = new_node;
 }
 
-void	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
+void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
 	struct s_free_node *	node;
 

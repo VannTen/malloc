@@ -12,8 +12,9 @@
 
 #include "free_node.h"
 #include "alloc_zone.h"
+#include "constants.h"
 
-void	*get_public_address(struct s_free_node const * const node)
+void const	*get_public_address(struct s_free_node const * const node)
 {
 	return (node + 1);
 }

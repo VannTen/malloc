@@ -28,7 +28,7 @@ struct s_free_node	{
 ** Get (const)
 */
 
-void	*get_public_address(struct s_free_node const *);
+void const	*get_public_address(struct s_free_node const *);
 size_t	node_size(struct s_free_node const *);
 
 #endif

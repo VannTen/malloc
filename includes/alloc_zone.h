@@ -36,6 +36,6 @@ struct s_free_node	*get_first_node(struct s_alloc_zone const * zone);
 ** Get
 */
 
-void				*get_first_fit(struct s_alloc_zone *, size_t);
+void const			*get_first_fit(struct s_alloc_zone *, size_t);
 
 #endif
