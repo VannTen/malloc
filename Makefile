@@ -21,6 +21,7 @@ NAME := malloc
 
 OBJ_DIR := objs
 SRCS := \
+	constants.c \
 	create_zone.c \
 	test.c \
 	assert_create_zone.c \

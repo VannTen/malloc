@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_zone_get.c                                   :+:      :+:    :+:   */
+/*   constants.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/11 17:12:23 by                   #+#    #+#             */
-/*   Updated: 2019/03/11 17:12:23 by                  ###   ########.fr       */
+/*   Created: 2019/03/13 17:26:50 by                   #+#    #+#             */
+/*   Updated: 2019/03/13 17:26:50 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "alloc_zone.h"
-#include "free_node.h"
+#ifndef CONSTANTS_H
+# define CONSTANTS_H
+# include <stddef.h>
 
-struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
-{
-	return ((void*)((char*)zone
-			+ offset_zone_start_first_free_node()));
-}
+size_t	offset_zone_start_first_address( void );
+size_t	offset_zone_start_first_free_node( void );
+
+#endif
