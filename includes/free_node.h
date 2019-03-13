@@ -15,6 +15,7 @@
 # include <stddef.h>
 # include "bool.h"
 # define LOG_2_ALIGN 4
+# define MIN_ALLOC_SPACE sizeof (void*)
 
 struct s_free_node	{
 
