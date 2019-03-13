@@ -21,7 +21,12 @@ void const	*get_public_address(struct s_free_node const * const node)
 
 static	struct s_alloc_zone *zone_start(struct s_free_node const * last_node)
 {
-	return (node->next - offset_zone_start_first_free_node());
+	return ((void*)((char*)last_node->next - offset_zone_start_first_free_node()));
+}
+
+t_bool	is_last_node(struct s_free_node const * node)
+{
+	return (node->next <= node);
 }
 
 size_t	node_size(struct s_free_node const * const node)

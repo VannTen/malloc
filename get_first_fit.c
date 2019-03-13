@@ -16,17 +16,11 @@
 #include <stddef.h>
 #include <assert.h>
 
-static t_bool	is_last_node(struct s_free_node const * node)
-{
-	return (node->next <= node);
-}
-
 static t_bool	node_has_enough_space(struct s_free_node const * const node,
 		size_t space)
 {
 	return (node_size(node) >= space && node->free);
 }
-
 
 static void	carve_node(struct s_free_node * node, size_t size_required)
 {
