@@ -10,37 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-void	carve_new_node(
-		struct s_free_node *origin,
-		size_t size)
+#include "alloc_zone.h"
+#include "free_node.h"
+#include "bool.h"
+#include <stddef.h>
+
+
+static t_bool	is_last_node(struct s_free_node const * node)
 {
-	struct s_free_node	*new_node;
-
-	size_of_rest = origin->size - size;
-	new_node = (char*)get_public_address(origin) + size;
-	new_node->size = origin->size - size; // TODO: get s_free_node size + padding.
-	new_node->next = origin->next;
-	origin->size = size;
-	origin->next = new_node;
+	return (node->next <= node);
 }
-
 t_bool	node_fits(struct s_free_node *node, size_t size)
 {
-	if (node->size < size)
-		return (false);
-	else if (node->size > size)
+	if (node_size(node) < size)
+		return (FALSE);
+	else if (node_size(node) > size)
 		carve_new_node(node, size);
-	return (true);
+	return (TRUE);
 }
+
 
 void	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
-	struct s_free_node * const first_node = get_first_node(zone);
-	struct s_free_node * current_node;
+	struct s_free_node *	node;
+	t_bool					found_fitting_node;
 
-	current_node = first_node;
-	while (node != NULL && node_fits(node, size_required))
+	node = get_first_node(zone);
+	found_fitting_node = FALSE;
+	while (!node_fits(node, size_required))
+	{
 		node = node->next;
-
-	return (node != NULL ? get_public_address(node) : NULL);
+		if (is_last_node(node))
+			break ;
+	}
+	if (node_fits(node, size_required))
+	{
+		carve_node(node, size_required);
+		found_fitting_node = TRUE;
+	}
+	return (found_fitting_node ? get_public_address(node) : NULL);
 }

@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_node.h                                        :+:      :+:    :+:   */
+/*   free_node_get.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/25 13:03:16 by                   #+#    #+#             */
-/*   Updated: 2019/02/25 13:03:16 by                  ###   ########.fr       */
+/*   Created: 2019/03/13 13:54:00 by                   #+#    #+#             */
+/*   Updated: 2019/03/13 13:54:00 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_NODE_H
-# define FREE_NODE_H
-# include <stddef.h>
-# include "bool.h"
-# define LOG_2_ALIGN 4
+#include "free_node.h"
 
-struct s_free_node	{
+void	*get_public_address(struct s_free_node const * const node)
+{
+	return (node + 1);
+}
 
-	struct s_free_node	*next;
-	t_bool				free;
-};
+size_t	node_size(struct s_free_node const * const node)
+{
+	if (is_last_node(node))
+		return (0);
+		// TODO
+	else
+		return ((char*)node->next - (char*)node);
+}
 
-
-/*
-** Get (const)
-*/
-
-void	*get_public_address(struct s_free_node const *);
-size_t	node_size(struct s_free_node const *);
-
-#endif
