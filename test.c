@@ -22,10 +22,15 @@ int main( void )
 	struct s_alloc_zone * zone;
 
 	zone = create_zone(4096);
-	printf("%p\n", (void*)zone);
 	assert(assert_create_zone(zone));
 	//munmap(zone, 4096);
 
-	get_first_fit(zone, 13);
+	assert(nb_free_node(zone) == 1);
+	printf("%p\n", get_first_fit(zone, 13));
+	assert(nb_free_node(zone) == 2);
+	printf("%p\n", get_first_fit(zone, 13));
+	assert(nb_free_node(zone) == 3);
+	printf("%p\n", get_first_fit(zone, 13));
+	assert(nb_free_node(zone) == 4);
 	return (0);
 }
