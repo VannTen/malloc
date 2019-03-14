@@ -28,6 +28,7 @@ SRCS := \
 	assert_create_zone.c \
 	get_first_fit.c \
 	free_node_get.c \
+	free_node.c \
 	alloc_zone_get.c
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes

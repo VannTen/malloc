@@ -50,5 +50,5 @@ void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 	if (node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE)
 		carve_node(node, size_required);
 	return (node_has_enough_space(node, size_required)
-			? get_public_address(node) : NULL);
+			? publish_address(node) : NULL);
 }

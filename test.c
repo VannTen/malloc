@@ -25,6 +25,7 @@ int main( void )
 	assert(assert_create_zone(zone));
 	//munmap(zone, 4096);
 
+	printf("%p\n", (void*)zone);
 	assert(nb_free_node(zone) == 1);
 	printf("%p\n", get_first_fit(zone, 13));
 	assert(nb_free_node(zone) == 2);
