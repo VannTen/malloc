@@ -33,8 +33,7 @@ size_t	node_size(struct s_free_node const * const node)
 {
 	if (is_last_node(node))
 		return ((char*)node
-				- ((char*)zone_start(node) + size_of_zone));
+				- ((char*)zone_start(node) + zone_start(node)->size));
 	else
 		return ((char*)node->next - (char*)node - sizeof *node);
 }
-

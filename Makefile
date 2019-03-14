@@ -10,7 +10,7 @@
 #*                                                                            *#
 #* ************************************************************************** *#
 
-CFLAGS := -Wall -Wextra -Werror -pedantic
+CFLAGS := -g3 -Wall -Wextra -Werror -pedantic
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
@@ -29,11 +29,13 @@ SRCS := \
 	free_node_get.c \
 	alloc_zone_get.c
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
+HEADER_DIR := includes
+HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
-$(OBJS): $(OBJ_DIR)/%.o: %.c Makefile | $(OBJ_DIR)
+$(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR):

@@ -19,7 +19,7 @@
 struct s_alloc_zone {
 
 //	t_rb_node	node; // TODO
-	size_t		biggest_size;
+	size_t		size;
 };
 
 size_t				round_up_to_multiple(size_t n, size_t log_2);

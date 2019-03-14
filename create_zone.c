@@ -38,7 +38,6 @@ size_t				round_up_to_multiple(size_t n, size_t log_2)
 	return (((n | ft_pow(2, log_2))) + 1);
 }
 
-#include <stdio.h>
 void				write_initial_metadata(struct s_alloc_zone *zone)
 {
 	struct s_free_node	* const first_node = get_first_node(zone);
@@ -58,9 +57,6 @@ struct s_alloc_zone	*create_zone(size_t	size)
 	if (zone_start == MAP_FAILED)
 		return (NULL);
 	write_initial_metadata(alloc_zone);
-	alloc_zone->biggest_size = size
-		- round_up_to_multiple(
-			sizeof *alloc_zone + sizeof (struct s_free_node),
-			LOG_2_ALIGN);
+	alloc_zone->size = size;
 	return (zone_start);
 }
