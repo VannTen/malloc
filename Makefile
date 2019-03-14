@@ -10,7 +10,8 @@
 #*                                                                            *#
 #* ************************************************************************** *#
 
-CFLAGS := -g3 -Wall -Wextra -Werror -pedantic
+CFLAGS := -g3 -Wall -Wextra -Werror -pedantic -fsanitize=address
+LDFALGS := -fsanitize=address
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
