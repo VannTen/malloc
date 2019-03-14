@@ -31,6 +31,8 @@ t_bool		assert_create_zone(struct s_alloc_zone const *);
 */
 
 struct s_free_node	*get_first_node(struct s_alloc_zone const * zone);
+size_t				nb_free_node(struct s_alloc_zone const *);
+void				*end_of_zone(struct s_alloc_zone const *);
 
 /*
 ** Get
