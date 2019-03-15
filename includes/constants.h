@@ -16,5 +16,6 @@
 
 size_t	offset_zone_start_first_address( void );
 size_t	offset_zone_start_first_free_node( void );
+size_t	ft_pow(size_t n, size_t pow);
 
 #endif

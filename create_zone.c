@@ -28,14 +28,9 @@
 ** the same.
 */
 
-static size_t				ft_pow(size_t n, size_t pow)
+size_t				round_up_to_multiple(size_t n, size_t multiple)
 {
-	return (pow == 0 ? 1 : n * ft_pow(n, pow - 1));
-}
-
-size_t				round_up_to_multiple(size_t n, size_t log_2)
-{
-	return (((n | ft_pow(2, log_2))) + 1);
+	return (n + multiple - 1 - (n + multiple - 1) % multiple);
 }
 
 void				write_initial_metadata(struct s_alloc_zone *zone)
