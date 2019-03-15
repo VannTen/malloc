@@ -27,7 +27,7 @@ int main( void )
 
 	printf("%p\n", (void*)zone);
 	assert(nb_free_node(zone) == 1);
-	printf("%p\n", get_first_fit(zone, 13));
+	printf("%p\n", get_first_fit(zone, 50));
 	assert(nb_free_node(zone) == 2);
 	printf("%p\n", get_first_fit(zone, 13));
 	assert(nb_free_node(zone) == 3);
