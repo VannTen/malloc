@@ -21,7 +21,9 @@ struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
 			+ offset_zone_start_first_free_node()));
 }
 
-size_t				nb_free_node(struct s_alloc_zone const * const zone)
+static size_t		nb_free_intern(
+		struct s_alloc_zone const * const zone,
+		t_bool counting_occupied_nodes)
 {
 	size_t	nb_free_node;
 	struct s_free_node const * node;
@@ -30,10 +32,21 @@ size_t				nb_free_node(struct s_alloc_zone const * const zone)
 	node = get_first_node(zone);
 	while (!is_last_node(node))
 	{
-		nb_free_node++;
+		if (counting_occupied_nodes || node->free)
+			nb_free_node++;
 		node = node->next;
 	}
 	return (nb_free_node);
+}
+
+size_t				nb_free_node(struct s_alloc_zone const * const zone)
+{
+	return (nb_free_intern(zone, FALSE));
+}
+
+size_t				nb_node(struct s_alloc_zone const * const zone)
+{
+	return (nb_free_intern(zone, TRUE));
 }
 
 void			*end_of_zone(struct s_alloc_zone const * const start_of_zone)
