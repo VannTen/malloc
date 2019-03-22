@@ -26,26 +26,24 @@ int main( void )
 	assert(assert_create_zone(zone));
 	//munmap(zone, 4096);
 
-	printf("zone start at : %p\n", (void*)zone);
-	assert(nb_node(zone) == 1);
-	printf("%p\n", get_first_fit(zone, 50));
-	assert(nb_node(zone) == 2);
-	printf("%p\n", get_first_fit(zone, 13));
-	assert(nb_node(zone) == 3);
-	printf("%p\n", get_first_fit(zone, 13));
-	assert(nb_node(zone) == 4);
 
 	for (size_t i = 0; i < 10; i++)
 	{
 		ptr[i] = get_first_fit(zone, 13);
 		printf("%p\n", ptr[i]);
-		assert(nb_node(zone) == 5 + i);
+		assert(nb_node(zone) == 2 + i);
 	}
 	for (size_t i = 0; i < 10; i++)
 	{
 		free_node((void*)ptr[i]);
 		assert(nb_free_node(zone) == 2 + i);
 	}
+	printf("%zu\n", nb_node(zone));
+	printf("%zu\n", nb_free_node(zone));
+
+	ptr[0] = get_first_fit(zone, 13);
+	ptr[1] = get_first_fit(zone, 13);
+	free_defrag((void*)ptr[1]);
 	printf("%zu\n", nb_node(zone));
 	printf("%zu\n", nb_free_node(zone));
 	return (0);
