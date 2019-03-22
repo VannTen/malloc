@@ -37,5 +37,6 @@ t_bool		is_last_node(struct s_free_node const *);
 */
 
 void const	*publish_address(struct s_free_node *);
+void		free_node(void *);
 
 #endif

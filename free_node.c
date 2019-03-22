@@ -20,3 +20,10 @@ void const	*publish_address(struct s_free_node * node)
 	node->free = FALSE;
 	return (get_public_address(node));
 }
+
+void		free_node(void *ptr)
+{
+	struct s_free_node * const node = (struct s_free_node *)ptr - 1;
+
+	node->free = TRUE;
+}
