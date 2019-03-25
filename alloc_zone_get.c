@@ -34,7 +34,7 @@ static size_t		nb_free_intern(
 	{
 		if (counting_occupied_nodes || node->free)
 			nb_free_node++;
-		node = node->next;
+		node = next_node(node);
 	}
 	return (nb_free_node);
 }

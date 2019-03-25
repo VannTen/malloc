@@ -37,7 +37,7 @@ void				write_initial_metadata(struct s_alloc_zone *zone)
 {
 	struct s_free_node	* const first_node = get_first_node(zone);
 
-	first_node->next = first_node;
+	first_node->next_offset = 0;
 	first_node->free = TRUE;
 }
 

@@ -24,16 +24,16 @@ void const	*publish_address(struct s_free_node * node)
 static void		defrag_to_last_node(struct s_free_node * node)
 {
 	assert(node->free);
-	while (node->next->free && !is_last_node(node))
-		node->next = node->next->next;
+	while (next_node(node)->free && !is_last_node(node))
+		node->next_offset += next_node(node)->next_offset;
 }
 
 static void		defragment_node(struct s_free_node * node)
 {
 	assert(node->free);
 	defrag_to_last_node(node);
-	if (node->next->free)
-		defrag_to_last_node(node->next);
+	if (next_node(node)->free)
+		defrag_to_last_node(next_node(node));
 }
 
 void		free_defrag(void *ptr)
