@@ -24,10 +24,8 @@ OBJ_DIR := objs
 TEST_DIR := tests
 TEST_SRC_DIR := test_src
 TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.c)
-$(info $(TEST_SRC))
 TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
-$(info $(TESTS))
 
 SRCS := \
 	constants.c \
