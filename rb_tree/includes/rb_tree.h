@@ -27,9 +27,10 @@ enum e_color
 
 enum e_tree_insert_ret
 {
-	NOTHING,
-	CHILD_INSERTION,
-	GRAND_CHILD_INSERTION // LEFT /RIGHT ?
+	NOTHING = 0,
+	LEFT = 1,
+	RIGHT = 2,
+	NEW_RED = 4
 };
 
 struct s_rbtree
