@@ -24,6 +24,15 @@ static void grand_parent_become_red(struct s_rbtree *grand_parent)
 	grand_parent->right->color = BLACK;
 }
 
+static t_bool	red_grand_child_in_inner_tree(
+		struct s_rbtree const * grand_parent,
+		struct s_rbtree const * child)
+{
+	return (
+			(child == grand_parent->left && child->right->color == RED)
+			|| (child == grand_parent->right && child->left->color == RED));
+}
+
 static enum e_insert_ret	repair_tree(
 		struct s_rbtree *node,
 		struct s_rbtree *child,
@@ -40,6 +49,11 @@ static enum e_insert_ret	repair_tree(
 		}
 		else
 		{
+			if (red_grand_child_in_inner_tree(node, child))
+				(grand_parent->left == child ? rotate_left : rotate_right)(child);
+			(grand_parent->left == child ? rotate_right : rotate_left)(grand_parent);
+			grand_parent->color = RED;
+			child->color = BLACK;
 		}
 	}
 
