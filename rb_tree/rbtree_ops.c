@@ -79,7 +79,7 @@ static void	insert(
 	if (*tree == NULL)
 	{
 		*tree = new_node;
-		return (NEW_RED);
+		return (NEW_RED_CHILD);
 	}
 	else
 		ret = insert(child, new_node, cmp);
@@ -91,7 +91,6 @@ void	rbtree_insert(
 	struct s_rbtree *new_node,
 	int (*cmp)(void const*, void const*))
 {
-	insert_recurse(tree, new_node);
-	if (*tree == new_node)
-		new_node->color = BLACK;
+	if (NEW_RED_CHILD == insert_recurse(tree, new_node))
+		(*tree)->color = BLACK;
 }
