@@ -38,20 +38,21 @@ static enum e_insert_ret	repair_tree(
 		struct s_rbtree *child,
 		enum e_insert_ret state)
 {
-	if (ret == NEW_RED && node->color == RED)
-		return (RED_HAS_NEW_CHILD);
+	if (ret == NEW_RED_CHILD && node->color == RED)
+		return (NEW_RED_GRAND_CHILD);
 	else if (ret == RED_HAS_NEW_CHILD)
 	{
 		if (sibling(tree, child)->color == RED)
 		{
 			grand_parent_become_red(*tree);
-			return (NEW_RED);
+			return (NEW_RED_CHILD);
 		}
 		else
 		{
 			if (red_grand_child_in_inner_tree(node, child))
 				(grand_parent->left == child ? rotate_left : rotate_right)(child);
 			(grand_parent->left == child ? rotate_right : rotate_left)(grand_parent);
+			//TODO : change that line. Won't ever work since the tested child has been rotated
 			grand_parent->color = RED;
 			child->color = BLACK;
 		}
