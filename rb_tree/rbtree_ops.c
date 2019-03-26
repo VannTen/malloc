@@ -24,38 +24,45 @@ static void grand_parent_become_red(struct s_rbtree *grand_parent)
 	grand_parent->right->color = BLACK;
 }
 
-static t_bool	red_grand_child_in_inner_tree(
-		struct s_rbtree const * grand_parent,
-		struct s_rbtree const * child)
+static void insert_repair_rotation(
+		struct s_rbtree **grand_parent,
+		struct s_rbtree *child)
 {
-	return (
-			(child == grand_parent->left && child->right->color == RED)
-			|| (child == grand_parent->right && child->left->color == RED));
+	t_bool const	left = (*grand_parent)->left == child;
+
+	if (left && grand_parent->left->right->color == RED)
+		rotate_left(&grand_parent->left);
+	else if (!left && child->right->left->color == RED)
+		rotate_right(&grand_parent->right);
+	if (left)
+	{
+		rotate_right(grand_parent);
+		(*grand_parent)->right->color = RED;
+	}
+	else
+	{
+		rotate_left(grand_parent);
+		(*grand_parent)->left->color = RED;
+	}
+	(*grand_parent)->color = BLACK;
 }
 
 static enum e_insert_ret	repair_tree(
-		struct s_rbtree *node,
-		struct s_rbtree *child,
+		struct s_rbtree **node,
+		struct s_rbtree **child,
 		enum e_insert_ret state)
 {
 	if (ret == NEW_RED_CHILD && node->color == RED)
 		return (NEW_RED_GRAND_CHILD);
 	else if (ret == RED_HAS_NEW_CHILD)
 	{
-		if (sibling(tree, child)->color == RED)
+		if (sibling(*tree, *child)->color == RED)
 		{
-			grand_parent_become_red(*tree);
+			grand_parent_become_red(*node);
 			return (NEW_RED_CHILD);
 		}
 		else
-		{
-			if (red_grand_child_in_inner_tree(node, child))
-				(grand_parent->left == child ? rotate_left : rotate_right)(child);
-			(grand_parent->left == child ? rotate_right : rotate_left)(grand_parent);
-			//TODO : change that line. Won't ever work since the tested child has been rotated
-			grand_parent->color = RED;
-			child->color = BLACK;
-		}
+			insert_repair_rotation(node, *child);
 	}
 
 }
@@ -76,7 +83,7 @@ static void	insert(
 	}
 	else
 		ret = insert(child, new_node, cmp);
-	return (repair_tree(*tree, *child, ret));
+	return (repair_tree(tree, child, ret));
 }
 
 void	rbtree_insert(

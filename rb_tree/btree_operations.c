@@ -25,26 +25,31 @@ void	*btree_search(struct s_btree const *node,
 		return (btree_search(result < 0 ? node->left : node->right));
 }
 
-struct s_btree	*left_rotate(struct s_btree * root)
+void	left_rotate(struct s_btree ** root)
 {
 	struct s_btree * pivot;
 
-	assert(root != NULL && root->right != NULL);
-	pivot = root->right;
-	root->right = pivot->left;
-	pivot->left = root;
-	return (pivot);
+	assert(*root != NULL && root->right != NULL);
+	pivot = (*root)->right;
+	(*root)->right = pivot->left;
+	pivot->left = *root;
+	*root = pivot;
 }
 
-struct s_btree	*right_rotate(struct s_btree * root)
+void	right_rotate(struct s_btree ** root)
 {
 	struct s_btree * pivot;
 
-	assert(root != NULL && root->left != NULL);
-	pivot = root->left;
-	root->left = pivot->right;
-	pivot->right= root;
-	return (pivot);
+	assert(*root != NULL && root->left != NULL);
+	pivot = (*root)->left;
+	(*root)->left = pivot->right;
+	pivot->right= *root;
+	*root = pivot;
+}
+
+void	rotate(struct s_btree **parent, struct s_btree *child)
+{
+	(child == (*parent)->left ? left_rotate : right_rotate)(parent);
 }
 
 void			btree_insert(
