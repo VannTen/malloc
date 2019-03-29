@@ -10,10 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rb_tree.h"
+#include <stddef.h>
 #include <assert.h>
+#include "rb_tree.h"
 
-void	*btree_search(struct s_btree const *node,
+struct s_btree const	*btree_search(struct s_btree const *node,
 		void *data,
 		int (*cmp)(void const*, void const*))
 {
@@ -22,14 +23,17 @@ void	*btree_search(struct s_btree const *node,
 	if (result == 0)
 		return node;
 	else
-		return (btree_search(result < 0 ? node->left : node->right));
+		return (btree_search(
+					result < 0 ? node->left : node->right,
+					data,
+					cmp));
 }
 
 void	left_rotate(struct s_btree ** root)
 {
 	struct s_btree * pivot;
 
-	assert(*root != NULL && root->right != NULL);
+	assert(*root != NULL && (*root)->right != NULL);
 	pivot = (*root)->right;
 	(*root)->right = pivot->left;
 	pivot->left = *root;
@@ -40,7 +44,7 @@ void	right_rotate(struct s_btree ** root)
 {
 	struct s_btree * pivot;
 
-	assert(*root != NULL && root->left != NULL);
+	assert(*root != NULL && (*root)->left != NULL);
 	pivot = (*root)->left;
 	(*root)->left = pivot->right;
 	pivot->right= *root;
@@ -53,16 +57,18 @@ void	rotate(struct s_btree **parent, struct s_btree *child)
 }
 
 void			btree_insert(
-		struct s_btree const * new_node,
-		struct s_btree * tree,
+		struct s_btree * new_node,
+		struct s_btree ** tree,
 		int (*cmp)(void const*, void const*))
 {
-	struct s_btree **	parent;
-
 	assert(tree != NULL);
-	parent = cmp(new_node, tree) < 0 ? &tree->left : &tree->right;
-	if (*parent != NULL)
-		btree_insert(new_node, *parent);
+	if (*tree == NULL)
+		*tree = new_node;
 	else
-		*parent = new_node;
+	{
+		btree_insert(
+				new_node,
+				cmp(new_node, tree) < 0 ? &(*tree)->left : &(*tree)->right,
+				cmp);
+	}
 }
