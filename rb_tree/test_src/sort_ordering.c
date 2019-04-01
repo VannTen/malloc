@@ -44,10 +44,10 @@ int main(void)
 
 	tree = NULL;
 	index = 0;
-	while (index < 100)
+	while (index < 10)
 	{
+		values[index].value = index + 4;
 		rbtree_init_node(&(values[index].node));
-		values[index].value = rand();
 		rbtree_insert(&tree, &(values[index].node), cmp);
 		index++;
 	}
