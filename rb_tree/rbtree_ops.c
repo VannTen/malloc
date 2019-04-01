@@ -21,6 +21,11 @@ static struct s_rbtree const *sibling(
 	return (child == cur_node->left ? cur_node->right : cur_node->left);
 }
 
+static enum e_color color(struct s_rbtree const * node)
+{
+	return (node == NULL || node->color == BLACK ? BLACK : RED);
+}
+
 static void grand_parent_become_red(struct s_rbtree *grand_parent)
 {
 	assert(grand_parent->left->color == RED && grand_parent->right->color == RED);
@@ -35,9 +40,9 @@ static void insert_repair_rotation(
 {
 	int const	left = (*grand_parent)->left == child;
 
-	if (left && (*grand_parent)->left->right->color == RED)
+	if (left && color((*grand_parent)->left->right) == RED)
 		left_rotate(&(*grand_parent)->left);
-	else if (!left && child->right->left->color == RED)
+	else if (!left && color(child->right->left) == RED)
 		right_rotate(&(*grand_parent)->right);
 	if (left)
 	{
@@ -61,7 +66,7 @@ static enum e_tree_insert_ret	repair_tree(
 		return (NEW_RED_GRAND_CHILD);
 	else if (state == NEW_RED_GRAND_CHILD)
 	{
-		if (sibling(*node, *child)->color == RED)
+		if (color(sibling(*node, *child)) == RED)
 		{
 			grand_parent_become_red(*node);
 			return (NEW_RED_CHILD);
