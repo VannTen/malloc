@@ -12,6 +12,7 @@
 
 #ifndef RB_TREE_H
 # define RB_TREE_H
+# include <stddef.h>
 
 enum e_color
 {
@@ -56,5 +57,13 @@ void	rbtree_insert(
 	struct s_rbtree *new_node,
 	int (*diff)(void const * ref, void const * inserted));
 void	rbtree_init_node(struct s_rbtree *node);
+
+/*
+** Red Black trees properties checks
+*/
+
+size_t	black_depth(struct s_rbtree const * tree);
+size_t	max_depth(struct s_rbtree const *);
+size_t	min_depth(struct s_rbtree const *);
 
 #endif

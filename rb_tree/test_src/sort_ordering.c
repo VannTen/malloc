@@ -52,4 +52,6 @@ int main(void)
 		index++;
 	}
 	rbtree_inorder_traversal(tree, check_tree_order);
+	assert(black_depth(tree) != 0);
+	assert(max_depth(tree) <= min_depth(tree) * 2);
 }
