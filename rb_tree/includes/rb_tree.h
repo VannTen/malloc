@@ -54,7 +54,7 @@ void	rotate(struct s_rbtree **parent, struct s_rbtree *child);
 void	rbtree_insert(
 	struct s_rbtree ** tree,
 	struct s_rbtree *new_node,
-	int (*cmp)(void const*, void const*));
+	int (*diff)(void const * ref, void const * inserted));
 void	rbtree_init_node(struct s_rbtree *node);
 
 #endif

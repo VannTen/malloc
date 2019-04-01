@@ -80,7 +80,7 @@ static enum e_tree_insert_ret	repair_tree(
 static enum e_tree_insert_ret	insert(
 	struct s_rbtree ** tree,
 	struct s_rbtree *new_node,
-	int (*cmp)(void const*, void const*))
+	int (*diff)(void const*, void const*))
 {
 	struct s_rbtree **			child;
 
@@ -91,14 +91,14 @@ static enum e_tree_insert_ret	insert(
 	}
 	else
 	{
-		if (cmp(*tree, new_node) < 0)
+		if (diff(*tree, new_node) > 0)
 			child = &(*tree)->left;
 		else
 			child = &(*tree)->right;
 		return (repair_tree(
 					tree,
 					child,
-					insert(child, new_node, cmp)));
+					insert(child, new_node, diff)));
 	}
 }
 
