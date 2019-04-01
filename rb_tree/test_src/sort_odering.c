@@ -49,6 +49,7 @@ int main(void)
 		rbtree_init_node(&(values[index].node));
 		values[index].value = rand();
 		rbtree_insert(&tree, &(values[index].node), cmp);
+		index++;
 	}
 	rbtree_inorder_traversal(tree, check_tree_order);
 }
