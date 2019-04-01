@@ -56,19 +56,14 @@ void	rotate(struct s_rbtree **parent, struct s_rbtree *child)
 	(child == (*parent)->left ? left_rotate : right_rotate)(parent);
 }
 
-void			btree_insert(
-		struct s_rbtree * new_node,
-		struct s_rbtree ** tree,
-		int (*cmp)(void const*, void const*))
+void	rbtree_inorder_traversal(
+		struct s_rbtree const * tree,
+		void (*f)(void const *))
 {
-	assert(tree != NULL);
-	if (*tree == NULL)
-		*tree = new_node;
-	else
+	if (tree != NULL)
 	{
-		btree_insert(
-				new_node,
-				cmp(new_node, tree) < 0 ? &(*tree)->left : &(*tree)->right,
-				cmp);
+		rbtree_inorder_traversal(tree->left, f);
+		f(tree);
+		rbtree_inorder_traversal(tree->right, f);
 	}
 }

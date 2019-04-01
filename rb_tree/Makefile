@@ -29,6 +29,7 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 
 SRCS := \
 	btree_operations.c \
+	rbtree_init.c \
 	rbtree_ops.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
