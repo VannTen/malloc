@@ -18,7 +18,7 @@ static struct s_rbtree const *sibling(
 		struct s_rbtree *cur_node,
 		struct s_rbtree const * child)
 {
-	return (child == cur_node->left ? cur_node->left : cur_node->right);
+	return (child == cur_node->left ? cur_node->right : cur_node->left);
 }
 
 static void grand_parent_become_red(struct s_rbtree *grand_parent)
