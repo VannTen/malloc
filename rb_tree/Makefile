@@ -36,7 +36,7 @@ HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
 $(NAME): $(OBJS)
-	ar -rcu $^ -o $@
+	ar -rcu $@ $^
 
 $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@

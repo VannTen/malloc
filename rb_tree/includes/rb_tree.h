@@ -33,4 +33,24 @@ struct s_rbtree
 	enum e_color	color;
 };
 
+/*
+** Btree operations (operates on btree part of red black trees)
+*/
+
+struct s_rbtree const	*btree_search(struct s_rbtree const *node,
+		void *data,
+		int (*cmp)(void const*, void const*));
+void	left_rotate(struct s_rbtree ** root);
+void	right_rotate(struct s_rbtree ** root);
+void	rotate(struct s_rbtree **parent, struct s_rbtree *child);
+
+/*
+** Red Black Trees operations (specific)
+*/
+
+void	rbtree_insert(
+	struct s_rbtree ** tree,
+	struct s_rbtree *new_node,
+	int (*cmp)(void const*, void const*));
+
 #endif
