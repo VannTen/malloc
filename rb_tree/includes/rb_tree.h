@@ -13,12 +13,6 @@
 #ifndef RB_TREE_H
 # define RB_TREE_H
 
-struct s_btree
-{
-	struct s_btree	*right;
-	struct s_btree	*left;
-};
-
 enum e_color
 {
 	RED,
@@ -34,7 +28,8 @@ enum e_tree_insert_ret
 
 struct s_rbtree
 {
-	struct s_btree	nodes;
+	struct s_rbtree	*left;
+	struct s_rbtree	*right;
 	enum e_color	color;
 };
 
