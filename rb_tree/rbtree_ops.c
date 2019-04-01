@@ -77,9 +77,7 @@ static enum e_tree_insert_ret	insert(
 	struct s_rbtree *new_node,
 	int (*cmp)(void const*, void const*))
 {
-	enum e_tree_insert_ret		ret;
-	struct s_rbtree ** const	child
-		= cmp(*tree, new_node) < 0 ? &(*tree)->left : &(*tree)->right;
+	struct s_rbtree **			child;
 
 	if (*tree == NULL)
 	{
@@ -87,8 +85,16 @@ static enum e_tree_insert_ret	insert(
 		return (NEW_RED_CHILD);
 	}
 	else
-		ret = insert(child, new_node, cmp);
-	return (repair_tree(tree, child, ret));
+	{
+		if (cmp(*tree, new_node) < 0)
+			child = &(*tree)->left;
+		else
+			child = &(*tree)->right;
+		return (repair_tree(
+					tree,
+					child,
+					insert(child, new_node, cmp)));
+	}
 }
 
 void	rbtree_insert(
