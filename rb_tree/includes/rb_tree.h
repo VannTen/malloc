@@ -43,7 +43,8 @@ struct s_rbtree const	*btree_search(struct s_rbtree const *node,
 		int (*cmp)(void const*, void const*));
 void	rbtree_inorder_traversal(
 		struct s_rbtree const * tree,
-		void (*f)(void const * node));
+		void (*f)(void const * node, void *extern_context),
+		void *extern_context);
 void	left_rotate(struct s_rbtree ** root);
 void	right_rotate(struct s_rbtree ** root);
 void	rotate(struct s_rbtree **parent, struct s_rbtree *child);

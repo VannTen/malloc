@@ -58,12 +58,13 @@ void	rotate(struct s_rbtree **parent, struct s_rbtree *child)
 
 void	rbtree_inorder_traversal(
 		struct s_rbtree const * tree,
-		void (*f)(void const *))
+		void (*f)(void const *, void *),
+		void *extern_context)
 {
 	if (tree != NULL)
 	{
-		rbtree_inorder_traversal(tree->left, f);
-		f(tree);
-		rbtree_inorder_traversal(tree->right, f);
+		rbtree_inorder_traversal(tree->left, f, extern_context);
+		f(tree, extern_context);
+		rbtree_inorder_traversal(tree->right, f, extern_context);
 	}
 }
