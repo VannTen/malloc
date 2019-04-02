@@ -42,7 +42,7 @@ static void insert_repair_rotation(
 
 	if (left && color((*grand_parent)->left->right) == RED)
 		left_rotate(&(*grand_parent)->left);
-	else if (!left && color(child->right->left) == RED)
+	else if (!left && color((*grand_parent)->right->left) == RED)
 		right_rotate(&(*grand_parent)->right);
 	if (left)
 	{
