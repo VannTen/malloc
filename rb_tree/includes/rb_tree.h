@@ -27,6 +27,13 @@ enum e_tree_insert_ret
 	NEW_RED_GRAND_CHILD
 };
 
+enum e_tree_remove_ret
+{
+	NOTHING,
+	REPLACER_FOUND,
+	TREE_HAS_ONE_BLACK_LESS
+};
+
 struct s_rbtree
 {
 	struct s_rbtree	*left;
