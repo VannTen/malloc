@@ -15,25 +15,10 @@
 #include <stddef.h>
 
 
-static struct s_rbtree **find_successor_or_predecessor(
-		struct s_rbtree const *node,
-		int successor)
-{
-	struct s_rbtree **replacer;
-
-	replacer = &node;
-	while (1)
-	{
-		replacer = successor ? &(*replacer)->left : &(*replacer)->right;
-		if ((successor ? *replacer->left : *replacer->right) == NULL)
-			break ;
-	}
-	return (replacer);
-}
-
 static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 {
 	struct s_rbtree *tmp;
+	enum e_color	tmp_color;
 
 	tmp = *node_1;
 	*node_1 = node_2;
@@ -44,11 +29,22 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	tmp = (*node_1)->right;
 	(*node_1)->right = node_2->right;
 	(*node_2)->right = tmp;
-	if ((*node_1)->color != (*node_2)->color)
+	tmp_color = (*node_1)->color;
+	(*node_1)->color = (*node_2)->color;
+	(*node_2)->color = tmp_color;
+}
+
+static enum e_remove_ret swap_with_successor(
+		struct s_rbtree ** const node,
+		struct s_rbtree ** const predecessor)
+{
+	if ((*node)->left == NULL)
 	{
-		(*node_1)->color = !(*node_1)->color;
-		(*node_2)->color = !(*node_2)->color;
+		swap_nodes(node, predecessor);
+		return (balance_tree(node, delete_node(node)));
 	}
+	else
+		return (swap_with_successor(&(*node)->left, predecessor));
 }
 
 static enum e_remove_ret remove_recurse(struct s_rbtree ** const tree,
@@ -61,23 +57,14 @@ static enum e_remove_ret remove_recurse(struct s_rbtree ** const tree,
 	struct s_rbtree **		subtree;
 
 	if (*tree == NULL)
-		return (criterion == NULL ? REPLACER_FOUND : NOTHING);
-	if (criterion != NULL)
-	{
-		diff_result = diff(*tree, criterion);
-		if (diff_result != 0)
-			subtree = diff_result > 0 ? &(*tree)->left : &(*tree)->right;
-		else
-		{
-			*removed = *tree;
-			criterion = NULL;
-			removed = tree;
-			subtree = &(*tree)->right;
-		}
-	}
+		return (NOT_FOUND);
+	diff_result = diff(*tree, criterion);
+	if (diff_result != 0)
+		subtree_state = remove_recurse(
+			diff_result > 0 ? &(*tree)->left : &(*tree)->right,
+			criterion, removed, diff);
 	else
-		subtree = &(*tree)->left;
-	subtree_state = remove_recurse(subtree, criterion, removed, diff);
+		subtree_state = swap_with_successor(&(*tree)->right, tree);
 	return (balance_tree(tree, subtree_state));
 }
 
@@ -87,7 +74,7 @@ void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,
 	struct s_rbtree * removed;
 
 	removed = NULL;
-	if (remove_recurse( tree, criterion, &removed, diff)
+	if (remove_recurse(tree, criterion, &removed, diff)
 			== TREE_HAS_ONE_BLACK_LESS)
 		; // No need to do anything
 
