@@ -34,6 +34,21 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	(*node_2)->color = tmp_color;
 }
 
+static enum e_remove_ret	delete_node(struct s_rbtree ** const node)
+{
+	struct s_rbtree * const	deleted = *node;
+
+	*node = (*node)->right;
+	if (deleted->color == BLACK)
+	{
+		if (deleted->right->color == RED)
+			deleted->right->color == BLACK;
+		else
+			return (TREE_HAS_ONE_BLACK_LESS);
+	}
+	return (NOTHING);
+}
+
 static enum e_remove_ret swap_with_successor(
 		struct s_rbtree ** const node,
 		struct s_rbtree ** const predecessor)
