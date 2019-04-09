@@ -24,14 +24,11 @@ enum e_remove_ret	balance_subtree(
 			;
 		else if ((*tree)->other_child->outer_child->color == RED)
 			;
-		else if ((*tree)->other_child->inner_child->color == RED
-					&& (*tree)->other_child->outer_child->color == BLACK)
+		else if ((*tree)->other_child->inner_child->color == RED)
 			;
-		else if ((*tree)->color == BLACK
-			&& (*tree)->other_child == == BLACK_CHILDS)
+		else if ((*tree)->color == BLACK)
 			;
-		else if ((*tree)->other_child == == BLACK_CHILDS
-				&& (*tree)->color == RED)
+		else
 			;
 	}
 	return (subtree_state);
