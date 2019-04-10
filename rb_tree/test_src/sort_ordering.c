@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#define SIZE_TEST INT_MAX / 4096
 
 struct test_node {
 
@@ -40,7 +41,6 @@ void	check_tree_order(void const *value, void *previous)
 }
 
 
-#define SIZE_TEST INT_MAX / 4096
 int	test_2(void)
 {
 	struct test_node	*values;

@@ -27,10 +27,9 @@ enum e_tree_insert_ret
 	NEW_RED_GRAND_CHILD
 };
 
-enum e_tree_remove_ret
+enum e_tree_state
 {
-	NOTHING,
-	REPLACER_FOUND,
+	GOOD,
 	TREE_HAS_ONE_BLACK_LESS
 };
 
@@ -73,5 +72,12 @@ void	rbtree_init_node(struct s_rbtree *node);
 size_t	black_depth(struct s_rbtree const * tree);
 size_t	max_depth(struct s_rbtree const *);
 size_t	min_depth(struct s_rbtree const *);
+int		is_valid_rb_tree(struct s_rbtree const *);
+
+/*
+** Helpers
+*/
+
+enum e_color	color(struct s_rbtree const *);
 
 #endif

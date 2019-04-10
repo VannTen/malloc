@@ -21,11 +21,6 @@ static struct s_rbtree const *sibling(
 	return (child == cur_node->left ? cur_node->right : cur_node->left);
 }
 
-static enum e_color color(struct s_rbtree const * node)
-{
-	return (node == NULL || node->color == BLACK ? BLACK : RED);
-}
-
 static void grand_parent_become_red(struct s_rbtree *grand_parent)
 {
 	assert(grand_parent->left->color == RED && grand_parent->right->color == RED);
