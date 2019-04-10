@@ -26,6 +26,12 @@ static int	cmp(void const *val_1, void const *val_2)
 			- ((struct test_node const *)val_2)->value);
 }
 
+static int diff(void const *val_1, void const *crit)
+{
+	return (((struct test_node const *)val_1)->value
+			- *(int*)crit);
+}
+
 int	main(void)
 {
 	struct test_node	values[10];
@@ -45,7 +51,7 @@ int	main(void)
 	while (index > 5)
 	{
 		value = index + 4;
-		rbtree_remove(&tree, &value, cmp);
+		rbtree_remove(&tree, &value, diff);
 		index--;
 		assert(is_valid_rb_tree(tree));
 	}
