@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "rb_tree.h"
+#include <stddef.h>
 
 enum e_color color(struct s_rbtree const * node)
 {

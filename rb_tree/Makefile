@@ -33,6 +33,7 @@ SRCS := \
 	rbtree_ops.c \
 	rbtree_delete.c \
 	rbtree_delete_balance.c \
+	rbtree_helpers.c \
 	rbtree_properties_checks.c \
 	rbtree_properties_checks_2.c
 
