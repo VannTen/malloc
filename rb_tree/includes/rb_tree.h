@@ -90,6 +90,7 @@ int		is_valid_rb_tree(struct s_rbtree const *);
 
 enum e_tree_state	balance_subtree(
 		struct s_rbtree ** const tree,
+		int side,
 		enum e_tree_state subtree_state);
 
 /*

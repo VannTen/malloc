@@ -12,59 +12,65 @@
 
 #include "rb_tree.h"
 
-
 static void			red_sibling(struct s_rbtree ** tree, int side)
 {
 	(*tree)->color = RED;
-	sibling->color = BLACK;
-	rotate(tree, sibling);
-	balance_subtree(tree, ...);
+	(*tree)->children[!side]->color = BLACK;
+	(side ? right_rotate : left_rotate)(tree);
+
 }
 
 static void			parent_sibling_nephews_black(struct s_rbtree ** tree, int side)
 {
-	sibling->color = RED;
-	return (TREE_HAS_ONE_BLACK_LESS);
+	(*tree)->children[!side]->color = RED;
+//	return (TREE_HAS_ONE_BLACK_LESS);
 }
 
 static void			parent_red_sib_neph_black(struct s_rbtree ** tree, int side)
 {
 	(*tree)->color = BLACK;
-	sibling->color = RED;
-}
-
-static void			inner_red_nephew(struct s_rbtree ** tree, int side)
-{
-	rotate(sibling, inner_nephew);
-	sibling->color = RED;
-	inner_nephew->color = BLACK;
-	outer_red_nephew(tree, side);
+	(*tree)->children[!side]->color = RED;
 }
 
 static void			outer_red_nephew(struct s_rbtree ** tree, int side)
 {
 	enum e_color const	tmp = (*tree)->color;
 
-	rotate(*tree, sibling);
-	sibling->color = tmp;
-	(*tree)->color = BLACK;
+	(side ? right_rotate : left_rotate)(tree);
+	(*tree)->color = tmp;
+	(*tree)->children[side]->color = BLACK;
+}
+
+static void			inner_red_nephew(struct s_rbtree ** tree, int side)
+{
+	struct s_rbtree ** const	sibling = &(*tree)->children[!side];
+	struct s_rbtree * const		inner_nephew = (*sibling)->children[side];
+
+	(side ? left_rotate : right_rotate)(sibling);
+	(*sibling)->color = RED;
+	inner_nephew->color = BLACK;
+	outer_red_nephew(tree, side);
 }
 
 enum e_tree_state	balance_subtree(
 		struct s_rbtree ** const tree,
-// Which child ?
+		int const	side,
 		enum e_tree_state subtree_state)
 {
 	if (subtree_state == TREE_HAS_ONE_BLACK_LESS)
 	{
-		if ((*tree)->other_child->color == RED)
-			red_sibling(tree, );
-		else if ((*tree)->other_child->outer_child->color == RED)
-			outer_red_nephew(tree, );
-		else if ((*tree)->other_child->inner_child->color == RED)
-			inner_red_nephew(tree, );
+		subtree_state = GOOD;
+		if ((*tree)->children[!side]->color == RED)
+			red_sibling(tree, side);
+		else if ((*tree)->children[!side]->children[!side]->color == RED)
+			outer_red_nephew(tree, side);
+		else if ((*tree)->children[!side]->children[side]->color == RED)
+			inner_red_nephew(tree, side);
 		else if ((*tree)->color == BLACK)
+		{
 			parent_sibling_nephews_black(tree, side);
+			subtree_state = TREE_HAS_ONE_BLACK_LESS;
+		}
 		else
 			parent_red_sib_neph_black(tree, side);
 	}
