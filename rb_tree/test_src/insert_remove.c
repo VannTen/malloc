@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <assert.h>
 #include "rb_tree.h"
 
 struct test_node {
@@ -18,7 +19,6 @@ struct test_node {
 	int				value;
 };
 
-int	main(void)
 
 static int	cmp(void const *val_1, void const *val_2)
 {
@@ -26,6 +26,7 @@ static int	cmp(void const *val_1, void const *val_2)
 			- ((struct test_node const *)val_2)->value);
 }
 
+int	main(void)
 {
 	struct test_node	values[10];
 	struct s_rbtree		*tree;
@@ -46,7 +47,7 @@ static int	cmp(void const *val_1, void const *val_2)
 		value = index + 4;
 		rbtree_remove(&tree, &value, cmp);
 		index--;
-		assert(is_rb_tree(tree));
+		assert(is_valid_rb_tree(tree));
 	}
 	assert(black_depth(tree) != 0);
 	assert(max_depth(tree) <= min_depth(tree) * 2);

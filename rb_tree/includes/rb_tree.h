@@ -69,6 +69,8 @@ void	rbtree_insert(
 	struct s_rbtree *new_node,
 	int (*diff)(void const * ref, void const * inserted));
 void	rbtree_init_node(struct s_rbtree *node);
+void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,
+		int (*diff)(void const*, void const*));
 
 /*
 ** Red Black trees properties checks
