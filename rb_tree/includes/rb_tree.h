@@ -74,6 +74,19 @@ size_t	max_depth(struct s_rbtree const *);
 size_t	min_depth(struct s_rbtree const *);
 int		is_valid_rb_tree(struct s_rbtree const *);
 
+
+/*
+** Implementation, not part of interface
+*/
+
+/*
+** Tree balancing
+*/
+
+enum e_tree_state	balance_subtree(
+		struct s_rbtree ** const tree,
+		enum e_tree_state subtree_state);
+
 /*
 ** Helpers
 */

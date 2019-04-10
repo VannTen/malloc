@@ -27,7 +27,7 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	(*node_1)->left = (*node_2)->left;
 	(*node_2)->left = tmp;
 	tmp = (*node_1)->right;
-	(*node_1)->right = node_2->right;
+	(*node_1)->right = (*node_2)->right;
 	(*node_2)->right = tmp;
 	tmp_color = (*node_1)->color;
 	(*node_1)->color = (*node_2)->color;
@@ -42,11 +42,11 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node)
 	if (deleted->color == BLACK)
 	{
 		if (deleted->right->color == RED)
-			deleted->right->color == BLACK;
+			deleted->right->color = BLACK;
 		else
 			return (TREE_HAS_ONE_BLACK_LESS);
 	}
-	return (NOTHING);
+	return (GOOD);
 }
 
 static enum e_tree_state swap_with_successor(
@@ -56,42 +56,44 @@ static enum e_tree_state swap_with_successor(
 	if ((*node)->left == NULL)
 	{
 		swap_nodes(node, predecessor);
-		return (balance_tree(node, delete_node(node)));
+		return (balance_subtree(node, delete_node(node)));
 	}
 	else
 		return (swap_with_successor(&(*node)->left, predecessor));
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
-		void * const criterion,
-		struct s_rbtree const **removed,
+		void const * const criterion,
+		struct s_rbtree const ** removed,
 		int (*diff)(void const*, void const*))
 {
 	int						diff_result;
-	enum e_tree_tree_state	subtree_state;
-	struct s_rbtree **		subtree;
+	enum e_tree_state	subtree_state;
 
 	if (*tree == NULL)
-		return (NOT_FOUND);
+		return (GOOD);
 	diff_result = diff(*tree, criterion);
 	if (diff_result != 0)
 		subtree_state = remove_recurse(
 			diff_result > 0 ? &(*tree)->left : &(*tree)->right,
 			criterion, removed, diff);
 	else
+	{
+		*removed = *tree;
 		subtree_state = swap_with_successor(&(*tree)->right, tree);
-	return (balance_tree(tree, subtree_state));
+	}
+	return (balance_subtree(tree, subtree_state));
 }
 
 void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,
 		int (*diff)(void const*, void const*))
 {
-	struct s_rbtree * removed;
+	struct s_rbtree const * removed;
 
 	removed = NULL;
 	if (remove_recurse(tree, criterion, &removed, diff)
 			== TREE_HAS_ONE_BLACK_LESS)
 		; // No need to do anything
 
-	return (removed)
+	return ((void*)removed);
 }
