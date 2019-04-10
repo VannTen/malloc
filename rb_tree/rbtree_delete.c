@@ -21,10 +21,10 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	enum e_color	tmp_color;
 
 	tmp = *node_1;
-	*node_1 = node_2;
+	*node_1 = *node_2;
 	*node_2 = tmp;
 	tmp = (*node_1)->left;
-	(*node_1)->left = node_2->left;
+	(*node_1)->left = (*node_2)->left;
 	(*node_2)->left = tmp;
 	tmp = (*node_1)->right;
 	(*node_1)->right = node_2->right;
@@ -34,7 +34,7 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	(*node_2)->color = tmp_color;
 }
 
-static enum e_remove_ret	delete_node(struct s_rbtree ** const node)
+static enum e_tree_state	delete_node(struct s_rbtree ** const node)
 {
 	struct s_rbtree * const	deleted = *node;
 
@@ -49,7 +49,7 @@ static enum e_remove_ret	delete_node(struct s_rbtree ** const node)
 	return (NOTHING);
 }
 
-static enum e_remove_ret swap_with_successor(
+static enum e_tree_state swap_with_successor(
 		struct s_rbtree ** const node,
 		struct s_rbtree ** const predecessor)
 {
@@ -62,13 +62,13 @@ static enum e_remove_ret swap_with_successor(
 		return (swap_with_successor(&(*node)->left, predecessor));
 }
 
-static enum e_remove_ret remove_recurse(struct s_rbtree ** const tree,
+static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 		void * const criterion,
 		struct s_rbtree const **removed,
 		int (*diff)(void const*, void const*))
 {
 	int						diff_result;
-	enum e_tree_remove_ret	subtree_state;
+	enum e_tree_tree_state	subtree_state;
 	struct s_rbtree **		subtree;
 
 	if (*tree == NULL)

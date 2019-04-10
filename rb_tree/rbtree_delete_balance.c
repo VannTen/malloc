@@ -50,10 +50,10 @@ static void			outer_red_nephew(struct s_rbtree ** tree, int side)
 	(*tree)->color = BLACK;
 }
 
-enum e_remove_ret	balance_subtree(
+enum e_tree_state	balance_subtree(
 		struct s_rbtree ** const tree,
 // Which child ?
-		enum e_remove_ret subtree_state)
+		enum e_tree_state subtree_state)
 {
 	if (subtree_state == TREE_HAS_ONE_BLACK_LESS)
 	{
