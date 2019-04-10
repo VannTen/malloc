@@ -24,7 +24,7 @@ struct s_rbtree const	*btree_search(struct s_rbtree const *node,
 		return node;
 	else
 		return (btree_search(
-					result < 0 ? node->left : node->right,
+					result < 0 ? node->children[LEFT] : node->children[RIGHT],
 					data,
 					cmp));
 }
@@ -33,10 +33,10 @@ void	left_rotate(struct s_rbtree ** root)
 {
 	struct s_rbtree * pivot;
 
-	assert(*root != NULL && (*root)->right != NULL);
-	pivot = (*root)->right;
-	(*root)->right = pivot->left;
-	pivot->left = *root;
+	assert(*root != NULL && (*root)->children[RIGHT] != NULL);
+	pivot = (*root)->children[RIGHT];
+	(*root)->children[RIGHT] = pivot->children[LEFT];
+	pivot->children[LEFT] = *root;
 	*root = pivot;
 }
 
@@ -44,16 +44,16 @@ void	right_rotate(struct s_rbtree ** root)
 {
 	struct s_rbtree * pivot;
 
-	assert(*root != NULL && (*root)->left != NULL);
-	pivot = (*root)->left;
-	(*root)->left = pivot->right;
-	pivot->right= *root;
+	assert(*root != NULL && (*root)->children[LEFT] != NULL);
+	pivot = (*root)->children[LEFT];
+	(*root)->children[LEFT] = pivot->children[RIGHT];
+	pivot->children[RIGHT]= *root;
 	*root = pivot;
 }
 
 void	rotate(struct s_rbtree **parent, struct s_rbtree *child)
 {
-	(child == (*parent)->left ? left_rotate : right_rotate)(parent);
+	(child == (*parent)->children[LEFT] ? left_rotate : right_rotate)(parent);
 }
 
 void	rbtree_inorder_traversal(
@@ -63,8 +63,8 @@ void	rbtree_inorder_traversal(
 {
 	if (tree != NULL)
 	{
-		rbtree_inorder_traversal(tree->left, f, extern_context);
+		rbtree_inorder_traversal(tree->children[LEFT], f, extern_context);
 		f(tree, extern_context);
-		rbtree_inorder_traversal(tree->right, f, extern_context);
+		rbtree_inorder_traversal(tree->children[RIGHT], f, extern_context);
 	}
 }

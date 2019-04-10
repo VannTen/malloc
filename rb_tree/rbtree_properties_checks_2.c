@@ -18,9 +18,9 @@ static int	reds_have_black_childs(struct s_rbtree const * const tree)
 		return (1);
 	else
 		return (((color(tree) == BLACK)
-					|| (color(tree->left) == BLACK && BLACK == color(tree->right)))
-				&& reds_have_black_childs(tree->left)
-				&& reds_have_black_childs(tree->right));
+					|| (color(tree->children[LEFT]) == BLACK && BLACK == color(tree->children[RIGHT])))
+				&& reds_have_black_childs(tree->children[LEFT])
+				&& reds_have_black_childs(tree->children[RIGHT]));
 }
 
 static int	root_is_black(struct s_rbtree const * const tree)

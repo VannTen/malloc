@@ -23,12 +23,12 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	tmp = *node_1;
 	*node_1 = *node_2;
 	*node_2 = tmp;
-	tmp = (*node_1)->left;
-	(*node_1)->left = (*node_2)->left;
-	(*node_2)->left = tmp;
-	tmp = (*node_1)->right;
-	(*node_1)->right = (*node_2)->right;
-	(*node_2)->right = tmp;
+	tmp = (*node_1)->children[LEFT];
+	(*node_1)->children[LEFT] = (*node_2)->children[LEFT];
+	(*node_2)->children[LEFT] = tmp;
+	tmp = (*node_1)->children[RIGHT];
+	(*node_1)->children[RIGHT] = (*node_2)->children[RIGHT];
+	(*node_2)->children[RIGHT] = tmp;
 	tmp_color = (*node_1)->color;
 	(*node_1)->color = (*node_2)->color;
 	(*node_2)->color = tmp_color;
@@ -38,11 +38,11 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node)
 {
 	struct s_rbtree * const	deleted = *node;
 
-	*node = (*node)->right;
+	*node = (*node)->children[RIGHT];
 	if (deleted->color == BLACK)
 	{
-		if (deleted->right->color == RED)
-			deleted->right->color = BLACK;
+		if (deleted->children[RIGHT]->color == RED)
+			deleted->children[RIGHT]->color = BLACK;
 		else
 			return (TREE_HAS_ONE_BLACK_LESS);
 	}
@@ -53,13 +53,13 @@ static enum e_tree_state swap_with_successor(
 		struct s_rbtree ** const node,
 		struct s_rbtree ** const predecessor)
 {
-	if ((*node)->left == NULL)
+	if ((*node)->children[LEFT] == NULL)
 	{
 		swap_nodes(node, predecessor);
 		return (balance_subtree(node, delete_node(node)));
 	}
 	else
-		return (swap_with_successor(&(*node)->left, predecessor));
+		return (swap_with_successor(&(*node)->children[LEFT], predecessor));
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
@@ -75,12 +75,12 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 	diff_result = diff(*tree, criterion);
 	if (diff_result != 0)
 		subtree_state = remove_recurse(
-			diff_result > 0 ? &(*tree)->left : &(*tree)->right,
+			diff_result > 0 ? &(*tree)->children[LEFT] : &(*tree)->children[RIGHT],
 			criterion, removed, diff);
 	else
 	{
 		*removed = *tree;
-		subtree_state = swap_with_successor(&(*tree)->right, tree);
+		subtree_state = swap_with_successor(&(*tree)->children[RIGHT], tree);
 	}
 	return (balance_subtree(tree, subtree_state));
 }

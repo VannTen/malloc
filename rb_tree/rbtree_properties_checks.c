@@ -31,8 +31,8 @@ size_t	black_depth(struct s_rbtree const * tree)
 		return (1);
 	else
 	{
-		left_depth = black_depth(tree->left);
-		if (left_depth != black_depth(tree->right) || left_depth == 0)
+		left_depth = black_depth(tree->children[LEFT]);
+		if (left_depth != black_depth(tree->children[RIGHT]) || left_depth == 0)
 			return (0);
 		else
 			return (left_depth + (tree->color == BLACK ? 1 : 0));
@@ -44,7 +44,7 @@ size_t	max_depth(struct s_rbtree const * tree)
 	if (tree == NULL)
 		return (1);
 	else
-		return (max(max_depth(tree->left), max_depth(tree->right)));
+		return (max(max_depth(tree->children[LEFT]), max_depth(tree->children[RIGHT])));
 }
 
 size_t	min_depth(struct s_rbtree const * tree)
@@ -52,5 +52,5 @@ size_t	min_depth(struct s_rbtree const * tree)
 	if (tree == NULL)
 		return (1);
 	else
-		return (min(min_depth(tree->left), min_depth(tree->right)));
+		return (min(min_depth(tree->children[LEFT]), min_depth(tree->children[RIGHT])));
 }

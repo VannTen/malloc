@@ -15,7 +15,7 @@
 
 void	rbtree_init_node(struct s_rbtree * const node)
 {
-	node->left = NULL;
-	node->right = NULL;
+	node->children[LEFT] = NULL;
+	node->children[RIGHT] = NULL;
 	node->color = RED;
 }

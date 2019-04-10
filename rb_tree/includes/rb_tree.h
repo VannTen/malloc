@@ -35,9 +35,14 @@ enum e_tree_state
 
 struct s_rbtree
 {
-	struct s_rbtree	*left;
-	struct s_rbtree	*right;
+	struct s_rbtree	*children[2];
 	enum e_color	color;
+};
+
+enum
+{
+	LEFT,
+	RIGHT
 };
 
 /*
