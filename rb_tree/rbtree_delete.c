@@ -20,12 +20,15 @@
 ** (case of swapping a parent with its direct child)
 */
 
-static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
+static void	swap_nodes(
+		struct s_rbtree ** const node_1,
+		struct s_rbtree ** const node_2)
 {
 	struct s_rbtree			tmp;
 	struct s_rbtree			*tmp_addr;
 	struct s_rbtree * const nodes[] = {*node_1, *node_2};
 
+	assert(*node_1 != NULL && *node_2 != NULL);
 	tmp_addr = *node_1;
 	*node_1 = *node_2;
 	*node_2 = tmp_addr;
@@ -44,19 +47,27 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 {
 	struct s_rbtree * const	deleted = *node;
 
+	assert(deleted != NULL);
+	assert(deleted->children[LEFT] == NULL || deleted->children[RIGHT] == NULL);
 	*node = (*node)->children[side];
-	if (color(deleted) == BLACK)
-	{
-		if (color(deleted->children[side]) == RED)
-			deleted->children[side]->color = BLACK;
-		else
-			return (TREE_HAS_ONE_BLACK_LESS);
-	}
+	if (color(deleted->children[side]) == RED)
+		deleted->children[side]->color = BLACK;
+	else if (color(deleted) == BLACK)
+		return (TREE_HAS_ONE_BLACK_LESS);
 	return (GOOD);
 }
 
+/*
+** The check in delete_node call is required
+** to handle the following special case :
+** If node is one of the children of predecessor, the pointer pointed by node
+** will be corrupted by swap_nodes, since it is
+** &(*predecessor)->children[EITHER] , which will be modified when the swap
+** exchanges the children of the two nodes.
+*/
+
 static enum e_tree_state swap_with_successor(
-		struct s_rbtree ** node,
+		struct s_rbtree ** const node,
 		struct s_rbtree ** const predecessor,
 		int side)
 {
@@ -66,8 +77,9 @@ static enum e_tree_state swap_with_successor(
 	if ((*node)->children[side] == NULL)
 	{
 		swap_nodes(node, predecessor);
-		node = predecessor;
-		state = delete_node(node, !side);
+		state = delete_node(&(*predecessor)->children[RIGHT]->children[RIGHT] != node
+				? node : &(*predecessor)->children[RIGHT],
+				!side);
 	}
 	else
 		state = swap_with_successor(&(*node)->children[side], predecessor, LEFT);
