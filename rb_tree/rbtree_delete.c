@@ -34,15 +34,15 @@ static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 	(*node_2)->color = tmp_color;
 }
 
-static enum e_tree_state	delete_node(struct s_rbtree ** const node)
+static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 {
 	struct s_rbtree * const	deleted = *node;
 
-	*node = (*node)->children[RIGHT];
+	*node = (*node)->children[side];
 	if (color(deleted) == BLACK)
 	{
-		if (color(deleted->children[RIGHT]) == RED)
-			deleted->children[RIGHT]->color = BLACK;
+		if (color(deleted->children[side]) == RED)
+			deleted->children[side]->color = BLACK;
 		else
 			return (TREE_HAS_ONE_BLACK_LESS);
 	}
@@ -57,15 +57,15 @@ static enum e_tree_state swap_with_successor(
 	enum e_tree_state	state;
 
 	assert(*node != NULL);
-	if ((*node)->children[LEFT] == NULL)
+	if ((*node)->children[side] == NULL)
 	{
 		swap_nodes(node, predecessor);
 		node = predecessor;
-		state = delete_node(node);
+		state = delete_node(node, side);
 	}
 	else
 		state = swap_with_successor(&(*node)->children[side], predecessor, LEFT);
-	return (balance_subtree(node, LEFT, state));
+	return (balance_subtree(node, side, state));
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,

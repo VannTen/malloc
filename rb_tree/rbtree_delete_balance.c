@@ -60,13 +60,13 @@ enum e_tree_state	balance_subtree(
 	if (subtree_state == TREE_HAS_ONE_BLACK_LESS)
 	{
 		subtree_state = GOOD;
-		if ((*tree)->children[!side]->color == RED)
+		if (color((*tree)->children[!side]) == RED)
 			red_sibling(tree, side);
-		else if ((*tree)->children[!side]->children[!side]->color == RED)
+		else if (color((*tree)->children[!side]->children[!side]) == RED)
 			outer_red_nephew(tree, side);
-		else if ((*tree)->children[!side]->children[side]->color == RED)
+		else if (color((*tree)->children[!side]->children[side]) == RED)
 			inner_red_nephew(tree, side);
-		else if ((*tree)->color == BLACK)
+		else if (color(*tree) == BLACK)
 		{
 			parent_sibling_nephews_black(tree, side);
 			subtree_state = TREE_HAS_ONE_BLACK_LESS;
