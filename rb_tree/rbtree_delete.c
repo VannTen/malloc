@@ -39,9 +39,9 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node)
 	struct s_rbtree * const	deleted = *node;
 
 	*node = (*node)->children[RIGHT];
-	if (deleted->color == BLACK)
+	if (color(deleted) == BLACK)
 	{
-		if (deleted->children[RIGHT]->color == RED)
+		if (color(deleted->children[RIGHT]) == RED)
 			deleted->children[RIGHT]->color = BLACK;
 		else
 			return (TREE_HAS_ONE_BLACK_LESS);
@@ -50,20 +50,22 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node)
 }
 
 static enum e_tree_state swap_with_successor(
-		struct s_rbtree ** const node)
+		struct s_rbtree ** node,
+		struct s_rbtree ** const predecessor,
+		int side)
 {
 	enum e_tree_state	state;
 
-	if ((*node) == NULL)
-	{
-	}
-	state = swap_with_successor(&(*node)->children[LEFT], predecessor);
-	if (state == SUCCESSOR_FOUND);
+	assert(*node != NULL);
+	if ((*node)->children[LEFT] == NULL)
 	{
 		swap_nodes(node, predecessor);
+		node = predecessor;
 		state = delete_node(node);
 	}
-	return (balance_subtree(node, LEFT, state);
+	else
+		state = swap_with_successor(&(*node)->children[side], predecessor, LEFT);
+	return (balance_subtree(node, LEFT, state));
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
@@ -83,7 +85,7 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 	else
 	{
 		*removed = *tree;
-		subtree_state = swap_with_successor(&(*tree));
+		subtree_state = swap_with_successor(tree, tree, RIGHT);
 	}
 	return (balance_subtree(tree, diff_result <= 0,subtree_state));
 }
