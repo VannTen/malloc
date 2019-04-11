@@ -101,4 +101,10 @@ enum e_tree_state	balance_subtree(
 
 enum e_color	color(struct s_rbtree const *);
 
+/*
+** Debug
+*/
+
+void			print_tree(struct s_rbtree const *);
+
 #endif

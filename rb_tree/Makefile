@@ -35,7 +35,8 @@ SRCS := \
 	rbtree_delete_balance.c \
 	rbtree_helpers.c \
 	rbtree_properties_checks.c \
-	rbtree_properties_checks_2.c
+	rbtree_properties_checks_2.c \
+	rbtree_debug.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes

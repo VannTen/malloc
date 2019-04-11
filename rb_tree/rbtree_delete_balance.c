@@ -17,6 +17,7 @@ static void			red_sibling(struct s_rbtree ** tree, int side)
 	(*tree)->color = RED;
 	(*tree)->children[!side]->color = BLACK;
 	(side ? right_rotate : left_rotate)(tree);
+	// TODO: forward to other rebalancing functions
 
 }
 
