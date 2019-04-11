@@ -57,7 +57,7 @@ enum e_tree_state	balance_subtree(
 		int const	side,
 		enum e_tree_state subtree_state)
 {
-	if (subtree_state == TREE_HAS_ONE_BLACK_LESS)
+	if (subtree_state == TREE_HAS_ONE_BLACK_LESS && *tree != NULL)
 	{
 		subtree_state = GOOD;
 		if (color((*tree)->children[!side]) == RED)

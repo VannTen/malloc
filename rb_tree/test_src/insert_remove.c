@@ -57,5 +57,5 @@ int	main(void)
 	}
 	assert(black_depth(tree) != 0);
 	assert(max_depth(tree) <= min_depth(tree) * 2);
-	return (1);
+	return (0);
 }
