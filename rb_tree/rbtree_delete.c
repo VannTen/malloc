@@ -14,24 +14,30 @@
 #include <assert.h>
 #include <stddef.h>
 
+/*
+** temporary pointers are necessary, since one of the parameters could be
+** pointing to one of the child of the other params, creating aliasing problems
+** (case of swapping a parent with its direct child)
+*/
 
 static void	swap_nodes(struct s_rbtree **node_1, struct s_rbtree **node_2)
 {
-	struct s_rbtree *tmp;
-	enum e_color	tmp_color;
+	struct s_rbtree			tmp;
+	struct s_rbtree			*tmp_addr;
+	struct s_rbtree * const nodes[] = {*node_1, *node_2};
 
-	tmp = *node_1;
+	tmp_addr = *node_1;
 	*node_1 = *node_2;
-	*node_2 = tmp;
-	tmp = (*node_1)->children[LEFT];
-	(*node_1)->children[LEFT] = (*node_2)->children[LEFT];
-	(*node_2)->children[LEFT] = tmp;
-	tmp = (*node_1)->children[RIGHT];
-	(*node_1)->children[RIGHT] = (*node_2)->children[RIGHT];
-	(*node_2)->children[RIGHT] = tmp;
-	tmp_color = (*node_1)->color;
-	(*node_1)->color = (*node_2)->color;
-	(*node_2)->color = tmp_color;
+	*node_2 = tmp_addr;
+	tmp.color = nodes[0]->color;
+	tmp.children[LEFT] = nodes[0]->children[LEFT];
+	tmp.children[RIGHT] = nodes[0]->children[RIGHT];
+	nodes[0]->color = nodes[1]->color;
+	nodes[0]->children[LEFT] = nodes[1]->children[LEFT];
+	nodes[0]->children[RIGHT] = nodes[1]->children[RIGHT];
+	nodes[1]->color = tmp.color;
+	nodes[1]->children[LEFT] = tmp.children[LEFT];
+	nodes[1]->children[RIGHT] = tmp.children[RIGHT];
 }
 
 static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
@@ -61,7 +67,7 @@ static enum e_tree_state swap_with_successor(
 	{
 		swap_nodes(node, predecessor);
 		node = predecessor;
-		state = delete_node(node, side);
+		state = delete_node(node, !side);
 	}
 	else
 		state = swap_with_successor(&(*node)->children[side], predecessor, LEFT);
