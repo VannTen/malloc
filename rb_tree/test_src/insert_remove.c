@@ -13,7 +13,6 @@
 #include <assert.h>
 #include "rb_tree.h"
 #include <stdlib.h>
-#include <stdio.h>
 #define SIZE_TEST 10
 
 struct test_node {
@@ -34,11 +33,6 @@ static int diff(void const *val_1, void const *crit)
 			- *(int*)crit);
 }
 
-static void _print_tree(void const *a, __attribute__((unused))void *b)
-{
-	printf("%d\n", ((struct test_node*)a)->value);
-}
-
 int	test_2(void)
 {
 	struct test_node	*values;
@@ -57,14 +51,11 @@ int	test_2(void)
 		index++;
 	}
 	index--;
-	rbtree_inorder_traversal(tree, _print_tree, NULL);
 	while (index != 0)
 	{
 		value = values[index].value;
 		rbtree_remove(&tree, &value, diff);
 		index--;
-		printf("=============================\n");
-		print_tree(tree);
 		assert(is_valid_rb_tree(tree));
 	}
 	free(values);
