@@ -16,7 +16,6 @@
 static void			parent_sibling_nephews_black(struct s_rbtree ** tree, int side)
 {
 	(*tree)->children[!side]->color = RED;
-//	return (TREE_HAS_ONE_BLACK_LESS);
 }
 
 static void			parent_red_sib_neph_black(struct s_rbtree ** tree, int side)
@@ -65,6 +64,7 @@ static void			red_sibling(struct s_rbtree ** tree, int side)
 {
 	int done;
 
+	(*tree)->color = RED;
 	(*tree)->children[!side]->color = BLACK;
 	(side ? right_rotate : left_rotate)(tree);
 	done = post_red_sibling(
