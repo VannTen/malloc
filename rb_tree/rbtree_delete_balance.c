@@ -11,13 +11,19 @@
 /* ************************************************************************** */
 
 #include "rb_tree.h"
+#include <assert.h>
 
+#include <stdio.h>
 static void			red_sibling(struct s_rbtree ** tree, int side)
 {
+	enum e_tree_state	state;
+
 	(*tree)->color = RED;
 	(*tree)->children[!side]->color = BLACK;
 	(side ? right_rotate : left_rotate)(tree);
-	// TODO: forward to other rebalancing functions
+	state = balance_subtree(
+			&(*tree)->children[side], side, TREE_HAS_ONE_BLACK_LESS);
+	assert(state == GOOD);
 
 }
 
