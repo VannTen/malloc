@@ -26,11 +26,14 @@ static void			parent_red_sib_neph_black(struct s_rbtree ** tree, int side)
 
 static void			outer_red_nephew(struct s_rbtree ** tree, int side)
 {
-	enum e_color const	tmp = (*tree)->color;
+	enum e_color const		tmp = (*tree)->color;
+	struct s_rbtree * const	outer_nephew
+		= (*tree)->children[!side]->children[!side];
 
+	(*tree)->color = BLACK;
 	(side ? right_rotate : left_rotate)(tree);
 	(*tree)->color = tmp;
-	(*tree)->children[side]->color = BLACK;
+	outer_nephew->color = BLACK;
 }
 
 static void			inner_red_nephew(struct s_rbtree ** tree, int side)
