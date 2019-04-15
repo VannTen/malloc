@@ -14,7 +14,7 @@
 #include "rb_tree.h"
 #include <stdlib.h>
 #include <stdio.h>
-#define SIZE_TEST 50
+#define SIZE_TEST 9
 
 struct test_node {
 
@@ -34,12 +34,22 @@ static int diff(void const *val_1, void const *crit)
 			- *(int*)crit);
 }
 
+void	assert_order(void const *node, void *_previous_value)
+{
+	struct test_node const * const	value = node;
+	int * const						previous_value = _previous_value;
+
+	assert(value->value >= *previous_value);
+	*previous_value = value->value;
+}
+
 int	test_2(void)
 {
 	struct test_node	*values;
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
+	int					assert_val;
 
 	tree = NULL;
 	index = 0;
@@ -49,47 +59,55 @@ int	test_2(void)
 		values[index].value = rand();
 		rbtree_init_node(&(values[index].node));
 		rbtree_insert(&tree, &(values[index].node), cmp);
+		assert_val = 0;
+		rbtree_inorder_traversal(tree, assert_order, &assert_val);
 		index++;
 	}
-	index--;
 	while (index != 0)
 	{
+		index--;
 		value = values[index].value;
 		rbtree_remove(&tree, &value, diff);
-		index--;
 		printf("===============================%zu\n", index);
 		print_tree(tree);
 		assert(is_valid_rb_tree(tree));
+		assert_val = 0;
+		rbtree_inorder_traversal(tree, assert_order, &assert_val);
 	}
 	free(values);
 	return (1);
 }
 
+#define SIZE_TEST_1 3
 int	test_1(void)
 {
-	struct test_node	values[20];
+	struct test_node	values[SIZE_TEST_1];
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
+	struct test_node	*addr;
 
 	tree = NULL;
 	index = 0;
-	while (index < 20)
+	while (index < SIZE_TEST_1)
 	{
 		values[index].value = index + 4;
 		rbtree_init_node(&(values[index].node));
 		rbtree_insert(&tree, &(values[index].node), cmp);
 		index++;
 	}
+	assert(is_valid_rb_tree(tree));
+	print_tree(tree);
 	while (index != 0)
 	{
-		value = index + 4;
-		rbtree_remove(&tree, &value, diff);
 		index--;
+		value = index + 4;
+		addr = rbtree_remove(&tree, &value, diff);
+		assert(value == addr->value);
 		assert(is_valid_rb_tree(tree));
+		printf("===============================%zu\n", index);
+		print_tree(tree);
 	}
-	assert(black_depth(tree) != 0);
-	assert(max_depth(tree) <= min_depth(tree) * 2);
 	return (1);
 }
 

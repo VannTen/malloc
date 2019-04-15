@@ -20,29 +20,6 @@
 ** (case of swapping a parent with its direct child)
 */
 
-static void	swap_nodes(
-		struct s_rbtree ** const node_1,
-		struct s_rbtree ** const node_2)
-{
-	struct s_rbtree			tmp;
-	struct s_rbtree			*tmp_addr;
-	struct s_rbtree * const nodes[] = {*node_1, *node_2};
-
-	assert(*node_1 != NULL && *node_2 != NULL);
-	tmp_addr = *node_1;
-	*node_1 = *node_2;
-	*node_2 = tmp_addr;
-	tmp.color = nodes[0]->color;
-	tmp.children[LEFT] = nodes[0]->children[LEFT];
-	tmp.children[RIGHT] = nodes[0]->children[RIGHT];
-	nodes[0]->color = nodes[1]->color;
-	nodes[0]->children[LEFT] = nodes[1]->children[LEFT];
-	nodes[0]->children[RIGHT] = nodes[1]->children[RIGHT];
-	nodes[1]->color = tmp.color;
-	nodes[1]->children[LEFT] = tmp.children[LEFT];
-	nodes[1]->children[RIGHT] = tmp.children[RIGHT];
-}
-
 static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 {
 	struct s_rbtree * const	deleted = *node;
@@ -66,9 +43,9 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 ** exchanges the children of the two nodes.
 */
 
-static enum e_tree_state swap_with_successor(
+static enum e_tree_state remove_successor(
 		struct s_rbtree ** const node,
-		struct s_rbtree ** const predecessor,
+		struct s_rbtree ** const successor,
 		int side)
 {
 	enum e_tree_state	state;
@@ -76,14 +53,13 @@ static enum e_tree_state swap_with_successor(
 	assert(*node != NULL);
 	if ((*node)->children[side] == NULL)
 	{
-		swap_nodes(node, predecessor);
-		state = delete_node(&(*predecessor)->children[RIGHT]->children[RIGHT] != node
-				? node : &(*predecessor)->children[RIGHT],
-				!side);
+		*successor = *node;
+		state = delete_node(node, !side);
 	}
 	else
-		state = swap_with_successor(&(*node)->children[side], predecessor, LEFT);
-	return (balance_subtree(node, side, state));
+		state = balance_subtree(node, side,
+				remove_successor(&(*node)->children[side], successor, LEFT));
+	return (state);
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
@@ -93,6 +69,7 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 {
 	int						diff_result;
 	enum e_tree_state	subtree_state;
+	struct s_rbtree		*successor;
 
 	if (*tree == NULL)
 		return (GOOD);
@@ -102,15 +79,17 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 		subtree_state = remove_recurse(
 				&(*tree)->children[diff_result <= 0],
 				criterion, removed, diff);
-		subtree_state = balance_subtree(
-				tree,
-				diff_result <= 0,
-				subtree_state);
+		subtree_state = balance_subtree(tree, diff_result <= 0, subtree_state);
 	}
 	else
 	{
 		*removed = *tree;
-		subtree_state = swap_with_successor(tree, tree, RIGHT);
+		subtree_state = remove_successor(tree, &successor, RIGHT);
+		if (*tree != NULL)
+		{
+			*successor = **tree;
+			*tree = successor;
+		}
 	}
 	return (subtree_state);
 }
