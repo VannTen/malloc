@@ -98,14 +98,21 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 		return (GOOD);
 	diff_result = diff(*tree, criterion);
 	if (diff_result != 0)
-		subtree_state = remove_recurse(&(*tree)->children[diff_result <= 0],
-			criterion, removed, diff);
+	{
+		subtree_state = remove_recurse(
+				&(*tree)->children[diff_result <= 0],
+				criterion, removed, diff);
+		subtree_state = balance_subtree(
+				tree,
+				diff_result <= 0,
+				subtree_state);
+	}
 	else
 	{
 		*removed = *tree;
 		subtree_state = swap_with_successor(tree, tree, RIGHT);
 	}
-	return (balance_subtree(tree, diff_result <= 0, subtree_state));
+	return (subtree_state);
 }
 
 void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,

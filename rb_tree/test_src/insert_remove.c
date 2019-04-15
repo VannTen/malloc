@@ -13,7 +13,8 @@
 #include <assert.h>
 #include "rb_tree.h"
 #include <stdlib.h>
-#define SIZE_TEST 10
+#include <stdio.h>
+#define SIZE_TEST 50
 
 struct test_node {
 
@@ -56,6 +57,8 @@ int	test_2(void)
 		value = values[index].value;
 		rbtree_remove(&tree, &value, diff);
 		index--;
+		printf("===============================%zu\n", index);
+		print_tree(tree);
 		assert(is_valid_rb_tree(tree));
 	}
 	free(values);
