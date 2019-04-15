@@ -105,7 +105,7 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 		*removed = *tree;
 		subtree_state = swap_with_successor(tree, tree, RIGHT);
 	}
-	return (balance_subtree(tree, diff_result <= 0,subtree_state));
+	return (balance_subtree(tree, diff_result <= 0, subtree_state));
 }
 
 void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,

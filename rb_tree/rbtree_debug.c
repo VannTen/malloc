@@ -19,9 +19,9 @@ static void	print_subtree(struct s_rbtree const *tree, int offset)
 
 	if (tree != NULL)
 	{
-		print_subtree(tree->children[LEFT], child_offset);
-		printf("%*c\n", offset, tree->color == RED ? 'R' : 'B');
 		print_subtree(tree->children[RIGHT], child_offset);
+		printf("%*c\n", offset, tree->color == RED ? 'R' : 'B');
+		print_subtree(tree->children[LEFT], child_offset);
 	}
 	else
 		printf("%*c\n", offset, 'L');

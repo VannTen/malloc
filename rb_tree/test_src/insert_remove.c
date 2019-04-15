@@ -64,21 +64,21 @@ int	test_2(void)
 
 int	test_1(void)
 {
-	struct test_node	values[10];
+	struct test_node	values[20];
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
 
 	tree = NULL;
 	index = 0;
-	while (index < 10)
+	while (index < 20)
 	{
 		values[index].value = index + 4;
 		rbtree_init_node(&(values[index].node));
 		rbtree_insert(&tree, &(values[index].node), cmp);
 		index++;
 	}
-	while (index > 5)
+	while (index != 0)
 	{
 		value = index + 4;
 		rbtree_remove(&tree, &value, diff);

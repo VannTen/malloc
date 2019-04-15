@@ -69,7 +69,7 @@ static void			red_sibling(struct s_rbtree ** tree, int side)
 	(side ? right_rotate : left_rotate)(tree);
 	done = post_red_sibling(
 			&(*tree)->children[side], side);
-	//assert(done);
+	assert(done);
 }
 
 enum e_tree_state	balance_subtree(
