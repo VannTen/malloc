@@ -29,7 +29,7 @@ int main(void)
 	{
 		values[index].value = index;
 		rbtree_init_node(&values[index].node);
-		rbtree_insert(&tree, &values[index].node, rbtree_test_diff);
+		rbtree_insert(&tree, &values[index].node, rbtree_test_cmp);
 		print_tree_content(tree);
 		print_tree(tree);
 		printf("=======\n");
