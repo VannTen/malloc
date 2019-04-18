@@ -12,31 +12,14 @@
 
 #include <assert.h>
 #include "rb_tree.h"
+#include "rb_tree_test.h"
 #include <stdlib.h>
 #include <stdio.h>
 #define SIZE_TEST 9
 
-struct test_node {
-
-	struct s_rbtree	node;
-	int				value;
-};
-
-static int	cmp(void const *val_1, void const *val_2)
-{
-	return (((struct test_node const *)val_1)->value
-			- ((struct test_node const *)val_2)->value);
-}
-
-static int diff(void const *val_1, void const *crit)
-{
-	return (((struct test_node const *)val_1)->value
-			- *(int*)crit);
-}
-
 void	assert_order(void const *node, void *_previous_value)
 {
-	struct test_node const * const	value = node;
+	struct s_test_node const * const	value = node;
 	int * const						previous_value = _previous_value;
 
 	assert(value->value >= *previous_value);
@@ -45,7 +28,7 @@ void	assert_order(void const *node, void *_previous_value)
 
 int	test_2(void)
 {
-	struct test_node	*values;
+	struct s_test_node	*values;
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
@@ -58,7 +41,7 @@ int	test_2(void)
 	{
 		values[index].value = rand();
 		rbtree_init_node(&(values[index].node));
-		rbtree_insert(&tree, &(values[index].node), cmp);
+		rbtree_insert(&tree, &(values[index].node), rbtree_test_cmp);
 		assert_val = 0;
 		rbtree_inorder_traversal(tree, assert_order, &assert_val);
 		index++;
@@ -67,7 +50,7 @@ int	test_2(void)
 	{
 		index--;
 		value = values[index].value;
-		rbtree_remove(&tree, &value, diff);
+		rbtree_remove(&tree, &value, rbtree_test_diff);
 		printf("===============================%zu\n", index);
 		print_tree(tree);
 		assert(is_valid_rb_tree(tree));
@@ -81,11 +64,11 @@ int	test_2(void)
 #define SIZE_TEST_1 3
 int	test_1(void)
 {
-	struct test_node	values[SIZE_TEST_1];
+	struct s_test_node	values[SIZE_TEST_1];
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
-	struct test_node	*addr;
+	struct s_test_node	*addr;
 
 	tree = NULL;
 	index = 0;
@@ -93,7 +76,7 @@ int	test_1(void)
 	{
 		values[index].value = index + 4;
 		rbtree_init_node(&(values[index].node));
-		rbtree_insert(&tree, &(values[index].node), cmp);
+		rbtree_insert(&tree, &(values[index].node), rbtree_test_cmp);
 		index++;
 	}
 	assert(is_valid_rb_tree(tree));
@@ -102,7 +85,7 @@ int	test_1(void)
 	{
 		index--;
 		value = index + 4;
-		addr = rbtree_remove(&tree, &value, diff);
+		addr = rbtree_remove(&tree, &value, rbtree_test_diff);
 		assert(value == addr->value);
 		assert(is_valid_rb_tree(tree));
 		printf("===============================%zu\n", index);
