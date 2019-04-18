@@ -86,10 +86,7 @@ static enum e_tree_insert_ret	insert(
 	}
 	else
 	{
-		if (diff(*tree, new_node) > 0)
-			child = &(*tree)->children[LEFT];
-		else
-			child = &(*tree)->children[RIGHT];
+		child = &(*tree)->children[diff(*tree, new_node) <= 0];
 		return (repair_tree(
 					tree,
 					child,

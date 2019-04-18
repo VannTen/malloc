@@ -14,6 +14,7 @@
 #include "rb_tree_test.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <assert.h>
 #define SIZE_TEST 3
 
 int main(void)
@@ -29,11 +30,18 @@ int main(void)
 		values[index].value = index;
 		rbtree_init_node(&values[index].node);
 		rbtree_insert(&tree, &values[index].node, rbtree_test_diff);
+		print_tree_content(tree);
+		print_tree(tree);
+		printf("=======\n");
 		index++;
 	}
+	assert(tree_is_inorder(tree));
+	print_tree(tree);
 	index--;
 	while (rbtree_remove(&tree, &index, rbtree_test_diff) != NULL)
 		index--;
 	printf("Remaining nodes : %d\n", index);
+	if (index != 0)
+		print_tree_content(tree);
 	return (!(index == 0));
 }

@@ -29,4 +29,11 @@ struct s_test_node {
 int	rbtree_test_cmp(void const *val_1, void const *val_2);
 int rbtree_test_diff(void const *val_1, void const *crit);
 
+/*
+** Printing and debugging
+*/
+
+void	print_tree_content(struct s_rbtree const *tree);
+void	print_tree(struct s_rbtree const *tree);
+
 #endif

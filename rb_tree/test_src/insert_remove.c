@@ -61,7 +61,7 @@ int	test_2(void)
 	return (1);
 }
 
-#define SIZE_TEST_1 3
+#define SIZE_TEST_1 4
 int	test_1(void)
 {
 	struct s_test_node	values[SIZE_TEST_1];
@@ -74,22 +74,24 @@ int	test_1(void)
 	index = 0;
 	while (index < SIZE_TEST_1)
 	{
-		values[index].value = index + 4;
+		values[index].value = index;
 		rbtree_init_node(&(values[index].node));
 		rbtree_insert(&tree, &(values[index].node), rbtree_test_cmp);
 		index++;
 	}
 	assert(is_valid_rb_tree(tree));
+	assert(tree_is_inorder(tree));
 	print_tree(tree);
+	index--;
 	while (index != 0)
 	{
-		index--;
-		value = index + 4;
+		value = index;
 		addr = rbtree_remove(&tree, &value, rbtree_test_diff);
-		assert(value == addr->value);
-		assert(is_valid_rb_tree(tree));
 		printf("===============================%zu\n", index);
 		print_tree(tree);
+		assert(is_valid_rb_tree(tree));
+		assert(value == addr->value);
+		index--;
 	}
 	return (1);
 }
