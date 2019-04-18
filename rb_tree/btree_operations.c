@@ -51,9 +51,9 @@ void	right_rotate(struct s_rbtree ** root)
 	*root = pivot;
 }
 
-void	rotate(struct s_rbtree **parent, struct s_rbtree *child)
+void	rotate(struct s_rbtree **parent, int side)
 {
-	(child == (*parent)->children[LEFT] ? left_rotate : right_rotate)(parent);
+	(side == LEFT ? left_rotate : right_rotate)(parent);
 }
 
 void	rbtree_inorder_traversal(

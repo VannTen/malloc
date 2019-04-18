@@ -59,7 +59,7 @@ void	rbtree_inorder_traversal(
 int		tree_is_inorder(struct s_rbtree const *tree);
 void	left_rotate(struct s_rbtree ** root);
 void	right_rotate(struct s_rbtree ** root);
-void	rotate(struct s_rbtree **parent, struct s_rbtree *child);
+void	rotate(struct s_rbtree **parent, int side);
 
 /*
 ** Red Black Trees operations (specific)
