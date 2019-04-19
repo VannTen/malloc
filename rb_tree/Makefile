@@ -57,7 +57,7 @@ $(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c -lrbtree | $(TEST_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 $(TESTS): %.passed:% | $(TEST_DIR)
-	./$<
+	@./$< $(TEST_OUT)
 	touch $@
 
 test: $(TESTS)
