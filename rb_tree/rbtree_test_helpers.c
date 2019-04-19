@@ -44,3 +44,8 @@ int	tree_is_inorder(struct s_rbtree const *tree)
 	rbtree_inorder_traversal(tree, acc, value);
 	return (value[1]);
 }
+
+void	*array_next_test_node(void * node)
+{
+	return (((struct s_test_node *)node) + 1);
+}

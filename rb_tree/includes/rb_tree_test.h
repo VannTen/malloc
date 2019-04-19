@@ -28,6 +28,7 @@ struct s_test_node {
 
 int	rbtree_test_cmp(void const *val_1, void const *val_2);
 int rbtree_test_diff(void const *val_1, void const *crit);
+void	*array_next_elem(void * test_node);
 
 /*
 ** Printing and debugging

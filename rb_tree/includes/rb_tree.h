@@ -107,5 +107,9 @@ enum e_color	color(struct s_rbtree const *);
 */
 
 void			print_tree(struct s_rbtree const *);
+struct s_rbtree	*rbtree_from_sequential(
+		void *first,
+		void *(*next)(void *),
+		int (*cmp)(void const *, void const *));
 
 #endif
