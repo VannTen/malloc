@@ -15,13 +15,14 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <assert.h>
-#define SIZE_TEST 3
+#define SIZE_TEST 100
 
 int main(void)
 {
 	struct s_test_node	values[SIZE_TEST];
 	int					index;
 	struct s_rbtree		*tree;
+	struct s_test_node	*val;
 
 	index = 0;
 	tree = NULL;
@@ -36,12 +37,16 @@ int main(void)
 		index++;
 	}
 	assert(tree_is_inorder(tree));
-	print_tree(tree);
 	index--;
-	while (rbtree_remove(&tree, &index, rbtree_test_diff) != NULL)
+	while ((val = rbtree_remove(&tree, &index, rbtree_test_diff)) != NULL)
+	{
+		assert(tree_is_inorder(tree));
+		print_tree_content(tree);
+		printf("=======%d %d \n", index, val->value);
 		index--;
+	}
 	printf("Remaining nodes : %d\n", index);
 	if (index != 0)
 		print_tree_content(tree);
-	return (!(index == 0));
+	return (!(index == -1));
 }
