@@ -30,7 +30,7 @@ static void	print_subtree(struct s_rbtree const *tree, int offset)
 
 static void	print_subtree_content(struct s_rbtree const *tree, int offset)
 {
-	int const child_offset = offset + 8;
+	int const child_offset = offset + 16;
 
 	if (tree != NULL)
 	{
