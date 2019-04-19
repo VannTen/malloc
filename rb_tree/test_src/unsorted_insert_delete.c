@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #ifndef SIZE_TEST
-# define SIZE_TEST 50
+# define SIZE_TEST 100
 #endif
 
 int main(void)
@@ -28,7 +28,7 @@ int main(void)
 	index = 0;
 	while (index < SIZE_TEST)
 	{
-		values[index].value = rand();
+		values[index].value = rand() % SIZE_TEST;
 		index++;
 	}
 	tree = rbtree_from_sequential(values,
@@ -39,9 +39,10 @@ int main(void)
 	{
 		print_tree_content(tree);
 		index--;
+		if (index < 0)
+			break ;
 		printf("=================================%d\n", values[index].value);
 	}
 	print_tree_content(tree);
-	printf("%d\n", values[index + 1].value);
 	return (index + 1);
 }
