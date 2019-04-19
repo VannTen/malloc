@@ -16,15 +16,17 @@
 struct s_rbtree	*rbtree_from_sequential(
 		void *first,
 		void *(*next)(void *),
-		int (*cmp)(void const *, void const *))
+		int (*cmp)(void const *, void const *),
+		void * const end_address)
 {
 	struct s_rbtree *new_tree;
 
 	new_tree = NULL;
-	while (first != NULL)
+	while (first != end_address)
 	{
-		rbtree_insert(&tree, first, cmp);
+		rbtree_init_node(first);
+		rbtree_insert(&new_tree, first, cmp);
 		first = next(first);
 	}
-	return (tree);
+	return (new_tree);
 }
