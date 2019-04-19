@@ -45,20 +45,23 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 
 static enum e_tree_state remove_successor(
 		struct s_rbtree ** const node,
-		struct s_rbtree ** const successor,
+		struct s_rbtree ** const ancestor,
 		int side)
 {
 	enum e_tree_state	state;
+	struct s_rbtree		*successor;
 
-	assert(*node != NULL);
 	if ((*node)->children[side] == NULL)
 	{
-		*successor = *node;
+		assert(node != ancestor);
+		successor = *node;
 		state = delete_node(node, !side);
+		*successor = **ancestor;
+		*ancestor = successor;
 	}
 	else
 		state = balance_subtree(node, side,
-				remove_successor(&(*node)->children[side], successor, LEFT));
+				remove_successor(&(*node)->children[side], ancestor, LEFT));
 	return (state);
 }
 
@@ -69,7 +72,6 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 {
 	int						diff_result;
 	enum e_tree_state	subtree_state;
-	struct s_rbtree		*successor;
 
 	if (*tree == NULL)
 		return (GOOD);
@@ -84,12 +86,10 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 	else
 	{
 		*removed = *tree;
-		subtree_state = remove_successor(tree, &successor, RIGHT);
-		if (*tree != NULL)
-		{
-			*successor = **tree;
-			*tree = successor;
-		}
+		if ((*tree)->children[LEFT] == NULL || (*tree)->children[RIGHT] == NULL)
+			subtree_state = delete_node(tree, (*tree)->children[LEFT] == NULL);
+		else
+			subtree_state = remove_successor(tree, tree, RIGHT);
 	}
 	return (subtree_state);
 }
