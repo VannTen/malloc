@@ -45,5 +45,6 @@ int main(void)
 		printf("=================================%d\n", values[index].value);
 	}
 	print_tree_content(tree);
+	printf("%zu=================================%d\n", rbtree_node_count(tree), values[index].value);
 	return (index + 1);
 }
