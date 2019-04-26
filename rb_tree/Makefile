@@ -36,6 +36,7 @@ SRCS := \
 	rbtree_helpers.c \
 	rbtree_test_helpers.c \
 	rbtree_convert.c \
+	rbtree_metadata.c \
 	rbtree_properties_checks.c \
 	rbtree_properties_checks_2.c \
 	rbtree_debug.c

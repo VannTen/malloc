@@ -82,6 +82,11 @@ size_t	max_depth(struct s_rbtree const *);
 size_t	min_depth(struct s_rbtree const *);
 int		is_valid_rb_tree(struct s_rbtree const *);
 
+/*
+** Tree metadat
+*/
+
+size_t	rbtree_node_count(struct s_rbtree const *);
 
 /*
 ** Implementation, not part of interface
