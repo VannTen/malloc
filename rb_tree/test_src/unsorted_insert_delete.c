@@ -35,9 +35,10 @@ int main(void)
 			array_next_test_node,
 			rbtree_test_cmp, values + SIZE_TEST);
 	index--;
-	while (rbtree_remove(&tree, &values[index].value, rbtree_test_diff) != NULL)
+	while (rbtree_node_count(tree) == (size_t)index + 1)
 	{
 		print_tree_content(tree);
+		rbtree_remove(&tree, &values[index].value, rbtree_test_diff);
 		index--;
 		if (index < 0)
 			break ;
