@@ -34,35 +34,41 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 	return (GOOD);
 }
 
-/*
-** The check in delete_node call is required
-** to handle the following special case :
-** If node is one of the children of predecessor, the pointer pointed by node
-** will be corrupted by swap_nodes, since it is
-** &(*predecessor)->children[EITHER] , which will be modified when the swap
-** exchanges the children of the two nodes.
-*/
-
 static enum e_tree_state remove_successor(
 		struct s_rbtree ** const node,
-		struct s_rbtree ** const ancestor,
+		struct s_rbtree ** const successor,
 		int side)
 {
 	enum e_tree_state	state;
-	struct s_rbtree		*successor;
 
 	if ((*node)->children[side] == NULL)
 	{
-		assert(node != ancestor);
-		successor = *node;
+		*successor = *node;
 		state = delete_node(node, !side);
-		*successor = **ancestor;
-		*ancestor = successor;
 	}
 	else
 		state = balance_subtree(node, side,
-				remove_successor(&(*node)->children[side], ancestor, LEFT));
+				remove_successor(&(*node)->children[side], successor, LEFT));
 	return (state);
+}
+static enum e_tree_state	replace_node(struct s_rbtree ** const tree)
+{
+	enum e_tree_state	subtree_state;
+	struct s_rbtree *	successor;
+
+	if ((*tree)->children[LEFT] == NULL || (*tree)->children[RIGHT] == NULL)
+		subtree_state = delete_node(tree, (*tree)->children[LEFT] == NULL);
+	else
+	{
+		subtree_state = remove_successor(&(*tree)->children[RIGHT],
+				&successor,
+				LEFT);
+		*successor = **tree;
+		*tree = successor;
+		subtree_state = balance_subtree(tree, RIGHT, subtree_state);
+	}
+
+	return (subtree_state);
 }
 
 static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
@@ -86,10 +92,7 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 	else
 	{
 		*removed = *tree;
-		if ((*tree)->children[LEFT] == NULL || (*tree)->children[RIGHT] == NULL)
-			subtree_state = delete_node(tree, (*tree)->children[LEFT] == NULL);
-		else
-			subtree_state = remove_successor(tree, tree, RIGHT);
+		subtree_state = replace_node(tree);
 	}
 	return (subtree_state);
 }
