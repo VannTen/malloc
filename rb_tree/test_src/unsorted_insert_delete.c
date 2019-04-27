@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #ifndef SIZE_TEST
-# define SIZE_TEST 100
+# define SIZE_TEST 10000
 #endif
 
 int main(void)

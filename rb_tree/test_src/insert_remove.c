@@ -15,7 +15,7 @@
 #include "rb_tree_test.h"
 #include <stdlib.h>
 #include <stdio.h>
-#define SIZE_TEST 1000
+#define SIZE_TEST 5000
 
 void	assert_order(void const *node, void *_previous_value)
 {
@@ -58,10 +58,9 @@ int	test_2(void)
 	return (1);
 }
 
-#define SIZE_TEST_1 400
 int	test_1(void)
 {
-	struct s_test_node	values[SIZE_TEST_1];
+	struct s_test_node	values[SIZE_TEST];
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
@@ -69,7 +68,7 @@ int	test_1(void)
 
 	tree = NULL;
 	index = 0;
-	while (index < SIZE_TEST_1)
+	while (index < SIZE_TEST)
 	{
 		values[index].value = index;
 		rbtree_init_node(&(values[index].node));

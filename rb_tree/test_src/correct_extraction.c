@@ -15,7 +15,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <assert.h>
-#define SIZE_TEST 100
+#define SIZE_TEST 5000
 
 int main(void)
 {
