@@ -29,12 +29,15 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 
 SRCS := \
 	constants.c \
+	node_size_constants.c \
+	page_size_constants.c \
 	create_zone.c \
 	assert_create_zone.c \
 	get_first_fit.c \
 	free_node_get.c \
 	free_node.c \
 	alloc_zone_get.c
+
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)

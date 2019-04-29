@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc_structures.h                                :+:      :+:    :+:   */
+/*   node_size_constants.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/27 12:55:11 by                   #+#    #+#             */
-/*   Updated: 2019/04/27 12:55:11 by                  ###   ########.fr       */
+/*   Created: 2019/04/29 14:20:05 by                   #+#    #+#             */
+/*   Updated: 2019/04/29 14:20:05 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_STRUCTURES_H
-# define MALLOC_STRUCTURES_H
+#include "constants.h"
+#include "free_node.h"
+#include <stddef.h>
 
-struct s_alloc_categorie
+static size_t	size_limit(size_t align_multiple)
 {
-	s_alloc_zone	*categories[3];
-	s_alloc_zone	*tinys[TINY_MAX];
-	s_alloc_zone	*small[SMALL_MAX - TINY_MAX];
-};
+	return (align_multiple * ALIGNMENT - sizeof (struct s_free_node));
+}
 
-extern struct s_alloc_categorie alloc_trees;
+size_t			tiny_size_limit( void )
+{
+	return (size_limit(TINY_MAX));
+}
 
-
-#endif
+size_t			small_size_limit( void )
+{
+	return (size_limit(SMALL_MAX));
+}
