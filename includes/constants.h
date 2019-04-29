@@ -39,5 +39,6 @@ size_t	tiny_size_limit( void );
 size_t	small_upper_limit( void );
 size_t	tiny_page_size( void );
 size_t	small_page_size( void );
+size_t	page_size(size_t align_multiple);
 
 #endif

@@ -11,32 +11,52 @@
 /* ************************************************************************** */
 
 #include "malloc_structures.h"
+#include "free_node.h"
+#include "constants.h"
 #include <stddef.h>
+#include <assert.h>
 
-static struct s_alloc_zone	**get_size_cat(size_t const size)
+static size_t	get_size_category(size_t const size)
 {
-	if (size <= TINY_ALLOC_SIZE)
-		return (&alloc_trees->categories[0]);
-	else if (size <= SMALL_ALLOC_SIZE)
-		return (&alloc_trees->categories[1]);
-	else
-		return (&alloc_trees->categories[2]);
+	return ((size - sizeof (struct s_free_node)) / ALIGNMENT + 1);
+}
+
+static void	*alloc_tiny_small(size_t const size)
+{
+	size_t				size_category;
+	size_t				max_category;
+	void				*new_address;
+	struct s_alloc_zone	**used_page;
+
+	size_category = get_size_category(size);
+	assert(size_category <= SMALL_MAX);
+	max_category = size_category <= TINY_MAX ? TINY_MAX : SMALL_MAX;
+	while (g_alloc_zone.block_by_size[size_category] == NULL
+			&& size_category != max_category)
+		size_category++;
+	used_page = &g_alloc_zone.block_by_size[size_category];
+	if (*used_page == NULL)
+	{
+		*used_page = create_zone(page_size(max_category));
+		if (*used_page == NULL)
+			return (NULL);
+	}
+	new_address = (void*)get_first_fit( *used_page);
+	if (page_size_cat(*used_page != size_category))
+	{
+		list_add(&g_alloc_zone.block_by_size[page_size_cat(*used)],
+				 list_pop(used));
+	}
+	return (new_address);
 }
 
 void	*malloc(size_t const size)
 {
-	struct s_alloc_zone **tree;
 	void				*client_address;
-	struct s_alloc_zone	*new_page;
 
-	tree = get_size_cat(size);
-	client_address = get_free_address(tree, size);
-	if (client_address == NULL)
-	{
-		new_page = create_alloc_zone(size);
-		client_address = get_free_address(new_page);
-		if (client_address != NULL)
-			rbtree_insert(tree, &insert, cmp_f);
-	}
+	if (size > small_size_limit())
+		client_address = alloc_large(size);
+	else
+		client_address = alloc_tiny_small(size);
 	return (client_address);
 }

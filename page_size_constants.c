@@ -16,7 +16,7 @@
 #include <stddef.h>
 #include <unistd.h>
 
-static size_t	page_size(size_t align_multiple)
+size_t	page_size(size_t align_multiple)
 {
 	return (((align_multiple * ALIGNMENT * MIN_FREE_NODE_PER_PAGE
 			+ sizeof (struct s_alloc_zone))

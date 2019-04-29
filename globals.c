@@ -12,4 +12,4 @@
 
 #include "malloc_structures.h"
 
-struct s_alloc_categorie	alloc_trees;
+struct s_alloc_categorie	g_alloc_zones;

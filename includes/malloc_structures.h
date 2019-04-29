@@ -16,11 +16,10 @@
 struct s_alloc_categorie
 {
 	s_alloc_zone	*categories[3];
-	s_alloc_zone	*tinys[TINY_MAX];
-	s_alloc_zone	*small[SMALL_MAX - TINY_MAX];
+	s_alloc_zone	*block_by_size[SMALL_MAX];
 };
 
-extern struct s_alloc_categorie alloc_trees;
+extern struct s_alloc_categorie g_alloc_zones;
 
 
 #endif
