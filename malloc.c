@@ -21,6 +21,26 @@ static size_t	get_size_category(size_t const size)
 	return ((size - sizeof (struct s_free_node)) / ALIGNMENT + 1);
 }
 
+static void	recategorize_page(struct s_alloc_zone const **page_location,
+		size_t const old_category)
+{
+	size_t				new_category;
+
+	new_category = page_size_category(*page_location);
+	if (new_category < old_category)
+	{
+		while (new_category != 0
+				&& g_alloc_zone.block_by_size[new_category] != NULL)
+			new_category--;
+		if (g_alloc_zone.block_by_size[new_category] != NULL)
+			g_alloc_zone.block_by_size[new_category] = *page_location;
+		else
+			list_add(g_alloc_zone.partially_used_pages,
+					&(*page_location)->list_node);
+		*page_location = NULL;
+	}
+}
+
 static void	*alloc_tiny_small(size_t const size)
 {
 	size_t				size_category;
@@ -36,17 +56,9 @@ static void	*alloc_tiny_small(size_t const size)
 		size_category++;
 	used_page = &g_alloc_zone.block_by_size[size_category];
 	if (*used_page == NULL)
-	{
-		*used_page = create_zone(page_size(max_category));
-		if (*used_page == NULL)
-			return (NULL);
-	}
-	new_address = (void*)get_first_fit( *used_page);
-	if (page_size_cat(*used_page != size_category))
-	{
-		list_add(&g_alloc_zone.block_by_size[page_size_cat(*used)],
-				 list_pop(used));
-	}
+		*used_page = create_page(size_category);
+	new_address = (void*)get_first_fit(*used_page);
+	recategorize_page(used_page, size_category);
 	return (new_address);
 }
 

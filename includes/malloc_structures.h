@@ -17,6 +17,7 @@ struct s_alloc_categorie
 {
 	s_alloc_zone	*categories[3];
 	s_alloc_zone	*block_by_size[SMALL_MAX];
+	s_list			*partially_used_pages;
 };
 
 extern struct s_alloc_categorie g_alloc_zones;
