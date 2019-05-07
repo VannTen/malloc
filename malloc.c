@@ -35,10 +35,33 @@ static void	recategorize_page(struct s_alloc_zone const **page_location,
 		if (g_alloc_zone.block_by_size[new_category] != NULL)
 			g_alloc_zone.block_by_size[new_category] = *page_location;
 		else
-			list_add(g_alloc_zone.partially_used_pages,
+			list_add(
+					g_alloc_zone.partially_used_pages[old_category <= TINY_MAX],
 					&(*page_location)->list_node);
 		*page_location = NULL;
 	}
+}
+
+static int			size_fits(void const *page_list_node, void const *size_cat)
+{
+	return (page_size_category(
+				page_from_list(page_list_node)) >= *(size_t*)size_cat);
+}
+
+static s_alloc_zone	*get_page(size_t const size_category)
+{
+	int	tiny_page const = size_category <= TINY_MAX;
+	struct s_alloc_zone	*new_page;
+
+	if (g_alloc_zone.partially_used_pages[tiny_page] != NULL)
+		new_page = list_remove_if(&g_alloc_zone.partially_used_pages[tiny_page],
+				size_fits, &size_category);
+	else
+	{
+		new_page = create_alloc_zone(tiny_page ? tiny_page_size() : small_page_size());
+		rbtree_insert(&g_alloc_zones.page_tree, new_page, page_cmp);
+	}
+	return (new_page);
 }
 
 static void	*alloc_tiny_small(size_t const size)
@@ -56,7 +79,7 @@ static void	*alloc_tiny_small(size_t const size)
 		size_category++;
 	used_page = &g_alloc_zone.block_by_size[size_category];
 	if (*used_page == NULL)
-		*used_page = create_page(size_category);
+		*used_page = get_page(size_category);
 	new_address = (void*)get_first_fit(*used_page);
 	recategorize_page(used_page, size_category);
 	return (new_address);
