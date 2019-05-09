@@ -85,6 +85,21 @@ static void	*alloc_tiny_small(size_t const size)
 	return (new_address);
 }
 
+static void	*alloc_large(size_t const size)
+{
+	struct s_alloc_zone	*new_page;
+	size_t				page_size;
+
+	page_size =
+		((offset_zone_start_first_address() + size - 1)
+		 / getpagesize() + 1)
+		* getpagesize();
+	new_page = create_alloc_zone(page_size);
+	if (new_page != NULL)
+		rbtree_insert(&g_alloc_zones.page_tree, new_page, page_cmp);
+	return (new_page);
+}
+
 void	*malloc(size_t const size)
 {
 	void				*client_address;
