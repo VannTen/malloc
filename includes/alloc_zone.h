@@ -14,12 +14,13 @@
 # define ALLOC_ZONE_H
 # include "free_node.h"
 # include "bool.h"
+# include "rb_tree.h"
 # include <stddef.h>
 
 struct s_alloc_zone {
 
-//	t_rb_node	node; // TODO
-	size_t		size;
+	struct s_rbtree	tree_node;
+	size_t			size;
 };
 
 size_t				round_up_to_multiple(size_t n, size_t log_2);

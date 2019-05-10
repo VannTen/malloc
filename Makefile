@@ -15,10 +15,11 @@ LDFLAGS := -shared -fsanitize=address
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
-INCLUDES_DIR := includes
+INCLUDES_DIR := includes rb_tree/includes
 #######
 
 NAME := libmalloc.so
+LIBS := rbtree/librbtree.a
 
 OBJ_DIR := objs
 TEST_DIR := tests
@@ -46,8 +47,13 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+
+$(LIBS): force
+	$(MAKE) -C $(dir $@)
+
+.PHONY: force
 
 $(NAME): CFLAGS := $(CFLAGS) -fPIC
 $(NAME): LDFLAGS := $(LDFLAGS) -shared

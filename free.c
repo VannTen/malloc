@@ -13,6 +13,7 @@
 #include "free_node.h"
 #include "constants.h"
 #include "malloc_structures.h"
+#include "rb_tree.h"
 #include <stdint.h>
 #include <assert.h>
 
