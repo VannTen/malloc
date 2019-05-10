@@ -15,7 +15,7 @@
 #include "rb_tree.h"
 
 struct s_rbtree const	*btree_search(struct s_rbtree const *node,
-		void *data,
+		void const *data,
 		int (*cmp)(void const*, void const*))
 {
 	int const result = cmp(data, node);

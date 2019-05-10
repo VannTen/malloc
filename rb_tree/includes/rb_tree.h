@@ -50,7 +50,7 @@ enum
 */
 
 struct s_rbtree const	*btree_search(struct s_rbtree const *node,
-		void *data,
+		void const *data,
 		int (*cmp)(void const *data, void const *node));
 void	rbtree_inorder_traversal(
 		struct s_rbtree const * tree,
