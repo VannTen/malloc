@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "free_node.h"
+#include "constants.h"
+#include "malloc_structures.h"
+#include <stdint.h>
+#include <assert.h>
 
 static int	address_page_position(void const *address, void const *_page)
 {
@@ -33,7 +37,7 @@ static int	address_is_valid(void const *address)
 			&& !((struct s_free_node const *)address)->free);
 }
 
-void		remove_from_incomplete_page(struct s_alloc_zone const *page)
+void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 {
 	size_t	index;
 
@@ -51,14 +55,13 @@ void		remove_from_incomplete_page(struct s_alloc_zone const *page)
 
 void		free(void *address)
 {
-	struct s_free_node			*metadata;
 	struct s_alloc_zone const	*cleared_page;
 
 	assert(address_is_valid(address));
 	cleared_page = free_defrag(address);
 	if (cleared_page != NULL)
 	{
-		rbtree_remove(&g_alloc_zone.page_tree, address, address_page_position);
+		rbtree_remove(&g_alloc_zones.page_tree, address, address_page_position);
 		remove_from_incomplete_pages(cleared_page);
 	}
 }
