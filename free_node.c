@@ -51,7 +51,7 @@ struct s_alloc_zone const	*free_defrag(void *ptr)
 	struct s_free_node * const node = (struct s_free_node *)ptr - 1;
 
 	free_node(ptr);
-	return (defragment_node(node);
+	return (defragment_node(node));
 }
 
 void		free_node(void *ptr)

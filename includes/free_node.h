@@ -39,6 +39,6 @@ struct s_free_node	*next_node(struct s_free_node const * node);
 
 void const	*publish_address(struct s_free_node *);
 void		free_node(void *);
-void		free_defrag(void *);
+struct s_alloc_zone	const	*free_defrag(void *);
 
 #endif
