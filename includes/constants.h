@@ -13,6 +13,8 @@
 #ifndef CONSTANTS_H
 # define CONSTANTS_H
 # include <stddef.h>
+# include "free_node.h"
+# include "alloc_zone.h"
 
 /*
 ** Implementation choices constants
@@ -40,5 +42,11 @@ size_t	small_upper_limit( void );
 size_t	tiny_page_size( void );
 size_t	small_page_size( void );
 size_t	page_size(size_t align_multiple);
+
+/*
+** Shorthands functions for pointers offset computation
+*/
+
+struct s_alloc_zone const *get_page_from_first_node(struct s_free_node const *);
 
 #endif

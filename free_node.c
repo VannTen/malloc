@@ -12,7 +12,9 @@
 
 #include "free_node.h"
 #include "bool.h"
+#include "constants.h"
 #include <assert.h>
+#include <stddef.h>
 
 void const	*publish_address(struct s_free_node * node)
 {
@@ -28,20 +30,28 @@ static void		defrag_to_last_node(struct s_free_node * node)
 		node->next_offset += next_node(node)->next_offset;
 }
 
-static void		defragment_node(struct s_free_node * node)
+static struct s_alloc_zone const	*defragment_node(struct s_free_node * node)
 {
+	struct s_free_node	*first_node;
+
 	assert(node->free);
 	defrag_to_last_node(node);
 	if (next_node(node)->free)
-		defrag_to_last_node(next_node(node));
+	{
+		first_node = next_node(node);
+		defrag_to_last_node(first_node);
+		if (is_last_node(first_node))
+			return (get_page_from_first_node(first_node));
+	}
+	return (NULL);
 }
 
-void		free_defrag(void *ptr)
+struct s_alloc_zone const	*free_defrag(void *ptr)
 {
 	struct s_free_node * const node = (struct s_free_node *)ptr - 1;
 
 	free_node(ptr);
-	defragment_node(node);
+	return (defragment_node(node);
 }
 
 void		free_node(void *ptr)
