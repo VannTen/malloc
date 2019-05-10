@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "free_node.h"
+
 static int	address_page_position(void const *address, void const *_page)
 {
 	struct s_alloc_zone const *page = _page;
@@ -22,10 +24,41 @@ static int	address_page_position(void const *address, void const *_page)
 		return (-1);
 }
 
-static int	address_is_valid(void *address)
+static int	address_is_valid(void const *address)
 {
 	return ((uintptr_t)address % ALIGNMENT == 0
 			&& btree_search(g_alloc_zones.page_tree,
 							address,
-							address_page_position) != NULL);
+							address_page_position) != NULL
+			&& !((struct s_free_node const *)address)->free);
+}
+
+void		remove_from_incomplete_page(struct s_alloc_zone const *page)
+{
+	size_t	index;
+
+	index = 0;
+	while (index <= SMALL_MAX && g_alloc_zones.block_by_size[index] != page)
+		index++;
+	if (index <= SMALL_MAX)
+		g_alloc_zones.block_by_size[index] = NULL;
+	else if (list_remove_if(g_alloc_zones.partially_used_pages[0]) != NULL)
+		;
+	else
+		list_remove_if(g_alloc_zones.partially_used_pages[1]);
+
+}
+
+void		free(void *address)
+{
+	struct s_free_node			*metadata;
+	struct s_alloc_zone const	*cleared_page;
+
+	assert(address_is_valid(address));
+	cleared_page = free_defrag(address);
+	if (cleared_page != NULL)
+	{
+		rbtree_remove(&g_alloc_zone.page_tree, address, address_page_position);
+		remove_from_incomplete_pages(cleared_page);
+	}
 }
