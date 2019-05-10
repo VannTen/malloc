@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "malloc_structures.h"
 #include "rb_tree.h"
+#include "list.h"
 #include <stdint.h>
 #include <assert.h>
 

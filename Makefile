@@ -15,11 +15,11 @@ LDFLAGS := -shared -fsanitize=address
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
-INCLUDES_DIR := includes rb_tree/includes
+INCLUDES_DIR := includes rb_tree/includes list/includes
 #######
 
 NAME := libmalloc.so
-LIBS := rbtree/librbtree.a
+LIBS := rbtree/librbtree.a list/liblist.a
 
 OBJ_DIR := objs
 TEST_DIR := tests
