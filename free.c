@@ -39,6 +39,11 @@ static int	address_is_valid(void const *address)
 			&& !((struct s_free_node const *)address)->free);
 }
 
+static int	same_page(void const *page, struct s_list const *page_list_node)
+{
+	return (page == page_from_list_node(page_list_node));
+}
+
 void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 {
 	size_t	index;
@@ -48,11 +53,17 @@ void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 		index++;
 	if (index <= SMALL_MAX)
 		g_alloc_zones.block_by_size[index] = NULL;
-	else if (list_remove_if(g_alloc_zones.partially_used_pages[0]) != NULL)
-		;
 	else
-		list_remove_if(g_alloc_zones.partially_used_pages[1]);
-
+	{
+		index = 0;
+		while (index < 2
+				&& NULL != list_remove_if(
+					&g_alloc_zones.partially_used_pages[index],
+					page,
+					same_page)
+			 )
+			index++;
+	}
 }
 
 void		free(void *address)

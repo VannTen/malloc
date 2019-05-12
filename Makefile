@@ -29,6 +29,7 @@ TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 
 SRCS := \
+	alloc_zone_data_struct.c \
 	alloc_zone_get.c \
 	assert_create_zone.c \
 	compute_pointers_offsets.c \

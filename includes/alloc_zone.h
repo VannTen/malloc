@@ -15,12 +15,14 @@
 # include "free_node.h"
 # include "bool.h"
 # include "rb_tree.h"
+# include "list.h"
 # include <stddef.h>
 
 struct s_alloc_zone {
 
 	struct s_rbtree	tree_node;
 	size_t			size;
+	struct s_list	list;
 };
 
 size_t				round_up_to_multiple(size_t n, size_t log_2);
@@ -35,6 +37,7 @@ struct s_free_node	*get_first_node(struct s_alloc_zone const * zone);
 size_t				nb_free_node(struct s_alloc_zone const *);
 size_t				nb_node(struct s_alloc_zone const *);
 void				*end_of_zone(struct s_alloc_zone const *);
+struct s_alloc_zone const *page_from_list_node(struct s_list const *list_node);
 
 /*
 ** Get
