@@ -38,6 +38,9 @@ size_t				nb_free_node(struct s_alloc_zone const *);
 size_t				nb_node(struct s_alloc_zone const *);
 void				*end_of_zone(struct s_alloc_zone const *);
 struct s_alloc_zone const *page_from_list_node(struct s_list const *list_node);
+int					alloc_zone_cmp(
+		struct s_alloc_zone const *,
+		struct s_alloc_zone const *);
 
 /*
 ** Get
