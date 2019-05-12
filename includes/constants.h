@@ -38,7 +38,7 @@ size_t	offset_zone_start_first_address( void );
 size_t	offset_zone_start_first_free_node( void );
 size_t	ft_pow(size_t n, size_t pow);
 size_t	tiny_size_limit( void );
-size_t	small_upper_limit( void );
+size_t	small_size_limit( void );
 size_t	tiny_page_size( void );
 size_t	small_page_size( void );
 size_t	page_size(size_t align_multiple);

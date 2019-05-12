@@ -19,7 +19,7 @@ INCLUDES_DIR := includes rb_tree/includes list/includes
 #######
 
 NAME := libmalloc.so
-LIBS := rbtree/librbtree.a list/liblist.a
+LIBS := rb_tree/librbtree.a list/liblist.a
 
 OBJ_DIR := objs
 TEST_DIR := tests

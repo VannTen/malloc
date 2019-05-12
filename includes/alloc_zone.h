@@ -22,6 +22,7 @@ struct s_alloc_zone {
 
 	struct s_rbtree	tree_node;
 	size_t			size;
+	size_t			biggest_free_size;
 	struct s_list	list;
 };
 
@@ -38,9 +39,8 @@ size_t				nb_free_node(struct s_alloc_zone const *);
 size_t				nb_node(struct s_alloc_zone const *);
 void				*end_of_zone(struct s_alloc_zone const *);
 struct s_alloc_zone const *page_from_list_node(struct s_list const *list_node);
-int					alloc_zone_cmp(
-		struct s_alloc_zone const *,
-		struct s_alloc_zone const *);
+int					alloc_zone_cmp(void const *, void const *);
+size_t				page_size_category(struct s_alloc_zone const *page);
 
 /*
 ** Get

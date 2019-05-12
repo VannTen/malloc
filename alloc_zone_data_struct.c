@@ -15,6 +15,8 @@
 
 struct s_alloc_zone const *page_from_list_node(struct s_list const *node)
 {
+	if (node == NULL)
+		return (NULL);
 	return ((void const*)(
 			((char const*)node) - offsetof(struct s_alloc_zone, list)));
 }

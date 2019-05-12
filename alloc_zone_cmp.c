@@ -14,8 +14,8 @@
 #include <stdint.h>
 
 int					alloc_zone_cmp(
-		struct s_alloc_zone const *ref,
-		struct s_alloc_zone const *compared)
+		void const *ref,
+		void const *compared)
 {
 	if ((uintptr_t)compared < (uintptr_t)ref)
 		return (-1);

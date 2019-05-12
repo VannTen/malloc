@@ -53,3 +53,9 @@ void			*end_of_zone(struct s_alloc_zone const * const start_of_zone)
 {
 	return ((char*)start_of_zone + start_of_zone->size);
 }
+
+size_t			page_size_category(struct s_alloc_zone const *page)
+{
+	//assert(!is_large_page(page)) TODO
+	return (page->biggest_free_size);
+}
