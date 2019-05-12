@@ -13,6 +13,7 @@
 #ifndef MALLOC_STRUCTURES_H
 # define MALLOC_STRUCTURES_H
 # include "rb_tree.h"
+# include "constants.h"
 
 struct s_alloc_categorie
 {
