@@ -18,6 +18,9 @@ int	main(void)
 
 	index = 0;
 	while (index < 100000)
+	{
 		free(malloc(10));
+		index++;
+	}
 	return (0);
 }
