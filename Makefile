@@ -27,6 +27,7 @@ TEST_SRC_DIR := test_src
 TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.c)
 TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
+options := CFLAGS
 
 SRCS := \
 	alloc_zone_cmp.c \
@@ -53,12 +54,11 @@ $(NAME): $(OBJS) $(LIBS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(LIBS): force
-	$(MAKE) -C $(dir $@)
+	$(MAKE) -C $(dir $@) $(foreach opt,$(options),'$(opt)=$($(opt))')
 
 .PHONY: force
 
 $(NAME): CFLAGS := $(CFLAGS) -fPIC
-$(NAME): LDFLAGS := $(LDFLAGS) -shared
 
 $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
