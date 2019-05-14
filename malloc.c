@@ -112,6 +112,7 @@ void	*malloc(size_t const size)
 {
 	void				*client_address;
 
+	write(STDOUT_FILENO, "malloc\n", sizeof("malloc\n"));
 	if (size > small_size_limit())
 		client_address = alloc_large(size);
 	else

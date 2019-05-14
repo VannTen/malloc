@@ -66,10 +66,12 @@ void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 	}
 }
 
+#include <unistd.h>
 void		free(void *address)
 {
 	struct s_alloc_zone const	*cleared_page;
 
+	write(STDOUT_FILENO, "free\n", sizeof("free\n"));
 	assert(address_is_valid(address));
 	cleared_page = free_defrag(address);
 	if (cleared_page != NULL)
