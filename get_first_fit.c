@@ -14,6 +14,7 @@
 #include "free_node.h"
 #include "bool.h"
 #include "constants.h"
+#include "max.h"
 #include <stddef.h>
 #include <assert.h>
 
@@ -37,9 +38,26 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 	node->next_offset = (char*)new_node - (char*)node;
 }
 
+static void	update_page_cat(
+		struct s_alloc_zone *zone,
+		struct s_free_node const *node)
+{
+	size_t	max_size;
+
+	max_size = 0;
+	while (node_size(node) < zone->biggest_free_size && !is_last_node(node))
+	{
+		max_size = size_t_max(node_size(node), max_size);
+		node = next_node(node);
+	}
+	if (node_size(node) < zone->biggest_free_size)
+		zone->biggest_free_size = max_size;
+}
+
 void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
 	struct s_free_node *	node;
+	int						may_reduce_page_cat;
 
 	node = get_first_node(zone);
 	while (!node_has_enough_space(node, size_required))
@@ -49,7 +67,12 @@ void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 			break ;
 	}
 	if (node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE)
+	{
+		may_reduce_page_cat = node_size(node) == zone->biggest_free_size;
 		carve_node(node, size_required);
+		if (may_reduce_page_cat)
+			update_page_cat(zone, next_node(node));
+	}
 	return (node_has_enough_space(node, size_required)
 			? publish_address(node) : NULL);
 }

@@ -12,6 +12,7 @@
 
 #include "alloc_zone.h"
 #include "free_node.h"
+#include "constants.h"
 #include <sys/mman.h>
 #include <mach/vm_statistics.h>
 
@@ -53,5 +54,9 @@ struct s_alloc_zone	*create_zone(size_t	size)
 		return (NULL);
 	write_initial_metadata(alloc_zone);
 	alloc_zone->size = size;
+	if (size == tiny_page_size())
+		alloc_zone->biggest_free_size = tiny_size_limit();
+	else if (size == small_page_size())
+		alloc_zone->biggest_free_size = small_size_limit();
 	return (zone_start);
 }
