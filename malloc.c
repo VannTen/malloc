@@ -37,7 +37,7 @@ static void	recategorize_page(struct s_alloc_zone **page_location,
 		while (new_category != 0
 				&& g_alloc_zones.block_by_size[new_category] != NULL)
 			new_category--;
-		if (g_alloc_zones.block_by_size[new_category] != NULL)
+		if (g_alloc_zones.block_by_size[new_category] == NULL)
 			g_alloc_zones.block_by_size[new_category] = *page_location;
 		else
 			list_add_start(
