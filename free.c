@@ -36,7 +36,7 @@ static int	address_is_valid(void const *address)
 			&& btree_search(g_alloc_zones.page_tree,
 							address,
 							address_page_position) != NULL
-			&& !((struct s_free_node const *)address)->free);
+			&& !((struct s_free_node const *)address + 1)->free);
 }
 
 static int	same_page(void const *page, struct s_list const *page_list_node)

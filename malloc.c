@@ -22,7 +22,8 @@
 
 static size_t	get_size_category(size_t const size)
 {
-	return ((size - sizeof (struct s_free_node)) / ALIGNMENT + 1);
+	return (size / ALIGNMENT
+			+ size / (ALIGNMENT - sizeof (struct s_free_node) + 1));
 }
 
 static void	recategorize_page(struct s_alloc_zone **page_location,

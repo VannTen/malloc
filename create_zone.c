@@ -55,8 +55,8 @@ struct s_alloc_zone	*create_zone(size_t	size)
 	write_initial_metadata(alloc_zone);
 	alloc_zone->size = size;
 	if (size == tiny_page_size())
-		alloc_zone->biggest_free_size = tiny_size_limit();
+		alloc_zone->biggest_free_size = 1;
 	else if (size == small_page_size())
-		alloc_zone->biggest_free_size = small_size_limit();
+		alloc_zone->biggest_free_size = TINY_MAX + 1;
 	return (zone_start);
 }
