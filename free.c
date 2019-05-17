@@ -18,7 +18,7 @@
 #include <stdint.h>
 #include <assert.h>
 
-static int	address_page_position(void const *address, void const *_page)
+static int	address_page_position(void const *_page, void const *address)
 {
 	struct s_alloc_zone const *page = _page;
 
