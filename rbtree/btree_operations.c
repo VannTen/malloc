@@ -27,7 +27,7 @@ struct s_rbtree const	*btree_search(struct s_rbtree const *node,
 		return node;
 	else
 		return (btree_search(
-					result < 0 ? node->children[LEFT] : node->children[RIGHT],
+					node->children[result <= 0],
 					data,
 					cmp));
 }
