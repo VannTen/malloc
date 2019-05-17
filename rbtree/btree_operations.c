@@ -22,7 +22,7 @@ struct s_rbtree const	*btree_search(struct s_rbtree const *node,
 
 	if (node == NULL)
 		return (NULL);
-	result = cmp(data, node);
+	result = cmp(node, data);
 	if (result == 0)
 		return node;
 	else
