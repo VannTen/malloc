@@ -18,8 +18,11 @@ struct s_rbtree const	*btree_search(struct s_rbtree const *node,
 		void const *data,
 		int (*cmp)(void const*, void const*))
 {
-	int const result = cmp(data, node);
+	int result;
 
+	if (node == NULL)
+		return (NULL);
+	result = cmp(data, node);
 	if (result == 0)
 		return node;
 	else
