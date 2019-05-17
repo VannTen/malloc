@@ -17,6 +17,7 @@
 #include "max.h"
 #include <stddef.h>
 #include <assert.h>
+#include <stdint.h>
 
 static t_bool	node_has_enough_space(struct s_free_node const * const node,
 		size_t space)
@@ -36,6 +37,7 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 	new_node->next_offset = (char*)next_node(node) - (char*)new_node;
 	new_node->free = TRUE;
 	node->next_offset = (char*)new_node - (char*)node;
+	assert((uintptr_t)get_public_address(new_node) % ALIGNMENT == 0);
 }
 
 static void	update_page_cat(
