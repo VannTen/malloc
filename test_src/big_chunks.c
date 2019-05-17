@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#define TEST_SIZE 4000
+#define TEST_SIZE 4
 #define CHUNK_SIZE 2000
 
 int	main(void)

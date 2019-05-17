@@ -27,7 +27,7 @@ static int	address_page_position(void const *_page, void const *address)
 	else if ((uintptr_t)page + page->size > (uintptr_t)address)
 		return (0);
 	else
-		return (-1);
+		return (1);
 }
 
 static int	address_is_valid(void const *address)
@@ -78,7 +78,9 @@ void		free(void *address)
 	cleared_page = free_defrag(address);
 	if (cleared_page != NULL)
 	{
-		rbtree_remove(&g_alloc_zones.page_tree, address, address_page_position);
 		remove_from_incomplete_pages(cleared_page);
+		cleared_page = rbtree_remove(
+				&g_alloc_zones.page_tree, address, address_page_position);
+		assert(cleared_page != NULL);
 	}
 }
