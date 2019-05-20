@@ -12,8 +12,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#define SIZE_TEST 2000
-#define MAX_ALLOC 200
+#define SIZE_TEST 20000
+#define MAX_ALLOC 2000
 
 int	main(void)
 {
