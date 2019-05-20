@@ -28,10 +28,14 @@ int	main(void)
 	{
 		alloc_size = rand() % MAX_ALLOC;
 		total += alloc_size;
+		address[index] = malloc(alloc_size);
 		printf("Allocation index : %zu, "
 				"allocation size : %zu, "
-				"total allocation size : %zu\n", index, alloc_size, total);
-		address[index] = malloc(alloc_size);
+				"total allocation size : %zu, "
+				"allocation result %p\n",
+				index, alloc_size, total, address[index]);
+		if (address[index] == NULL)
+			return (1);
 		index++;
 	}
 	index = 0;
