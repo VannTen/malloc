@@ -70,11 +70,11 @@ static struct s_alloc_zone	*get_page(size_t const size_category)
 	return (new_page);
 }
 
-static void	*alloc_tiny_small(size_t const size)
+static struct s_free_node *alloc_tiny_small(size_t const size)
 {
 	size_t				size_category;
 	size_t				max_category;
-	void				*new_address;
+	struct s_free_node	*new_address;
 	struct s_alloc_zone	**used_page;
 
 	size_category = size_to_size_category(size);
@@ -91,7 +91,7 @@ static void	*alloc_tiny_small(size_t const size)
 	return (new_address);
 }
 
-static void	*alloc_large(size_t const size)
+static struct s_free_node	*alloc_large(size_t const size)
 {
 	struct s_alloc_zone	*new_page;
 	size_t				page_size;
@@ -104,7 +104,8 @@ static void	*alloc_large(size_t const size)
 	if (new_page != NULL)
 		rbtree_insert(&g_alloc_zones.page_tree,
 				&new_page->tree_node, alloc_zone_cmp);
-	return (new_page);
+	get_first_node(new_page)->free = FALSE;
+	return (get_first_node(new_page));
 }
 
 void	*malloc(size_t const size)
