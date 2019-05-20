@@ -56,5 +56,6 @@ struct s_alloc_zone const *get_page_from_first_node(struct s_free_node const *);
 size_t	size_category_to_size(size_t size_category);
 size_t	size_to_size_category(size_t size_category);
 size_t	node_size_category(struct s_free_node const *node);
+size_t	page_biggest_free_node_category(struct s_alloc_zone const *page);
 
 #endif
