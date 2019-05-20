@@ -31,13 +31,13 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 
 	assert(node->free);
 	assert(node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE);
-	assert(node_has_enough_space(node, size_required));
 	new_node = (struct s_free_node *)((char*)(node)
-			+ round_up_to_multiple(size_required, ft_pow(2, LOG_2_ALIGN)));
+			+ (size_to_size_category(size_required) + 1) * ALIGNMENT);
 	new_node->next_offset = (char*)next_node(node) - (char*)new_node;
 	new_node->free = TRUE;
 	node->next_offset = (char*)new_node - (char*)node;
 	assert((uintptr_t)get_public_address(new_node) % ALIGNMENT == 0);
+	assert(node_has_enough_space(node, size_required));
 }
 
 static void	update_page_cat(
