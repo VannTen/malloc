@@ -29,9 +29,9 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 {
 	struct s_free_node * new_node;
 
-	assert(node_has_enough_space(node, size_required)
-			&& node_size(node)
-				>= size_required + sizeof *node + MIN_ALLOC_SPACE);
+	assert(node->free);
+	assert(node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE);
+	assert(node_has_enough_space(node, size_required));
 	new_node = (struct s_free_node *)((char*)(node)
 			+ round_up_to_multiple(size_required, ft_pow(2, LOG_2_ALIGN)));
 	new_node->next_offset = (char*)next_node(node) - (char*)new_node;
@@ -62,13 +62,11 @@ void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 	int						may_reduce_page_cat;
 
 	node = get_first_node(zone);
-	while (!node_has_enough_space(node, size_required))
-	{
+	while (!is_last_node(node) && !node_has_enough_space(node, size_required))
 		node = next_node(node);
-		if (is_last_node(node))
-			break ;
-	}
-	if (node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE)
+	if (node->free
+			&& node_size(node)
+			>= size_required + sizeof *node + MIN_ALLOC_SPACE)
 	{
 		may_reduce_page_cat = node_size(node) == zone->biggest_free_size;
 		carve_node(node, size_required);
