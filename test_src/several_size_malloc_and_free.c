@@ -19,13 +19,18 @@ int	main(void)
 {
 	void	*address[SIZE_TEST];
 	size_t	index;
+	size_t	total;
 	size_t	alloc_size;
 
 	index = 0;
+	total = 0;
 	while (index < SIZE_TEST)
 	{
 		alloc_size = rand() % MAX_ALLOC;
-		printf("%zu\n", alloc_size);
+		total += alloc_size;
+		printf("Allocation index : %zu, "
+				"allocation size : %zu, "
+				"total allocation size : %zu\n", index, alloc_size, total);
 		address[index] = malloc(alloc_size);
 		index++;
 	}
