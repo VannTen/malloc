@@ -33,5 +33,5 @@ size_t	size_to_size_category(size_t size)
 		return (1);
 	else
 		return (1 + (size - category_1_size) / ALIGNMENT
-				 + ((size - category_1_size) % ALIGNMENT) != 0);
+				 + (((size - category_1_size) % ALIGNMENT) != 0));
 }
