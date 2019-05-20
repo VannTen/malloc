@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#define TEST_SIZE 4
+#define TEST_SIZE 4000
 #define CHUNK_SIZE 2000
 
 int	main(void)
@@ -29,6 +29,8 @@ int	main(void)
 	{
 		index--;
 		free(address[index]);
+		if (address[index] == NULL)
+			break ;
 	}
-	return (0);
+	return (index);
 }
