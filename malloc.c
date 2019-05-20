@@ -24,19 +24,23 @@ static void	recategorize_page(struct s_alloc_zone **page_location,
 		size_t const old_category)
 {
 	size_t				new_category;
+	size_t const		min_category = old_category <= TINY_MAX ? 0 : TINY_MAX;
 
 	new_category = page_size_category(*page_location);
 	if (new_category < old_category)
 	{
-		while (new_category != 0
-				&& g_alloc_zones.block_by_size[new_category] != NULL)
-			new_category--;
-		if (g_alloc_zones.block_by_size[new_category] == NULL)
-			g_alloc_zones.block_by_size[new_category] = *page_location;
-		else
-			list_add_start(
-					&g_alloc_zones.partially_used_pages[old_category <= TINY_MAX],
-					&(*page_location)->list);
+		if (new_category > min_category)
+		{
+			while (new_category > min_category
+					&& g_alloc_zones.block_by_size[new_category] != NULL)
+				new_category--;
+			if (new_category > min_category)
+				g_alloc_zones.block_by_size[new_category] = *page_location;
+			else
+				list_add_start(
+						&g_alloc_zones.partially_used_pages[old_category <= TINY_MAX],
+						&(*page_location)->list);
+		}
 		*page_location = NULL;
 	}
 }

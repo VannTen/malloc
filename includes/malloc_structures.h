@@ -18,7 +18,7 @@
 struct s_alloc_categorie
 {
 	struct s_rbtree		*page_tree;
-	struct s_alloc_zone	*block_by_size[SMALL_MAX];
+	struct s_alloc_zone	*block_by_size[SMALL_MAX + 1];
 	struct s_list		*partially_used_pages[2];
 };
 
