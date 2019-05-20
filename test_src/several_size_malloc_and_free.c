@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#define SIZE_TEST 500
+#define SIZE_TEST 2000
 #define MAX_ALLOC 200
 
 int	main(void)
@@ -22,17 +22,14 @@ int	main(void)
 	size_t	total;
 	size_t	alloc_size;
 
-	index = 0;
-	total = 0;
+	index = total = 0;
 	while (index < SIZE_TEST)
 	{
 		alloc_size = rand() % MAX_ALLOC;
 		total += alloc_size;
 		address[index] = malloc(alloc_size);
-		printf("Allocation index : %zu, "
-				"allocation size : %zu, "
-				"total allocation size : %zu, "
-				"allocation result %p\n",
+		printf("Allocation index : %zu, allocation size : %zu, "
+				"total allocation size : %zu, allocation result %p\n",
 				index, alloc_size, total, address[index]);
 		if (address[index] == NULL)
 			return (1);
