@@ -47,19 +47,19 @@ static void	update_page_cat(
 	size_t	max_size;
 
 	max_size = 0;
-	while (node_size(node) < zone->biggest_free_size && !is_last_node(node))
+	while (node_size_category(node) < zone->biggest_free_size
+			&& !is_last_node(node))
 	{
-		max_size = size_t_max(node_size(node), max_size);
+		max_size = size_t_max(node_size_category(node), max_size);
 		node = next_node(node);
 	}
-	if (node_size(node) < zone->biggest_free_size)
+	if (node_size_category(node) < zone->biggest_free_size)
 		zone->biggest_free_size = max_size;
 }
 
 void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
 	struct s_free_node *	node;
-	int						may_reduce_page_cat;
 
 	node = get_first_node(zone);
 	while (!is_last_node(node) && !node_has_enough_space(node, size_required))
@@ -68,9 +68,8 @@ void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 			&& node_size(node)
 			>= size_required + sizeof *node + MIN_ALLOC_SPACE)
 	{
-		may_reduce_page_cat = node_size(node) == zone->biggest_free_size;
 		carve_node(node, size_required);
-		if (may_reduce_page_cat)
+		if (node_size_category(next_node(node)) < zone->biggest_free_size)
 			update_page_cat(zone, next_node(node));
 	}
 	return (node_has_enough_space(node, size_required)
