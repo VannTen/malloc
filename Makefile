@@ -78,3 +78,8 @@ $(TESTS): %.passed:% | $(TEST_DIR)
 test: $(TESTS)
 
 .PHONY: test
+
+
+##### Special targets
+
+.DELETE_ON_ERROR:
