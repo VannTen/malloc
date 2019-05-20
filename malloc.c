@@ -20,12 +20,6 @@
 #include <stddef.h>
 #include <unistd.h>
 
-static size_t	get_size_category(size_t const size)
-{
-	return (size / ALIGNMENT
-			+ size / (ALIGNMENT - sizeof (struct s_free_node) + 1));
-}
-
 static void	recategorize_page(struct s_alloc_zone **page_location,
 		size_t const old_category)
 {
@@ -79,7 +73,7 @@ static void	*alloc_tiny_small(size_t const size)
 	void				*new_address;
 	struct s_alloc_zone	**used_page;
 
-	size_category = get_size_category(size);
+	size_category = size_to_size_category(size);
 	assert(size_category <= SMALL_MAX);
 	max_category = size_category <= TINY_MAX ? TINY_MAX : SMALL_MAX;
 	while (g_alloc_zones.block_by_size[size_category] == NULL

@@ -49,4 +49,11 @@ size_t	page_size(size_t align_multiple);
 
 struct s_alloc_zone const *get_page_from_first_node(struct s_free_node const *);
 
+/*
+** Translating size to size category and vice versa
+*/
+
+size_t	size_category_to_size(size_t size_category);
+size_t	size_to_size_category(size_t size_category);
+
 #endif

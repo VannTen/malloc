@@ -45,7 +45,8 @@ SRCS := \
 	globals.c \
 	malloc.c \
 	node_size_constants.c \
-	page_size_constants.c
+	page_size_constants.c \
+	size_category.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
