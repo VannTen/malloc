@@ -47,10 +47,12 @@ static void	update_page_cat(
 	size_t	max_size;
 
 	max_size = 0;
-	while (node_size_category(node) < zone->biggest_free_size
-			&& !is_last_node(node))
+	while (node_size_category(node) < zone->biggest_free_size)
 	{
-		max_size = size_t_max(node_size_category(node), max_size);
+		if (node->free)
+			max_size = size_t_max(node_size_category(node), max_size);
+		if (is_last_node(node))
+			break ;
 		node = next_node(node);
 	}
 	if (node_size_category(node) < zone->biggest_free_size)

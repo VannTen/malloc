@@ -18,7 +18,7 @@ size_t	size_category_to_size(size_t size_category)
 {
 	return (ALIGNMENT
 			- sizeof(struct s_free_node)
-			+ (size_category) * ALIGNMENT);
+			+ (size_category - 1) * ALIGNMENT);
 }
 
 size_t	size_to_size_category(size_t size)
@@ -26,11 +26,10 @@ size_t	size_to_size_category(size_t size)
 	size_t static const category_1_size = ALIGNMENT
 		- sizeof(struct s_free_node);
 
-	if (size <= category_1_size)
-		return (0);
-	else
-		return ((size - category_1_size) / ALIGNMENT
-				 + (((size - category_1_size) % ALIGNMENT) != 0));
+	return (1 + (size > category_1_size ?
+				(size - category_1_size) / ALIGNMENT
+				+ (((size - category_1_size) % ALIGNMENT) != 0)
+				: 0));
 }
 
 size_t	node_size_category(struct s_free_node const *node)
