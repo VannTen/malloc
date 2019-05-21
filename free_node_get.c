@@ -14,9 +14,13 @@
 #include "alloc_zone.h"
 #include "constants.h"
 
+/*
+** Public address of a NULL s_free_node (aka no node) is NULL
+*/
+
 void const	*get_public_address(struct s_free_node const * const node)
 {
-	return (node + 1);
+	return (node + (node != NULL));
 }
 
 static	struct s_alloc_zone *zone_start(struct s_free_node const * last_node)
