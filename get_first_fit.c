@@ -64,7 +64,9 @@ static struct s_free_node const *malloc_node(struct s_free_node *node)
 	return (node);
 }
 
-struct s_free_node const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
+struct s_free_node const	*get_first_fit(
+		struct s_alloc_zone *zone,
+		size_t size_required)
 {
 	struct s_free_node *	node;
 

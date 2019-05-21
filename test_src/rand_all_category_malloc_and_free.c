@@ -39,6 +39,8 @@ int	main(void)
 	while (index < SIZE_TEST)
 	{
 		free(address[index]);
+		printf("Allocation index : %zu\n", index);
+		if (address[index] == NULL)
 		if (address[index] == NULL)
 			return (1);
 		index++;
