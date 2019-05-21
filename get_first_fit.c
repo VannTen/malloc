@@ -30,7 +30,7 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 	struct s_free_node * new_node;
 
 	assert(node->free);
-	assert(node_size(node) >= size_required + sizeof *node + MIN_ALLOC_SPACE);
+	assert(node_size_category(node) > size_to_size_category(size_required));
 	new_node = (struct s_free_node *)((char*)(node)
 			+ (size_to_size_category(size_required) + 1) * ALIGNMENT);
 	new_node->next_offset = (char*)next_node(node) - (char*)new_node;
@@ -55,7 +55,7 @@ static void	update_page_cat(
 	size_t	max_size;
 
 	max_size = 0;
-	while (node_size_category(node) < zone->biggest_free_size)
+	while (node_size_category(node) < zone->biggest_free_size || !node->free)
 	{
 		if (node->free)
 			max_size = size_t_max(node_size_category(node), max_size);
@@ -63,7 +63,7 @@ static void	update_page_cat(
 			break ;
 		node = next_node(node);
 	}
-	if (node_size_category(node) < zone->biggest_free_size)
+	if (node_size_category(node) < zone->biggest_free_size || !node->free)
 		zone->biggest_free_size = new_page_category(
 				max_size,
 				zone->biggest_free_size);
