@@ -42,6 +42,7 @@ size_t	small_size_limit( void );
 size_t	tiny_page_size( void );
 size_t	small_page_size( void );
 size_t	page_size(size_t align_multiple);
+size_t	page_smallest_category(size_t current_biggest);
 
 /*
 ** Shorthands functions for pointers offset computation

@@ -40,6 +40,14 @@ static void	carve_node(struct s_free_node * node, size_t size_required)
 	assert(node_has_enough_space(node, size_required));
 }
 
+static size_t	new_page_category(size_t max_size, size_t old_cat)
+{
+	if (max_size >= page_smallest_category(old_cat))
+		return (max_size);
+	else
+		return (0);
+}
+
 static void	update_page_cat(
 		struct s_alloc_zone *zone,
 		struct s_free_node const *node)
@@ -56,7 +64,9 @@ static void	update_page_cat(
 		node = next_node(node);
 	}
 	if (node_size_category(node) < zone->biggest_free_size)
-		zone->biggest_free_size = max_size;
+		zone->biggest_free_size = new_page_category(
+				max_size,
+				zone->biggest_free_size);
 }
 
 static struct s_free_node const *malloc_node(struct s_free_node *node)

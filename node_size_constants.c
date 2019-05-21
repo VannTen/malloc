@@ -13,6 +13,7 @@
 #include "constants.h"
 #include "free_node.h"
 #include <stddef.h>
+#include <assert.h>
 
 static size_t	size_limit(size_t align_multiple)
 {
@@ -27,4 +28,10 @@ size_t			tiny_size_limit( void )
 size_t			small_size_limit( void )
 {
 	return (size_limit(SMALL_MAX));
+}
+
+size_t			page_smallest_category(size_t const page_current_biggest)
+{
+	assert(page_current_biggest <= SMALL_MAX);
+	return (1 + (page_current_biggest <= TINY_MAX ? 0 : TINY_MAX));
 }
