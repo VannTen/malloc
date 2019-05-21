@@ -35,7 +35,8 @@ size_t	size_to_size_category(size_t size)
 
 size_t	node_size_category(struct s_free_node const *node)
 {
-	return (size_to_size_category(node_size(node)));
+	return (size_to_size_category(node_size(node)
+				- sizeof *node * !!is_last_node(node)));
 }
 
 size_t	page_biggest_free_node_category(struct s_alloc_zone const *page)
