@@ -57,7 +57,14 @@ static void	update_page_cat(
 		zone->biggest_free_size = max_size;
 }
 
-void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
+static struct s_free_node const *malloc_node(struct s_free_node *node)
+{
+	assert(node->free);
+	node->free = FALSE;
+	return (node);
+}
+
+struct s_free_node const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 {
 	struct s_free_node *	node;
 
@@ -73,5 +80,5 @@ void const	*get_first_fit(struct s_alloc_zone *zone, size_t size_required)
 			update_page_cat(zone, next_node(node));
 	}
 	return (node_has_enough_space(node, size_required)
-			? publish_address(node) : NULL);
+			? malloc_node(node) : NULL);
 }

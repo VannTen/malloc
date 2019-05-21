@@ -46,6 +46,6 @@ size_t				page_size_category(struct s_alloc_zone const *page);
 ** Get
 */
 
-void const			*get_first_fit(struct s_alloc_zone *, size_t);
+struct s_free_node const	*get_first_fit(struct s_alloc_zone *, size_t);
 
 #endif

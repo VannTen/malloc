@@ -16,13 +16,6 @@
 #include <assert.h>
 #include <stddef.h>
 
-void const	*publish_address(struct s_free_node * node)
-{
-	assert(node->free);
-	node->free = FALSE;
-	return (get_public_address(node));
-}
-
 static void		defrag_to_last_node(struct s_free_node * node)
 {
 	assert(node->free);

@@ -70,11 +70,11 @@ static struct s_alloc_zone	*get_page(size_t const size_category)
 	return (new_page);
 }
 
-static struct s_free_node *alloc_tiny_small(size_t const size)
+static struct s_free_node const *alloc_tiny_small(size_t const size)
 {
 	size_t				size_category;
 	size_t				max_category;
-	struct s_free_node	*new_address;
+	struct s_free_node const	*new_address;
 	struct s_alloc_zone	**used_page;
 
 	size_category = size_to_size_category(size);
@@ -86,7 +86,7 @@ static struct s_free_node *alloc_tiny_small(size_t const size)
 	used_page = &g_alloc_zones.block_by_size[size_category];
 	if (*used_page == NULL)
 		*used_page = get_page(size_category);
-	new_address = (void*)get_first_fit(*used_page, size);
+	new_address = get_first_fit(*used_page, size);
 	recategorize_page(used_page, size_category);
 	return (new_address);
 }
@@ -110,12 +110,12 @@ static struct s_free_node	*alloc_large(size_t const size)
 
 void	*malloc(size_t const size)
 {
-	void				*client_address;
+	struct s_free_node const	*selected_node;
 
 	write(STDOUT_FILENO, "malloc\n", sizeof("malloc\n"));
 	if (size > small_size_limit())
-		client_address = alloc_large(size);
+		selected_node = alloc_large(size);
 	else
-		client_address = alloc_tiny_small(size);
-	return (client_address);
+		selected_node = alloc_tiny_small(size);
+	return ((void*)get_public_address(selected_node));
 }
