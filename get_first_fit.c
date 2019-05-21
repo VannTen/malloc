@@ -69,13 +69,6 @@ static void	update_page_cat(
 				zone->biggest_free_size);
 }
 
-static struct s_free_node const *malloc_node(struct s_free_node *node)
-{
-	assert(node->free);
-	node->free = FALSE;
-	return (node);
-}
-
 int							carving_may_change_page_cat(
 		struct s_free_node const *node,
 		size_t const page_cat)
@@ -96,21 +89,22 @@ struct s_free_node const	*get_first_fit(
 	may_update_page_cat = FALSE;
 	while (!is_last_node(node) && !node_has_enough_space(node, size_required))
 		node = next_node(node);
-	if (node->free
-			&& node_size(node)
-			>= size_required + sizeof *node + MIN_ALLOC_SPACE)
+	if (node->free)
 	{
-		carve_node(node, size_required);
-		may_update_page_cat = carving_may_change_page_cat(node, zone->biggest_free_size);
+		if (node_size_category(node) > size_to_size_category(size_required))
+		{
+			carve_node(node, size_required);
+			may_update_page_cat = carving_may_change_page_cat(node, zone->biggest_free_size);
+		}
+		if (node_size(node) >= size_required)
+		{
+			node->free = FALSE;
+			may_update_page_cat = may_update_page_cat
+				|| zone->biggest_free_size == node_size_category(node);
+		}
+		else
+			node = NULL;
 	}
-	if (node_has_enough_space(node, size_required))
-	{
-		malloc_node(node);
-		may_update_page_cat = may_update_page_cat
-			|| zone->biggest_free_size == node_size_category(node);
-	}
-	else
-		node = NULL;
 	if (may_update_page_cat)
 		update_page_cat(zone, node);
 	return (node);
