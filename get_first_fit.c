@@ -64,13 +64,24 @@ static struct s_free_node const *malloc_node(struct s_free_node *node)
 	return (node);
 }
 
+int							carving_may_change_page_cat(
+		struct s_free_node const *node,
+		size_t const page_cat)
+{
+	return (node_size_category(next_node(node)) < page_cat
+			&& node_size_category(next_node(node)) + node_size_category(node)
+			>= page_cat);
+}
+
 struct s_free_node const	*get_first_fit(
 		struct s_alloc_zone *zone,
 		size_t size_required)
 {
 	struct s_free_node *	node;
+	int						may_update_page_cat;
 
 	node = get_first_node(zone);
+	may_update_page_cat = FALSE;
 	while (!is_last_node(node) && !node_has_enough_space(node, size_required))
 		node = next_node(node);
 	if (node->free
@@ -78,9 +89,17 @@ struct s_free_node const	*get_first_fit(
 			>= size_required + sizeof *node + MIN_ALLOC_SPACE)
 	{
 		carve_node(node, size_required);
-		if (node_size_category(next_node(node)) < zone->biggest_free_size)
-			update_page_cat(zone, next_node(node));
+		may_update_page_cat = carving_may_change_page_cat(node, zone->biggest_free_size);
 	}
-	return (node_has_enough_space(node, size_required)
-			? malloc_node(node) : NULL);
+	if (node_has_enough_space(node, size_required))
+	{
+		malloc_node(node);
+		may_update_page_cat = may_update_page_cat
+			|| zone->biggest_free_size == node_size_category(node);
+	}
+	else
+		node = NULL;
+	if (may_update_page_cat)
+		update_page_cat(zone, node);
+	return (node);
 }
