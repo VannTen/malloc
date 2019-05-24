@@ -18,6 +18,11 @@
 ** Public address of a NULL s_free_node (aka no node) is NULL
 */
 
+int			address_is_taken(void const *address)
+{
+	return (!((struct s_free_node const *)address - 1)->free);
+}
+
 void const	*get_public_address(struct s_free_node const * const node)
 {
 	return (node + (node != NULL));

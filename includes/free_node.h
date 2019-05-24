@@ -32,6 +32,7 @@ void const	*get_public_address(struct s_free_node const *);
 size_t	node_size(struct s_free_node const *);
 t_bool		is_last_node(struct s_free_node const *);
 struct s_free_node	*next_node(struct s_free_node const * node);
+int			address_is_taken(void const *address);
 
 /*
 ** Modify

@@ -41,6 +41,9 @@ void				*end_of_zone(struct s_alloc_zone const *);
 struct s_alloc_zone const *page_from_list_node(struct s_list const *list_node);
 int					alloc_zone_cmp(void const *, void const *);
 size_t				page_size_category(struct s_alloc_zone const *page);
+int					address_exists_in_page(
+		void const *address,
+		struct s_alloc_zone const *page);
 
 /*
 ** Get

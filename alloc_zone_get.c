@@ -15,6 +15,18 @@
 #include "free_node.h"
 #include <stddef.h>
 
+int					address_exists_in_page(
+		void const *address,
+		struct s_alloc_zone const *page)
+{
+	struct s_free_node const *node;
+
+	node = get_first_node(page);
+	while (get_public_address(node) != address && !is_last_node(node))
+		node = next_node(node);
+	return (get_public_address(node) == address);
+}
+
 struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
 {
 	return ((void*)((char*)zone

@@ -32,11 +32,16 @@ static int	address_page_position(void const *_page, void const *address)
 
 static int	address_is_valid(void const *address)
 {
-	return ((uintptr_t)address % ALIGNMENT == 0
-			&& btree_search(g_alloc_zones.page_tree,
+	struct s_alloc_zone const	*page;
+
+	if ((uintptr_t)address % ALIGNMENT != 0)
+		return (0);
+	page = (struct s_alloc_zone const *)btree_search(g_alloc_zones.page_tree,
 							address,
-							address_page_position) != NULL
-			&& !((struct s_free_node const *)address - 1)->free);
+							address_page_position);
+	if (page == NULL)
+		return (0);
+	return (address_exists_in_page(address, page) && address_is_taken(address));
 }
 
 static int	same_page(void const *page, struct s_list const *page_list_node)
