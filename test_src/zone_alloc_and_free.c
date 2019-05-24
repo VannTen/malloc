@@ -16,7 +16,7 @@
 int	main( void )
 {
 	struct s_alloc_zone * zone = create_zone(4096);
-	void const * ptr[5];
+	struct s_free_node const * ptr[5];
 
 	assert(nb_node(zone) == 1);
 	assert(nb_free_node(zone) == 1);
@@ -28,7 +28,7 @@ int	main( void )
 	assert(nb_free_node(zone) == 1);
 	for (size_t i = 0;i < 5;i++)
 	{
-		free_node((void*)ptr[i]);
+		free_node((void*)get_public_address(ptr[i]));
 		assert(nb_free_node(zone) == (i < 5 ? i + 2 : 1));
 		assert(nb_node(zone) == (i < 5 ? 6 : 1));
 	}
