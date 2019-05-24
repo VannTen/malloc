@@ -40,8 +40,6 @@ int	main(void)
 	{
 		printf("Allocation index : %zu \n", index);
 		free(address[index]);
-		if (address[index] == NULL)
-			return (1);
 		index++;
 	}
 	return (0);
