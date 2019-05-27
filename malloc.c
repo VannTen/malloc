@@ -122,7 +122,6 @@ void	*malloc(size_t const size)
 {
 	struct s_free_node const	*selected_node;
 
-	write(STDOUT_FILENO, "malloc\n", sizeof("malloc\n"));
 	if (size > small_size_limit())
 		selected_node = alloc_large(size);
 	else
