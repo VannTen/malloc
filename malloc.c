@@ -65,7 +65,8 @@ static struct s_alloc_zone	*get_page(size_t const size_category)
 	else
 	{
 		new_page = create_zone(tiny_page ? tiny_page_size() : small_page_size());
-		rbtree_insert(&g_alloc_zones.page_tree, &new_page->tree_node, alloc_zone_cmp);
+		if (new_page != NULL)
+			rbtree_insert(&g_alloc_zones.page_tree, &new_page->tree_node, alloc_zone_cmp);
 	}
 	return (new_page);
 }
@@ -86,8 +87,12 @@ static struct s_free_node const *alloc_tiny_small(size_t const size)
 	used_page = &g_alloc_zones.block_by_size[size_category];
 	if (*used_page == NULL)
 		*used_page = get_page(size_category);
-	new_address = get_first_fit(*used_page, size);
-	recategorize_page(used_page, size_category);
+	new_address = NULL;
+	if (*used_page != NULL)
+	{
+		new_address = get_first_fit(*used_page, size);
+		recategorize_page(used_page, size_category);
+	}
 	return (new_address);
 }
 
