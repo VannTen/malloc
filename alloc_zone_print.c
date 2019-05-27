@@ -13,9 +13,12 @@
 #include "alloc_zone.h"
 #include "constants.h"
 #include "free_node.h"
+#include "itoa_tools.h"
+#include "string.h"
 #include <assert.h>
+#include <unistd.h>
 
-char const *select_type_string(struct s_alloc_zone const *zone)
+char const		*select_type_string(struct s_alloc_zone const *zone)
 {
 	char const					*type_string;
 
@@ -28,29 +31,56 @@ char const *select_type_string(struct s_alloc_zone const *zone)
 	return (type_string);
 }
 
+static size_t	write_pointer(void const *ptr, char *string)
+{
+	size_t len;
+
+	string[0] = '0';
+	string[1] = 'x';
+	len = itoa_len_unsigned((uintptr_t)ptr, 16);
+	itoa_write_unsigned(string + len,
+			(uintptr_t)ptr, 16, HEXADECIMAL_DIGITS);
+	return (len);
+}
+
+static size_t	write_node(struct s_free_node const *node, char * const string)
+{
+	size_t string_index;
+
+	string_index = 0;
+	string_index += write_pointer(get_public_address(node), string );
+	ft_strcpy(string + string_index, " - ");
+	string_index += sizeof (" - ");
+	string_index += write_pointer(end_of_node(node), string + string_index);
+	ft_strcpy(string + string_index, " : ");
+	string_index += sizeof (" : ");
+	string_index += itoa_len_unsigned(node_size(node), 10);
+	itoa_write_unsigned(string, node_size(node), 10, DECIMAL_DIGITS);
+	ft_strcpy(string, " octets\n");
+	return (string_index + sizeof(" octets\n"));
+}
+
 int	alloc_zone_print(struct s_alloc_zone const *zone)
 {
 	char const * const			 type_string  = select_type_string(zone);
-	size_t						index;
+	size_t						size;
 	struct s_free_node const	*node;
-	int							write_ret;
+	char						buf[255];
 
 	assert(zone != NULL);
-	index = ft_strlen(type_string);
 	node = get_first_node(zone);
-	write_ret = 0;
+	write(STDOUT_FILENO, type_string, ft_strlen(type_string));
 	while (1)
 	{
 		if (!node->free)
 		{
-			write_ret = ft_printf("%p - %p : %zu octets\n",
-						get_public_address(node), end_of_node(node), node_size(node));
-			if (write_ret < 0)
-				return (write_ret);
+			size = write_node(node, buf);
+			buf[size] = '\0';
+			write(STDOUT_FILENO, buf, size);
 		}
 		if (is_last_node(node))
 			break ;
 		node = next_node(node);
 	}
-	return (write_ret);
+	return (0);
 }
