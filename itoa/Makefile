@@ -11,15 +11,15 @@
 #* ************************************************************************** *#
 
 CFLAGS := -g3 -Wall -Wextra -Werror -pedantic -fsanitize=address
-LDFLAGS := -shared -fsanitize=address
+LDFLAGS := -fsanitize=address
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
-LIBS := rbtree list utils itoa
+LIBS := 
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
-NAME := libmalloc.so
+NAME := libitoa.a
 LIBS_FILES := $(foreach lib,$(LIBS), $(lib)/lib$(lib).a)
 
 OBJ_DIR := objs
@@ -31,37 +31,19 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 options := CFLAGS
 
 SRCS := \
-	alloc_zone_cmp.c \
-	alloc_zone_data_struct.c \
-	alloc_zone_get.c \
-	alloc_zone_print.c \
-	assert_create_zone.c \
-	compute_pointers_offsets.c \
-	constants.c \
-	create_zone.c \
-	free.c \
-	free_node.c \
-	free_node_get.c \
-	get_first_fit.c \
-	globals.c \
-	malloc.c \
-	node_size_constants.c \
-	page_size_constants.c \
-	size_category.c
+	itoa_tools.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
-$(NAME): $(OBJS) $(LIBS_FILES)
-	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
+$(NAME): $(OBJS)
+	ar -rcu $@ $^
 
 $(LIBS_FILES): force
 	$(MAKE) -C $(dir $@) $(foreach opt,$(options),'$(opt)=$($(opt))')
 
 .PHONY: force
-
-$(NAME): CFLAGS := $(CFLAGS) -fPIC
 
 $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
