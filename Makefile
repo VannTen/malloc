@@ -34,6 +34,7 @@ SRCS := \
 	alloc_zone_cmp.c \
 	alloc_zone_data_struct.c \
 	alloc_zone_get.c \
+	alloc_zone_print.c \
 	assert_create_zone.c \
 	compute_pointers_offsets.c \
 	constants.c \

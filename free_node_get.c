@@ -28,6 +28,11 @@ void const	*get_public_address(struct s_free_node const * const node)
 	return (node + (node != NULL));
 }
 
+void const	*end_of_node(struct s_free_node const * const node)
+{
+	return (((char const *)get_public_address(node)) + node_size(node));
+}
+
 static	struct s_alloc_zone *zone_start(struct s_free_node const * last_node)
 {
 	return ((void*)((char*)next_node(last_node) - offset_zone_start_first_free_node()));
