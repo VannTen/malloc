@@ -23,11 +23,11 @@ static int	address_page_position(void const *_page, void const *address)
 	struct s_alloc_zone const *page = _page;
 
 	if ((uintptr_t)page > (uintptr_t)address)
-		return (-1);
+		return (1);
 	else if ((uintptr_t)page + page->size > (uintptr_t)address)
 		return (0);
 	else
-		return (1);
+		return (-1);
 }
 
 static int	address_is_valid(void const *address)

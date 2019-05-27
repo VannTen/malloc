@@ -18,9 +18,9 @@ int					alloc_zone_cmp(
 		void const *compared)
 {
 	if ((uintptr_t)ref > (uintptr_t)compared)
-		return (-1);
-	else if ((uintptr_t)ref < (uintptr_t)compared)
 		return (1);
+	else if ((uintptr_t)ref < (uintptr_t)compared)
+		return (-1);
 	else
 		return (0);
 }
