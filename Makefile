@@ -47,6 +47,7 @@ SRCS := \
 	malloc.c \
 	node_size_constants.c \
 	page_size_constants.c \
+	show_alloc_mem.c \
 	size_category.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
