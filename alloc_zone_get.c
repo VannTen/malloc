@@ -14,6 +14,7 @@
 #include "alloc_zone.h"
 #include "free_node.h"
 #include <stddef.h>
+#include <assert.h>
 
 int					address_exists_in_page(
 		void const *address,
@@ -29,6 +30,7 @@ int					address_exists_in_page(
 
 struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
 {
+	assert(zone != NULL);
 	return ((void*)((char*)zone
 			+ offset_zone_start_first_free_node()));
 }

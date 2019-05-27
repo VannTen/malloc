@@ -102,10 +102,14 @@ static struct s_free_node	*alloc_large(size_t const size)
 		* getpagesize();
 	new_page = create_zone(page_size);
 	if (new_page != NULL)
+	{
 		rbtree_insert(&g_alloc_zones.page_tree,
 				&new_page->tree_node, alloc_zone_cmp);
-	get_first_node(new_page)->free = FALSE;
-	return (get_first_node(new_page));
+		get_first_node(new_page)->free = FALSE;
+		return (get_first_node(new_page));
+	}
+	else
+		return (NULL);
 }
 
 void	*malloc(size_t const size)
