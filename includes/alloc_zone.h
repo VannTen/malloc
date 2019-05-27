@@ -44,7 +44,7 @@ size_t				page_size_category(struct s_alloc_zone const *page);
 int					address_exists_in_page(
 		void const *address,
 		struct s_alloc_zone const *page);
-int					alloc_zone_print(struct s_alloc_zone const *);
+size_t				alloc_zone_print(struct s_alloc_zone const *);
 
 /*
 ** Get

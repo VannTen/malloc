@@ -59,15 +59,17 @@ static size_t	write_node(struct s_free_node const *node, char * const string)
 	return (string_index + sizeof(" octets\n"));
 }
 
-int	alloc_zone_print(struct s_alloc_zone const *zone)
+size_t			alloc_zone_print(struct s_alloc_zone const *zone)
 {
 	char const * const			 type_string  = select_type_string(zone);
 	size_t						size;
+	size_t						size_allocated;
 	struct s_free_node const	*node;
 	char						buf[255];
 
 	assert(zone != NULL);
 	node = get_first_node(zone);
+	size_allocated = 0;
 	write(STDOUT_FILENO, type_string, ft_strlen(type_string));
 	while (1)
 	{
@@ -76,10 +78,11 @@ int	alloc_zone_print(struct s_alloc_zone const *zone)
 			size = write_node(node, buf);
 			buf[size] = '\0';
 			write(STDOUT_FILENO, buf, size);
+			size_allocated += node_size(node);
 		}
 		if (is_last_node(node))
 			break ;
 		node = next_node(node);
 	}
-	return (0);
+	return (size_allocated);
 }
