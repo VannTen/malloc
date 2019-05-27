@@ -23,11 +23,11 @@ char const		*select_type_string(struct s_alloc_zone const *zone)
 	char const					*type_string;
 
 	if (zone->biggest_free_size == LARGE_MAGIC_NUMBER)
-		type_string = "LARGE";
+		type_string = "LARGE\n";
 	else if (zone->size == tiny_page_size())
-		type_string = "TINY";
+		type_string = "TINY\n";
 	else
-		type_string = "SMALL";
+		type_string = "SMALL\n";
 	return (type_string);
 }
 
@@ -37,26 +37,25 @@ static size_t	write_pointer(void const *ptr, char *string)
 
 	string[0] = '0';
 	string[1] = 'x';
-	len = itoa_len_unsigned((uintptr_t)ptr, 16);
+	len = itoa_len_unsigned((uintptr_t)ptr, 16) + 1;
 	itoa_write_unsigned(string + len,
 			(uintptr_t)ptr, 16, HEXADECIMAL_DIGITS);
-	return (len);
+	return (len + 1);
 }
 
 static size_t	write_node(struct s_free_node const *node, char * const string)
 {
 	size_t string_index;
 
-	string_index = 0;
-	string_index += write_pointer(get_public_address(node), string );
+	string_index = write_pointer(get_public_address(node), string);
 	ft_strcpy(string + string_index, " - ");
-	string_index += sizeof (" - ");
+	string_index += sizeof (" - ") - 1;
 	string_index += write_pointer(end_of_node(node), string + string_index);
 	ft_strcpy(string + string_index, " : ");
-	string_index += sizeof (" : ");
-	string_index += itoa_len_unsigned(node_size(node), 10);
-	itoa_write_unsigned(string, node_size(node), 10, DECIMAL_DIGITS);
-	ft_strcpy(string, " octets\n");
+	string_index += sizeof (" : ") - 1;
+	string_index += itoa_len_unsigned(node_size(node), 10) - 1;
+	itoa_write_unsigned(string + string_index, node_size(node), 10, DECIMAL_DIGITS);
+	ft_strcpy(string + string_index + 1, " octets\n");
 	return (string_index + sizeof(" octets\n"));
 }
 
