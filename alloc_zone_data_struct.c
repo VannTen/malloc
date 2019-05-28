@@ -13,7 +13,7 @@
 #include "alloc_zone.h"
 #include <stddef.h>
 
-struct s_alloc_zone const *page_from_list_node(struct s_list const *node)
+struct s_alloc_zone const	*page_from_list_node(struct s_list const *node)
 {
 	if (node == NULL)
 		return (NULL);
