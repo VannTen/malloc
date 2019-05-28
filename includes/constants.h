@@ -35,29 +35,31 @@
 ** Computed constants implemented as functions
 */
 
-size_t	offset_zone_start_first_address( void );
-size_t	offset_zone_start_first_free_node( void );
-size_t	ft_pow(size_t n, size_t pow);
-size_t	tiny_size_limit( void );
-size_t	small_size_limit( void );
-size_t	tiny_page_size( void );
-size_t	small_page_size( void );
-size_t	page_size(size_t align_multiple);
-size_t	page_smallest_category(size_t current_biggest);
+size_t						offset_zone_start_first_address(void);
+size_t						offset_zone_start_first_free_node(void);
+size_t						ft_pow(size_t n, size_t pow);
+size_t						tiny_size_limit(void);
+size_t						small_size_limit(void);
+size_t						tiny_page_size(void);
+size_t						small_page_size(void);
+size_t						page_size(size_t align_multiple);
+size_t						page_smallest_category(size_t current_biggest);
 
 /*
 ** Shorthands functions for pointers offset computation
 */
 
-struct s_alloc_zone const *get_page_from_first_node(struct s_free_node const *);
+struct s_alloc_zone const	*get_page_from_first_node(
+		struct s_free_node const *node);
 
 /*
 ** Translating size to size category and vice versa
 */
 
-size_t	size_category_to_size(size_t size_category);
-size_t	size_to_size_category(size_t size_category);
-size_t	node_size_category(struct s_free_node const *node);
-size_t	page_biggest_free_node_category(struct s_alloc_zone const *page);
+size_t						size_category_to_size(size_t size_category);
+size_t						size_to_size_category(size_t size_category);
+size_t						node_size_category(struct s_free_node const *node);
+size_t						page_biggest_free_node_category(
+		struct s_alloc_zone const *page);
 
 #endif

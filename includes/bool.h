@@ -19,7 +19,6 @@ enum	e_bool
 	TRUE = !FALSE
 };
 
-typedef enum e_bool t_bool;
-
+typedef enum e_bool	t_bool;
 
 #endif

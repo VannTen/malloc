@@ -15,31 +15,29 @@
 # include <stddef.h>
 # include "bool.h"
 # define LOG_2_ALIGN 4
-# define MIN_ALLOC_SPACE sizeof (void*)
 
-struct s_free_node	{
+struct						s_free_node	{
 
 	short	next_offset;
 	t_bool	free:1;
 };
 
-
 /*
 ** Get (const)
 */
 
-void const	*get_public_address(struct s_free_node const *);
-void const	*end_of_node(struct s_free_node const *);
-size_t	node_size(struct s_free_node const *);
-t_bool		is_last_node(struct s_free_node const *);
-struct s_free_node	*next_node(struct s_free_node const * node);
-int			address_is_taken(void const *address);
+void const					*get_public_address(struct s_free_node const *n);
+void const					*end_of_node(struct s_free_node const *n);
+size_t						node_size(struct s_free_node const *n);
+t_bool						is_last_node(struct s_free_node const *n);
+struct s_free_node			*next_node(struct s_free_node const *node);
+int							address_is_taken(void const *address);
 
 /*
 ** Modify
 */
 
-void		free_node(void *);
-struct s_alloc_zone	const	*free_defrag(void *);
+void						free_node(void *address);
+struct s_alloc_zone	const	*free_defrag(void *address);
 
 #endif
