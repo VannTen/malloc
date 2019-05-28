@@ -43,6 +43,7 @@ SRCS := \
 	free.c \
 	free_node.c \
 	free_node_get.c \
+	free_node_get_addresses.c \
 	get_first_fit.c \
 	globals.c \
 	malloc.c \
