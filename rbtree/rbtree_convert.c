@@ -17,7 +17,7 @@ struct s_rbtree	*rbtree_from_sequential(
 		void *first,
 		void *(*next)(void *),
 		int (*cmp)(void const *, void const *),
-		void * const end_address)
+		void *const end_address)
 {
 	struct s_rbtree *new_tree;
 

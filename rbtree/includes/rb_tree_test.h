@@ -14,8 +14,7 @@
 # define RB_TREE_TEST_H
 # include "rb_tree.h"
 
-
-struct s_test_node {
+struct	s_test_node {
 
 	struct s_rbtree	node;
 	int				value;
@@ -26,9 +25,9 @@ struct s_test_node {
 ** They expect rb_tree stocking simple ints
 */
 
-int	rbtree_test_cmp(void const *val_1, void const *val_2);
-int rbtree_test_diff(void const *val_1, void const *crit);
-void	*array_next_test_node(void * test_node);
+int		rbtree_test_cmp(void const *val_1, void const *val_2);
+int		rbtree_test_diff(void const *val_1, void const *crit);
+void	*array_next_test_node(void *test_node);
 
 /*
 ** Printing and debugging

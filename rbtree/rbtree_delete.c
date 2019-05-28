@@ -14,15 +14,9 @@
 #include <assert.h>
 #include <stddef.h>
 
-/*
-** temporary pointers are necessary, since one of the parameters could be
-** pointing to one of the child of the other params, creating aliasing problems
-** (case of swapping a parent with its direct child)
-*/
-
-static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
+static enum e_tree_state	delete_node(struct s_rbtree **const node, int side)
 {
-	struct s_rbtree * const	deleted = *node;
+	struct s_rbtree *const	deleted = *node;
 
 	assert(deleted != NULL);
 	assert(deleted->children[LEFT] == NULL || deleted->children[RIGHT] == NULL);
@@ -34,9 +28,9 @@ static enum e_tree_state	delete_node(struct s_rbtree ** const node, int side)
 	return (GOOD);
 }
 
-static enum e_tree_state remove_successor(
-		struct s_rbtree ** const node,
-		struct s_rbtree ** const successor,
+static enum e_tree_state	remove_successor(
+		struct s_rbtree **const node,
+		struct s_rbtree **const successor,
 		int side)
 {
 	enum e_tree_state	state;
@@ -51,10 +45,11 @@ static enum e_tree_state remove_successor(
 				remove_successor(&(*node)->children[side], successor, LEFT));
 	return (state);
 }
-static enum e_tree_state	replace_node(struct s_rbtree ** const tree)
+
+static enum e_tree_state	replace_node(struct s_rbtree **const tree)
 {
 	enum e_tree_state	subtree_state;
-	struct s_rbtree *	successor;
+	struct s_rbtree		*successor;
 
 	if ((*tree)->children[LEFT] == NULL || (*tree)->children[RIGHT] == NULL)
 		subtree_state = delete_node(tree, (*tree)->children[LEFT] == NULL);
@@ -71,12 +66,12 @@ static enum e_tree_state	replace_node(struct s_rbtree ** const tree)
 	return (subtree_state);
 }
 
-static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
-		void const * const criterion,
-		struct s_rbtree const ** removed,
+static enum e_tree_state remove_recurse(struct s_rbtree **const tree,
+		void const *const criterion,
+		struct s_rbtree const **removed,
 		int (*diff)(void const*, void const*))
 {
-	int						diff_result;
+	int					diff_result;
 	enum e_tree_state	subtree_state;
 
 	if (*tree == NULL)
@@ -100,12 +95,11 @@ static enum e_tree_state remove_recurse(struct s_rbtree ** const tree,
 void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,
 		int (*diff)(void const*, void const*))
 {
-	struct s_rbtree const * removed;
+	struct s_rbtree const *removed;
 
 	removed = NULL;
 	if (remove_recurse(tree, criterion, &removed, diff)
 			== TREE_HAS_ONE_BLACK_LESS)
-		; // No need to do anything
-
+		;
 	return ((void*)removed);
 }

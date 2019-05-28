@@ -44,7 +44,7 @@ static void			red_sibling(struct s_rbtree **tree, int side)
 
 enum e_tree_state	balance_subtree(
 		struct s_rbtree **const tree,
-		int const	side,
+		int const side,
 		enum e_tree_state subtree_state)
 {
 	if (subtree_state == TREE_HAS_ONE_BLACK_LESS && *tree != NULL)

@@ -40,13 +40,12 @@ static void	print_subtree_content(struct s_rbtree const *tree, int offset)
 	}
 }
 
-
-void	print_tree(struct s_rbtree const *tree)
+void		print_tree(struct s_rbtree const *tree)
 {
 	print_subtree(tree, 0);
 }
 
-void	print_tree_content(struct s_rbtree const *tree)
+void		print_tree_content(struct s_rbtree const *tree)
 {
 	print_subtree_content(tree, 0);
 }
