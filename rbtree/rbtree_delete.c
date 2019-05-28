@@ -62,11 +62,10 @@ static enum e_tree_state	replace_node(struct s_rbtree **const tree)
 		*tree = successor;
 		subtree_state = balance_subtree(tree, RIGHT, subtree_state);
 	}
-
 	return (subtree_state);
 }
 
-static enum e_tree_state remove_recurse(struct s_rbtree **const tree,
+static enum e_tree_state	remove_recurse(struct s_rbtree **const tree,
 		void const *const criterion,
 		struct s_rbtree const **removed,
 		int (*diff)(void const*, void const*))
@@ -92,7 +91,9 @@ static enum e_tree_state remove_recurse(struct s_rbtree **const tree,
 	return (subtree_state);
 }
 
-void	*rbtree_remove(struct s_rbtree **tree, void const *criterion,
+void						*rbtree_remove(
+		struct s_rbtree **tree,
+		void const *criterion,
 		int (*diff)(void const*, void const*))
 {
 	struct s_rbtree const *removed;
