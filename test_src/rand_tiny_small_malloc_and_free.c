@@ -22,7 +22,7 @@ int	main(void)
 	size_t	total;
 	size_t	alloc_size;
 
-	index = total = 0;
+	index = (total = 0);
 	while (index < SIZE_TEST)
 	{
 		alloc_size = rand() % MAX_ALLOC;

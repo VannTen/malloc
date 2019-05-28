@@ -13,10 +13,9 @@
 #include "alloc_zone.h"
 #include <stdio.h>
 
-
 int	main(void)
 {
-	struct s_alloc_zone * const zone = create_zone(4096);
+	struct s_alloc_zone *const zone = create_zone(4096);
 
 	while (get_first_fit(zone, 1) != NULL)
 		;
