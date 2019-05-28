@@ -49,7 +49,7 @@ size_t						page_smallest_category(size_t current_biggest);
 ** Shorthands functions for pointers offset computation
 */
 
-struct s_alloc_zone const	*get_page_from_first_node(
+struct s_alloc_zone			*get_page_from_first_node(
 		struct s_free_node const *node);
 
 /*

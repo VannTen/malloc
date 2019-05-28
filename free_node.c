@@ -16,7 +16,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-static void							defrag_to_last_node(
+static void					defrag_to_last_node(
 		struct s_free_node *node)
 {
 	assert(node->free);
@@ -24,7 +24,7 @@ static void							defrag_to_last_node(
 		node->next_offset += next_node(node)->next_offset;
 }
 
-static struct s_alloc_zone const	*defragment_node(struct s_free_node *node)
+static struct s_alloc_zone	*defragment_node(struct s_free_node *node)
 {
 	struct s_free_node	*first_node;
 
@@ -40,7 +40,7 @@ static struct s_alloc_zone const	*defragment_node(struct s_free_node *node)
 	return (NULL);
 }
 
-struct s_alloc_zone const			*free_defrag(void *ptr)
+struct s_alloc_zone			*free_defrag(void *ptr)
 {
 	struct s_free_node *const node = (struct s_free_node *)ptr - 1;
 
@@ -48,7 +48,7 @@ struct s_alloc_zone const			*free_defrag(void *ptr)
 	return (defragment_node(node));
 }
 
-void								free_node(void *ptr)
+void						free_node(void *ptr)
 {
 	struct s_free_node *const node = (struct s_free_node *)ptr - 1;
 

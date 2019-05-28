@@ -17,6 +17,7 @@
 #include "list.h"
 #include <stdint.h>
 #include <assert.h>
+#include <sys/mman.h>
 
 static int	address_page_position(void const *v_page, void const *address)
 {
@@ -72,7 +73,8 @@ void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 
 void		free(void *address)
 {
-	struct s_alloc_zone const	*cleared_page;
+	struct s_alloc_zone			*cleared_page;
+	int							ret_val;
 
 	if (address == NULL)
 		return ;
@@ -84,5 +86,7 @@ void		free(void *address)
 		cleared_page = rbtree_remove(
 				&g_alloc_zones.page_tree, address, address_page_position);
 		assert(cleared_page != NULL);
+		ret_val = munmap(cleared_page, cleared_page->size);
+		assert(ret_val == 0);
 	}
 }
