@@ -31,6 +31,7 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 options := CFLAGS
 
 SRCS := \
+	alloc_tiny_small.c \
 	alloc_zone_cmp.c \
 	alloc_zone_data_struct.c \
 	alloc_zone_get.c \

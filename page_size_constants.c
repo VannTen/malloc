@@ -19,17 +19,17 @@
 size_t	page_size(size_t align_multiple)
 {
 	return (((align_multiple * ALIGNMENT * MIN_FREE_NODE_PER_PAGE
-			+ sizeof (struct s_alloc_zone))
+			+ sizeof(struct s_alloc_zone))
 				/ getpagesize() + 1)
 			* getpagesize());
 }
 
-size_t			tiny_page_size( void )
+size_t	tiny_page_size(void)
 {
 	return (page_size(TINY_MAX));
 }
 
-size_t			small_page_size( void )
+size_t	small_page_size(void)
 {
 	return (page_size(SMALL_MAX));
 }

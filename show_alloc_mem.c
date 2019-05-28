@@ -32,7 +32,7 @@ void		show_alloc_mem(void)
 
 	total_size = 0;
 	rbtree_inorder_traversal(g_alloc_zones.page_tree,
-			_print_page_summary, &total_size);
+			print_page_summary, &total_size);
 	ft_strcpy(buffer, strings[0]);
 	index = ft_strlen(strings[0]);
 	index += itoa_len_unsigned(total_size, 10) - 1;
