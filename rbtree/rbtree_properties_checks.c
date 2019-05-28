@@ -23,7 +23,7 @@ static size_t	max(size_t val_1, size_t val_2)
 	return (val_2 < val_1 ? val_1 : val_2);
 }
 
-size_t	black_depth(struct s_rbtree const * tree)
+size_t			black_depth(struct s_rbtree const *tree)
 {
 	size_t	left_depth;
 
@@ -39,18 +39,20 @@ size_t	black_depth(struct s_rbtree const * tree)
 	}
 }
 
-size_t	max_depth(struct s_rbtree const * tree)
+size_t			max_depth(struct s_rbtree const *tree)
 {
 	if (tree == NULL)
 		return (1);
 	else
-		return (max(max_depth(tree->children[LEFT]), max_depth(tree->children[RIGHT])));
+		return (max(max_depth(tree->children[LEFT]),
+					max_depth(tree->children[RIGHT])));
 }
 
-size_t	min_depth(struct s_rbtree const * tree)
+size_t			min_depth(struct s_rbtree const *tree)
 {
 	if (tree == NULL)
 		return (1);
 	else
-		return (min(min_depth(tree->children[LEFT]), min_depth(tree->children[RIGHT])));
+		return (min(min_depth(tree->children[LEFT]),
+					min_depth(tree->children[RIGHT])));
 }

@@ -10,44 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "rb_tree_delete_nephew_cases.h"
 #include "rb_tree.h"
 #include <assert.h>
 
-static void			parent_sibling_nephews_black(struct s_rbtree ** tree, int side)
-{
-	(*tree)->children[!side]->color = RED;
-}
-
-static void			parent_red_sib_neph_black(struct s_rbtree ** tree, int side)
-{
-	(*tree)->color = BLACK;
-	(*tree)->children[!side]->color = RED;
-}
-
-static void			outer_red_nephew(struct s_rbtree ** tree, int side)
-{
-	enum e_color const		tmp = (*tree)->color;
-	struct s_rbtree * const	outer_nephew
-		= (*tree)->children[!side]->children[!side];
-
-	(*tree)->color = BLACK;
-	(side ? right_rotate : left_rotate)(tree);
-	(*tree)->color = tmp;
-	outer_nephew->color = BLACK;
-}
-
-static void			inner_red_nephew(struct s_rbtree ** tree, int side)
-{
-	struct s_rbtree ** const	sibling = &(*tree)->children[!side];
-	struct s_rbtree * const		inner_nephew = (*sibling)->children[side];
-
-	(side ? left_rotate : right_rotate)(sibling);
-	(*sibling)->color = RED;
-	inner_nephew->color = BLACK;
-	outer_red_nephew(tree, side);
-}
-
-static int			post_red_sibling(struct s_rbtree ** const tree, int side)
+static int			post_red_sibling(struct s_rbtree **const tree, int side)
 {
 	int done_something;
 
@@ -63,7 +30,7 @@ static int			post_red_sibling(struct s_rbtree ** const tree, int side)
 	return (done_something);
 }
 
-static void			red_sibling(struct s_rbtree ** tree, int side)
+static void			red_sibling(struct s_rbtree **tree, int side)
 {
 	int done;
 
@@ -76,7 +43,7 @@ static void			red_sibling(struct s_rbtree ** tree, int side)
 }
 
 enum e_tree_state	balance_subtree(
-		struct s_rbtree ** const tree,
+		struct s_rbtree **const tree,
 		int const	side,
 		enum e_tree_state subtree_state)
 {

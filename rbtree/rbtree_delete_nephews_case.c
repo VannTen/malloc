@@ -11,40 +11,40 @@
 /* ************************************************************************** */
 
 #include "rb_tree.h"
-#include "rb_tree_test.h"
+#include "rb_tree_delete_nephew_cases.h"
 
-int			rbtree_test_cmp(void const *val_1, void const *val_2)
+void	parent_sibling_nephews_black(
+		struct s_rbtree **tree,
+		int side)
 {
-	return (((struct s_test_node const *)val_1)->value
-			- ((struct s_test_node const *)val_2)->value);
+	(*tree)->children[!side]->color = RED;
 }
 
-int			rbtree_test_diff(void const *val_1, void const *crit)
+void	parent_red_sib_neph_black(struct s_rbtree **tree, int side)
 {
-	return (((struct s_test_node const *)val_1)->value
-			- *(int*)crit);
+	(*tree)->color = BLACK;
+	(*tree)->children[!side]->color = RED;
 }
 
-static void	acc(void const *v_node, void *prev_val)
+void	outer_red_nephew(struct s_rbtree **tree, int side)
 {
-	struct s_test_node const *const	node = v_node;
-	int *const						val = prev_val;
+	enum e_color const		tmp = (*tree)->color;
+	struct s_rbtree *const	outer_nephew = (*tree)
+		->children[!side]->children[!side];
 
-	val[1] = val[1] && node->value >= val[0];
-	val[0] = node->value;
+	(*tree)->color = BLACK;
+	(side ? right_rotate : left_rotate)(tree);
+	(*tree)->color = tmp;
+	outer_nephew->color = BLACK;
 }
 
-int			tree_is_inorder(struct s_rbtree const *tree)
+void	inner_red_nephew(struct s_rbtree **tree, int side)
 {
-	int value[2];
+	struct s_rbtree **const	sibling = &(*tree)->children[!side];
+	struct s_rbtree *const		inner_nephew = (*sibling)->children[side];
 
-	value[0] = 0;
-	value[1] = (0 == 0);
-	rbtree_inorder_traversal(tree, acc, value);
-	return (value[1]);
-}
-
-void		*array_next_test_node(void *node)
-{
-	return (((struct s_test_node *)node) + 1);
+	(side ? left_rotate : right_rotate)(sibling);
+	(*sibling)->color = RED;
+	inner_nephew->color = BLACK;
+	outer_red_nephew(tree, side);
 }

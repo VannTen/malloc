@@ -13,7 +13,7 @@
 #include "rb_tree.h"
 #include <stddef.h>
 
-size_t	rbtree_node_count(struct s_rbtree const * const tree)
+size_t	rbtree_node_count(struct s_rbtree const *const tree)
 {
 	if (tree == NULL)
 		return (0);

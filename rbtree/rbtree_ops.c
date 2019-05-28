@@ -14,15 +14,17 @@
 #include <assert.h>
 #include <stddef.h>
 
-static void grand_parent_become_red(struct s_rbtree *grand_parent)
+static void						grand_parent_become_red(
+		struct s_rbtree *grand_parent)
 {
-	assert(grand_parent->children[LEFT]->color == RED && grand_parent->children[RIGHT]->color == RED);
+	assert(grand_parent->children[LEFT]->color == RED
+			&& grand_parent->children[RIGHT]->color == RED);
 	grand_parent->color = RED;
 	grand_parent->children[LEFT]->color = BLACK;
 	grand_parent->children[RIGHT]->color = BLACK;
 }
 
-static void insert_repair_rotation(
+static void						insert_repair_rotation(
 		struct s_rbtree **grand_parent,
 		int side)
 {
@@ -54,7 +56,7 @@ static enum e_tree_insert_ret	repair_tree(
 }
 
 static enum e_tree_insert_ret	insert(
-	struct s_rbtree ** tree,
+	struct s_rbtree **tree,
 	struct s_rbtree *new_node,
 	int (*diff)(void const*, void const*))
 {
@@ -75,8 +77,8 @@ static enum e_tree_insert_ret	insert(
 	}
 }
 
-void	rbtree_insert(
-	struct s_rbtree ** tree,
+void							rbtree_insert(
+	struct s_rbtree **tree,
 	struct s_rbtree *new_node,
 	int (*cmp)(void const*, void const*))
 {

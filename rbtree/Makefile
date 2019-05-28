@@ -33,6 +33,7 @@ SRCS := \
 	rbtree_ops.c \
 	rbtree_delete.c \
 	rbtree_delete_balance.c \
+	rbtree_delete_nephews_case.c \
 	rbtree_helpers.c \
 	rbtree_test_helpers.c \
 	rbtree_convert.c \

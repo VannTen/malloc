@@ -13,7 +13,7 @@
 #include "rb_tree.h"
 #include <stddef.h>
 
-void	rbtree_init_node(struct s_rbtree * const node)
+void	rbtree_init_node(struct s_rbtree *const node)
 {
 	node->children[LEFT] = NULL;
 	node->children[RIGHT] = NULL;
