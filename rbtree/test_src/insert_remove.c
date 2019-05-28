@@ -17,37 +17,62 @@
 #include <stdio.h>
 #define SIZE_TEST 5000
 
-void	assert_order(void const *node, void *_previous_value)
+void	assert_order(void const *node, void *v_previous_value)
 {
-	struct s_test_node const * const	value = node;
-	int * const						previous_value = _previous_value;
+	struct s_test_node const *const	value = node;
+	int *const						previous_value = v_previous_value;
 
 	assert(value->value >= *previous_value);
 	*previous_value = value->value;
 }
 
-int	test_2(void)
+void	init_values_2(struct s_test_node *values, struct s_rbtree **tree)
+{
+	int		assert_val;
+	size_t	index;
+
+	index = 0;
+	while (index < SIZE_TEST)
+	{
+		values[index].value = rand();
+		rbtree_init_node(&(values[index].node));
+		rbtree_insert(tree, &(values[index].node), rbtree_test_cmp);
+		assert_val = 0;
+		rbtree_inorder_traversal(*tree, assert_order, &assert_val);
+		index++;
+	}
+}
+
+void	init_values_1(struct s_test_node *values, struct s_rbtree **tree)
+{
+	int		assert_val;
+	size_t	index;
+
+	index = 0;
+	while (index < SIZE_TEST)
+	{
+		values[index].value = index;
+		rbtree_init_node(&(values[index].node));
+		rbtree_insert(tree, &(values[index].node), rbtree_test_cmp);
+		assert_val = 0;
+		rbtree_inorder_traversal(*tree, assert_order, &assert_val);
+		index++;
+	}
+}
+
+int		test_2(void)
 {
 	struct s_test_node	*values;
 	struct s_rbtree		*tree;
 	size_t				index;
 	int					value;
-	int					assert_val;
 	struct s_test_node	*val;
 
 	tree = NULL;
 	index = 0;
-	values = malloc(SIZE_TEST * sizeof (*values));
-	while (index < SIZE_TEST)
-	{
-		values[index].value = rand();
-		rbtree_init_node(&(values[index].node));
-		rbtree_insert(&tree, &(values[index].node), rbtree_test_cmp);
-		assert_val = 0;
-		rbtree_inorder_traversal(tree, assert_order, &assert_val);
-		index++;
-	}
-	index--;
+	values = malloc(sizeof(*values) * SIZE_TEST);
+	init_values_2(values, &tree);
+	index = SIZE_TEST;
 	while ((val = rbtree_remove(&tree, &index, rbtree_test_diff)) != NULL)
 	{
 		value = values[index].value;
@@ -58,7 +83,7 @@ int	test_2(void)
 	return (1);
 }
 
-int	test_1(void)
+int		main(void)
 {
 	struct s_test_node	values[SIZE_TEST];
 	struct s_rbtree		*tree;
@@ -67,14 +92,8 @@ int	test_1(void)
 	struct s_test_node	*addr;
 
 	tree = NULL;
-	index = 0;
-	while (index < SIZE_TEST)
-	{
-		values[index].value = index;
-		rbtree_init_node(&(values[index].node));
-		rbtree_insert(&tree, &(values[index].node), rbtree_test_cmp);
-		index++;
-	}
+	index = SIZE_TEST;
+	init_values_1(values, &tree);
 	assert(is_valid_rb_tree(tree));
 	assert(tree_is_inorder(tree));
 	print_tree(tree);
@@ -88,10 +107,5 @@ int	test_1(void)
 		assert(is_valid_rb_tree(tree));
 		assert(value == addr->value);
 	}
-	return (1);
-}
-
-int	main(void)
-{
-	return (!(test_1() && test_2()));
+	return (!(test_2()));
 }

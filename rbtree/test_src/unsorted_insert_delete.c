@@ -18,13 +18,13 @@
 # define SIZE_TEST 5000
 #endif
 
-int main(void)
+int	main(void)
 {
 	struct s_test_node	*values;
 	int					index;
 	struct s_rbtree		*tree;
 
-	values = malloc((SIZE_TEST)* sizeof (*values));
+	values = malloc((SIZE_TEST) * sizeof(*values));
 	index = 0;
 	while (index < SIZE_TEST)
 	{
