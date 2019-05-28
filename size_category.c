@@ -23,19 +23,18 @@ size_t	size_category_to_size(size_t size_category)
 
 size_t	size_to_size_category(size_t size)
 {
-	size_t static const category_1_size = ALIGNMENT
-		- sizeof(struct s_free_node);
+	size_t static const cat_1_size = ALIGNMENT - sizeof(struct s_free_node);
 
-	return (1 + (size > category_1_size ?
-				(size - category_1_size) / ALIGNMENT
-				+ (((size - category_1_size) % ALIGNMENT) != 0)
+	return (1 + (size > cat_1_size ?
+				(size - cat_1_size) / ALIGNMENT
+				+ (((size - cat_1_size) % ALIGNMENT) != 0)
 				: 0));
 }
 
 size_t	node_size_category(struct s_free_node const *node)
 {
 	return (size_to_size_category(node_size(node)
-				- sizeof *node * !!is_last_node(node)));
+				- sizeof(*node) * !!is_last_node(node)));
 }
 
 size_t	page_biggest_free_node_category(struct s_alloc_zone const *page)

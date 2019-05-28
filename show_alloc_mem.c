@@ -17,13 +17,13 @@
 #include "itoa_tools.h"
 #include <unistd.h>
 
-static void	_print_page_summary(void const *page,
+static void	print_page_summary(void const *page,
 		void *context)
 {
 	*(size_t*)context += alloc_zone_print(page);
 }
 
-void	show_alloc_mem(void)
+void		show_alloc_mem(void)
 {
 	size_t				total_size;
 	char				buffer[100];
