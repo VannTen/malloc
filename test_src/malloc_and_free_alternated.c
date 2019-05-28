@@ -15,7 +15,19 @@
 #define MAX_ALLOC_SIZE 3800
 #define STEP_BACK 45
 
-int	main(void)
+void	free_address(void **address)
+{
+	size_t	index;
+
+	index = 0;
+	while (index < SIZE_TEST)
+	{
+		free(address[index]);
+		index++;
+	}
+}
+
+int		main(void)
 {
 	void	*addresses[SIZE_TEST];
 	size_t	index;
@@ -40,11 +52,6 @@ int	main(void)
 			index -= rand() % STEP_BACK;
 		index++;
 	}
-	index = 0;
-	while (index < SIZE_TEST)
-	{
-		free(addresses[index]);
-		index++;
-	}
+	free_address(addresses);
 	return (0);
 }

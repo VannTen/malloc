@@ -15,16 +15,15 @@
 #define WRITE_ONCE_EVERY 45
 #define PERFECTLY_RANDOM_NUMBER 54254
 
-int	main(void)
+void	malloc_write_address(int **numbers_addr)
 {
-	int	*numbers_addr[SIZE_TEST];
 	size_t	index;
 	size_t	index_write;
 
 	index = 0;
 	while (index < SIZE_TEST)
 	{
-		numbers_addr[index] = malloc(sizeof *numbers_addr);
+		numbers_addr[index] = malloc(sizeof(*numbers_addr));
 		if (index != 0 && index % WRITE_ONCE_EVERY == 0)
 		{
 			index_write = index - WRITE_ONCE_EVERY;
@@ -36,6 +35,14 @@ int	main(void)
 		}
 		index++;
 	}
+}
+
+int		main(void)
+{
+	int		*numbers_addr[SIZE_TEST];
+	size_t	index;
+
+	malloc_write_address(numbers_addr);
 	index = 0;
 	while (index < SIZE_TEST && *numbers_addr[index] == PERFECTLY_RANDOM_NUMBER)
 		index++;

@@ -14,6 +14,6 @@
 # define MAX_H
 # include <stddef.h>
 
-size_t	size_t_max(size_t s, size_t s);
+size_t	size_t_max(size_t s, size_t s2);
 
 #endif

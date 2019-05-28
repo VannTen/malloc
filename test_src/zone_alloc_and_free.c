@@ -26,7 +26,7 @@ int	main(void)
 	index = 0;
 	while (index < 5)
 	{
-		ptr[i] = get_first_fit(zone, 56);
+		ptr[index] = get_first_fit(zone, 56);
 		index++;
 	}
 	assert(nb_node(zone) == 6);
@@ -34,9 +34,9 @@ int	main(void)
 	index = 0;
 	while (index < 5)
 	{
-		free_node((void*)get_public_address(ptr[i]));
-		assert(nb_free_node(zone) == (i < 5 ? i + 2 : 1));
-		assert(nb_node(zone) == (i < 5 ? 6 : 1));
+		free_node((void*)get_public_address(ptr[index]));
+		assert(nb_free_node(zone) == (index < 5 ? index + 2 : 1));
+		assert(nb_node(zone) == (index < 5 ? 6 : 1));
 		index++;
 	}
 	return (0);

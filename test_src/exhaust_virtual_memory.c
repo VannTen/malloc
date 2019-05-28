@@ -16,7 +16,8 @@
 int	main(void)
 {
 	void	*ptr;
+
 	while ((ptr = malloc(rand())) != NULL)
-	{ }
+		;
 	return (0);
 }

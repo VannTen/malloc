@@ -24,6 +24,5 @@ int	main(void)
 	get_first_fit(page, 14);
 	get_first_fit(page, 12);
 	alloc_zone_print(page);
-
 	return (0);
 }

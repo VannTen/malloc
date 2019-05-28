@@ -15,14 +15,29 @@
 #define SIZE_TEST 50000
 #define MAX_ALLOC 200
 
-int	main(void)
+void	free_address(void **address)
+{
+	size_t	index;
+
+	index = 0;
+	while (index < SIZE_TEST)
+	{
+		free(address[index]);
+		if (address[index] == NULL)
+			exit(1);
+		index++;
+	}
+}
+
+int		main(void)
 {
 	void	*address[SIZE_TEST];
 	size_t	index;
 	size_t	total;
 	size_t	alloc_size;
 
-	index = (total = 0);
+	index = 0;
+	total = 0;
 	while (index < SIZE_TEST)
 	{
 		alloc_size = rand() % MAX_ALLOC;
@@ -35,13 +50,6 @@ int	main(void)
 			return (1);
 		index++;
 	}
-	index = 0;
-	while (index < SIZE_TEST)
-	{
-		free(address[index]);
-		if (address[index] == NULL)
-			return (1);
-		index++;
-	}
+	free_address(address);
 	return (0);
 }

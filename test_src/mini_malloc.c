@@ -12,12 +12,11 @@
 
 #include <stdlib.h>
 
-int main(void)
+int	main(void)
 {
 	void	*address;
 
 	address = malloc(5);
 	free(address);
-
 	return (0);
 }
