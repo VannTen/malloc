@@ -43,25 +43,26 @@ static size_t	write_pointer(void const *ptr, char *string)
 	return (len + 1);
 }
 
-static size_t	write_node(struct s_free_node const *node, char * const string)
+static size_t	write_node(struct s_free_node const *node, char *const string)
 {
 	size_t string_index;
 
 	string_index = write_pointer(get_public_address(node), string);
 	ft_strcpy(string + string_index, " - ");
-	string_index += sizeof (" - ") - 1;
+	string_index += sizeof(" - ") - 1;
 	string_index += write_pointer(end_of_node(node), string + string_index);
 	ft_strcpy(string + string_index, " : ");
-	string_index += sizeof (" : ") - 1;
+	string_index += sizeof(" : ") - 1;
 	string_index += itoa_len_unsigned(node_size(node), 10) - 1;
-	itoa_write_unsigned(string + string_index, node_size(node), 10, DECIMAL_DIGITS);
+	itoa_write_unsigned(string + string_index, node_size(node),
+			10, DECIMAL_DIGITS);
 	ft_strcpy(string + string_index + 1, " octets\n");
 	return (string_index + sizeof(" octets\n"));
 }
 
 size_t			alloc_zone_print(struct s_alloc_zone const *zone)
 {
-	char const * const			 type_string  = select_type_string(zone);
+	char const *const			type_string = select_type_string(zone);
 	size_t						size;
 	size_t						size_allocated;
 	struct s_free_node const	*node;

@@ -36,19 +36,24 @@ size_t				round_up_to_multiple(size_t n, size_t multiple)
 
 void				write_initial_metadata(struct s_alloc_zone *zone)
 {
-	struct s_free_node	* const first_node = get_first_node(zone);
+	struct s_free_node	*const first_node = get_first_node(zone);
 
 	first_node->next_offset = 0;
 	first_node->free = TRUE;
 }
 
-struct s_alloc_zone	*create_zone(size_t	size)
+static void			*vmem_allocation(size_t size)
 {
-	void * const				zone_start = mmap(
+	return (mmap(
 			NULL, size,
 			PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE,
-			VM_MAKE_TAG(241), 0);
-	struct s_alloc_zone	* const	alloc_zone = (struct s_alloc_zone * const)zone_start;
+			VM_MAKE_TAG(241), 0));
+}
+
+struct s_alloc_zone	*create_zone(size_t size)
+{
+	void *const					zone_start = vmem_allocation(size);
+	struct s_alloc_zone	*const	alloc_zone = zone_start;
 
 	if (zone_start == MAP_FAILED)
 		return (NULL);

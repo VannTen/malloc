@@ -15,14 +15,14 @@
 #include "constants.h"
 #include <stddef.h>
 
-size_t	offset_zone_start_first_address( void )
+size_t	offset_zone_start_first_address(void)
 {
 	return (round_up_to_multiple(
-				sizeof (struct s_alloc_zone) + sizeof(struct s_free_node),
+				sizeof(struct s_alloc_zone) + sizeof(struct s_free_node),
 				ft_pow(2, LOG_2_ALIGN)));
 }
 
-size_t	offset_zone_start_first_free_node( void )
+size_t	offset_zone_start_first_free_node(void)
 {
 	return (offset_zone_start_first_address() - sizeof(struct s_free_node));
 }

@@ -18,9 +18,9 @@
 #include <stdint.h>
 #include <assert.h>
 
-static int	address_page_position(void const *_page, void const *address)
+static int	address_page_position(void const *v_page, void const *address)
 {
-	struct s_alloc_zone const *page = _page;
+	struct s_alloc_zone const *page = v_page;
 
 	if ((uintptr_t)page > (uintptr_t)address)
 		return (1);
@@ -65,8 +65,7 @@ void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
 				&& NULL != list_remove_if(
 					&g_alloc_zones.partially_used_pages[index],
 					page,
-					same_page)
-			 )
+					same_page))
 			index++;
 	}
 }

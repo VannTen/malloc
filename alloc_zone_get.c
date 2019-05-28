@@ -28,7 +28,7 @@ int					address_exists_in_page(
 	return (get_public_address(node) == address);
 }
 
-struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
+struct s_free_node	*get_first_node(struct s_alloc_zone const *const zone)
 {
 	assert(zone != NULL);
 	return ((void*)((char*)zone
@@ -36,11 +36,11 @@ struct s_free_node	*get_first_node(struct s_alloc_zone const * const zone)
 }
 
 static size_t		nb_free_intern(
-		struct s_alloc_zone const * const zone,
+		struct s_alloc_zone const *const zone,
 		t_bool counting_occupied_nodes)
 {
-	size_t	nb_free_node;
-	struct s_free_node const * node;
+	size_t						nb_free_node;
+	struct s_free_node const	*node;
 
 	nb_free_node = 1;
 	node = get_first_node(zone);
@@ -53,23 +53,12 @@ static size_t		nb_free_intern(
 	return (nb_free_node);
 }
 
-size_t				nb_free_node(struct s_alloc_zone const * const zone)
+size_t				nb_free_node(struct s_alloc_zone const *const zone)
 {
 	return (nb_free_intern(zone, FALSE));
 }
 
-size_t				nb_node(struct s_alloc_zone const * const zone)
+size_t				nb_node(struct s_alloc_zone const *const zone)
 {
 	return (nb_free_intern(zone, TRUE));
-}
-
-void			*end_of_zone(struct s_alloc_zone const * const start_of_zone)
-{
-	return ((char*)start_of_zone + start_of_zone->size);
-}
-
-size_t			page_size_category(struct s_alloc_zone const *page)
-{
-	//assert(!is_large_page(page)) TODO
-	return (page->biggest_free_size);
 }
