@@ -19,7 +19,7 @@ LIBS := rbtree list utils itoa string
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
-NAME := libmalloc.so
+NAME := libft_malloc.so
 LIBS_FILES := $(foreach lib,$(LIBS), $(lib)/lib$(lib).a)
 
 OBJ_DIR := objs
