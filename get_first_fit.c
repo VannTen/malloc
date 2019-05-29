@@ -87,16 +87,13 @@ struct s_free_node const	*get_first_fit(
 	while (!is_last_node(node)
 			&& !(node->free && node_size(node) >= size_required))
 		node = next_node(node);
-	if (node->free)
+	if (node->free && node_size(node) >= size_required)
 	{
 		if (node_size_category(node) > size_to_size_category(size_required))
 			carve_node(node, size_required);
-		if (node_size(node) >= size_required)
-		{
-			node->free = FALSE;
-			if (page_needs_update(node, zone->biggest_free_size))
-				update_page_cat(zone, node);
-		}
+		node->free = FALSE;
+		if (page_needs_update(node, zone->biggest_free_size))
+			update_page_cat(zone, node);
 	}
 	else
 		node = NULL;
