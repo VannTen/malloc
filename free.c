@@ -50,25 +50,18 @@ static int	same_page(void const *page, struct s_list const *page_list_node)
 	return (page == page_from_list_node(page_list_node));
 }
 
-void		remove_from_incomplete_pages(struct s_alloc_zone const *page)
+static int	remove_from_incomplete_pages(struct s_alloc_zone const *page)
 {
 	size_t	index;
 
 	index = 0;
-	while (index <= SMALL_MAX && g_alloc_zones.block_by_size[index] != page)
+	while (index < 2
+			&& NULL != list_remove_if(
+				&g_alloc_zones.partially_used_pages[index],
+				page,
+				same_page))
 		index++;
-	if (index <= SMALL_MAX)
-		g_alloc_zones.block_by_size[index] = NULL;
-	else
-	{
-		index = 0;
-		while (index < 2
-				&& NULL != list_remove_if(
-					&g_alloc_zones.partially_used_pages[index],
-					page,
-					same_page))
-			index++;
-	}
+	return (index < 2);
 }
 
 void		free(void *address)
@@ -80,9 +73,10 @@ void		free(void *address)
 		return ;
 	assert(address_is_valid(address));
 	cleared_page = free_defrag(address);
-	if (cleared_page != NULL)
+	if (cleared_page != NULL
+			&& (cleared_page->biggest_free_size == LARGE_MAGIC_NUMBER
+			|| remove_from_incomplete_pages(cleared_page)))
 	{
-		remove_from_incomplete_pages(cleared_page);
 		cleared_page = rbtree_remove(
 				&g_alloc_zones.page_tree, address, address_page_position);
 		assert(cleared_page != NULL);
