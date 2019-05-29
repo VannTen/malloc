@@ -11,14 +11,34 @@
 /* ************************************************************************** */
 
 #include "alloc_zone.h"
+#include "constants.h"
 #include <stdio.h>
 
-int	main(void)
+static int	small_size(void)
 {
-	struct s_alloc_zone *const zone = create_zone(4096);
+	struct s_alloc_zone *const	zone = create_zone(small_page_size());
+	size_t						index;
 
-	while (get_first_fit(zone, 1) != NULL)
-		;
-	printf("Zone contains %zu allocations of minimal size.\n", nb_node(zone));
-	return (0);
+	index = 0;
+	while (get_first_fit(zone, small_size_limit()) != NULL)
+		index++;
+	printf("Zone small contains %zu allocations of maximal size.\n", index);
+	return (index >= 100);
+}
+
+static int	tiny_size(void)
+{
+	struct s_alloc_zone *const	zone = create_zone(tiny_page_size());
+	size_t						index;
+
+	index = 0;
+	while (get_first_fit(zone, tiny_size_limit()) != NULL)
+		index++;
+	printf("Zone tiny contains %zu allocations of maximal size.\n", index);
+	return (index >= 100);
+}
+
+int			main(void)
+{
+	return (!(tiny_size() && small_size()));
 }
