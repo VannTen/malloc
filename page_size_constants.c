@@ -15,13 +15,19 @@
 #include "constants.h"
 #include <stddef.h>
 #include <unistd.h>
+#include <limits.h>
+#include <assert.h>
 
 size_t	page_size(size_t align_multiple)
 {
-	return (((align_multiple * ALIGNMENT * MIN_FREE_NODE_PER_PAGE
+	size_t size;
+
+	size = ((align_multiple * ALIGNMENT * MIN_FREE_NODE_PER_PAGE
 			+ sizeof(struct s_alloc_zone))
 				/ getpagesize() + 1)
-			* getpagesize());
+			* getpagesize();
+	assert(size <= SHRT_MAX);
+	return (size);
 }
 
 size_t	tiny_page_size(void)
