@@ -12,10 +12,12 @@
 
 #include "small_tiny_alloc.h"
 #include "malloc_structures.h"
+#include "malloc_intern_debug.h"
 #include "alloc_zone.h"
 #include "constants.h"
 #include "rb_tree.h"
 #include <stddef.h>
+#include <assert.h>
 #include <unistd.h>
 
 static struct s_free_node	*alloc_large(size_t const size)
@@ -48,5 +50,6 @@ void						*malloc(size_t const size)
 		selected_node = alloc_large(size);
 	else
 		selected_node = alloc_tiny_small(size);
+	assert(!large_in_bad_places(&g_alloc_zones));
 	return ((void*)get_public_address(selected_node));
 }

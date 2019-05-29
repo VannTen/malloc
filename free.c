@@ -13,6 +13,7 @@
 #include "free_node.h"
 #include "constants.h"
 #include "malloc_structures.h"
+#include "malloc_intern_debug.h"
 #include "rb_tree.h"
 #include "list.h"
 #include <stdint.h>
@@ -83,4 +84,5 @@ void		free(void *address)
 		ret_val = munmap(cleared_page, cleared_page->size);
 		assert(ret_val == 0);
 	}
+	assert(!large_in_bad_places(&g_alloc_zones));
 }

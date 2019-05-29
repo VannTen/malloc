@@ -48,6 +48,7 @@ SRCS := \
 	get_first_fit.c \
 	globals.c \
 	malloc.c \
+	malloc_debug.c \
 	node_size_constants.c \
 	page_size_constants.c \
 	show_alloc_mem.c \
