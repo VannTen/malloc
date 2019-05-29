@@ -57,10 +57,8 @@ static int	remove_from_incomplete_pages(struct s_alloc_zone const *page)
 
 	index = 0;
 	while (index < 2
-			&& NULL != list_remove_if(
-				&g_alloc_zones.partially_used_pages[index],
-				page,
-				same_page))
+			&& NULL == list_remove_if(
+				&g_alloc_zones.partially_used_pages[index], page, same_page))
 		index++;
 	return (index < 2);
 }
