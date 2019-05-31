@@ -42,7 +42,6 @@ void						*end_of_zone(struct s_alloc_zone const *z);
 struct s_alloc_zone			*page_from_list_node(
 		struct s_double_list const *list_node);
 int							alloc_zone_cmp(void const *lhs, void const *rhs);
-size_t						page_size_category(struct s_alloc_zone const *page);
 int							address_exists_in_page(
 						void const *address,
 						struct s_alloc_zone const *page);
@@ -53,5 +52,8 @@ size_t						alloc_zone_print(struct s_alloc_zone const *z);
 */
 
 struct s_free_node			*get_first_fit(struct s_alloc_zone *z, size_t s);
+int							is_large(struct s_alloc_zone const *z);
+int							is_tiny(struct s_alloc_zone const *z);
+int							is_small(struct s_alloc_zone const *z);
 
 #endif

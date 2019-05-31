@@ -12,7 +12,6 @@
 
 #include "small_tiny_alloc.h"
 #include "malloc_structures.h"
-#include "malloc_intern_debug.h"
 #include "alloc_zone.h"
 #include "constants.h"
 #include "rb_tree.h"
@@ -35,7 +34,6 @@ static struct s_free_node	*alloc_large(size_t const size)
 		rbtree_insert(&g_alloc_zones.page_tree,
 				&new_page->tree_node, alloc_zone_cmp);
 		get_first_node(new_page)->free = FALSE;
-		new_page->biggest_free_size = LARGE_MAGIC_NUMBER;
 		return (get_first_node(new_page));
 	}
 	else
@@ -50,6 +48,5 @@ void						*malloc(size_t const size)
 		selected_node = alloc_large(size);
 	else
 		selected_node = alloc_tiny_small(size);
-	assert(!large_in_bad_places(&g_alloc_zones));
 	return ((void*)get_public_address(selected_node));
 }

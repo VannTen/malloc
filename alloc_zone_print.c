@@ -22,12 +22,14 @@ char const		*select_type_string(struct s_alloc_zone const *zone)
 {
 	char const					*type_string;
 
-	if (zone->biggest_free_size == LARGE_MAGIC_NUMBER)
+	if (is_large(zone))
 		type_string = "LARGE\n";
-	else if (zone->size == tiny_page_size())
+	else if (is_tiny(zone))
 		type_string = "TINY\n";
-	else
+	else if (is_small(zone))
 		type_string = "SMALL\n";
+	else
+		type_string = "ERROR\n";
 	return (type_string);
 }
 
