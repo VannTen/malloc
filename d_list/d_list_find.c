@@ -13,7 +13,8 @@
 #include "double_list.h"
 
 void	*d_list_find(struct s_double_list *const first_node,
-		void *(*match)(struct s_double_list *))
+		void *(*match)(struct s_double_list const *, void const *data),
+		void const *data)
 {
 	struct s_double_list	*node;
 	void					*result;
@@ -30,7 +31,8 @@ void	*d_list_find(struct s_double_list *const first_node,
 }
 
 void	*d_list_find_back(struct s_double_list *const first_node,
-		void *(*match)(struct s_double_list *))
+		void *(*match)(struct s_double_list const *, void const *data),
+		void const *data)
 {
 	struct s_double_list	*node;
 	void					*result;
