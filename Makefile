@@ -15,7 +15,7 @@ LDFLAGS := -shared -fsanitize=address
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 MKDIR := mkdir
-LIBS := rbtree list utils itoa string
+LIBS := rbtree list utils itoa string d_list
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
