@@ -20,10 +20,12 @@
 
 struct						s_alloc_zone {
 
-	struct s_rbtree	tree_node;
-	size_t			size;
-	size_t			biggest_free_size;
-	struct s_list	list;
+	struct s_rbtree			tree_node;
+	size_t					size;
+	size_t					total_free_size;
+	size_t					nb_node;
+	size_t					nb_free_node;
+	struct s_double_list	list;
 };
 
 size_t						round_up_to_multiple(size_t n, size_t log_2);
