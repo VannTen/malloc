@@ -22,7 +22,7 @@ void	*d_list_find(struct s_double_list *const first_node,
 	node = first_node;
 	while (1)
 	{
-		result = match(node);
+		result = match(node, data);
 		node = node->next;
 		if (node == first_node)
 			break ;
@@ -40,7 +40,7 @@ void	*d_list_find_back(struct s_double_list *const first_node,
 	node = first_node;
 	while (1)
 	{
-		result = match(node);
+		result = match(node, data);
 		node = node->previous;
 		if (node == first_node)
 			break ;
