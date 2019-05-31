@@ -23,8 +23,8 @@ static int					page_is_good_candidate(
 	return (page->total_free_size >= size);
 }
 
-struct s_free_node const	*get_address(
-		struct s_double_list *const list,
+void	*get_address(
+		struct s_double_list const *const list,
 		void const *const v_size)
 {
 	struct s_alloc_zone *const	page = page_from_list_node(list);

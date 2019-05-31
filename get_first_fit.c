@@ -19,7 +19,7 @@
 #include <assert.h>
 #include <stdint.h>
 
-static void					carve_node(
+static void			carve_node(
 		struct s_free_node *node, size_t size_required)
 {
 	struct s_free_node *new_node;
@@ -35,7 +35,7 @@ static void					carve_node(
 	assert(node_size(node) >= size_required && node->free);
 }
 
-static size_t				new_page_category(size_t max_size, size_t old_cat)
+static size_t		new_page_category(size_t max_size, size_t old_cat)
 {
 	if (max_size >= page_smallest_category(old_cat))
 		return (max_size);
@@ -43,7 +43,7 @@ static size_t				new_page_category(size_t max_size, size_t old_cat)
 		return (0);
 }
 
-static void					update_page_cat(
+static void			update_page_cat(
 		struct s_alloc_zone *zone,
 		struct s_free_node const *node)
 {
@@ -64,7 +64,7 @@ static void					update_page_cat(
 				zone->biggest_free_size);
 }
 
-static int					page_needs_update(
+static int			page_needs_update(
 		struct s_free_node const *node,
 		size_t const biggest_cat_page)
 {
@@ -77,7 +77,7 @@ static int					page_needs_update(
 						next_node(node)) < biggest_cat_page)));
 }
 
-struct s_free_node const	*get_first_fit(
+struct s_free_node	*get_first_fit(
 		struct s_alloc_zone *zone,
 		size_t size_required)
 {

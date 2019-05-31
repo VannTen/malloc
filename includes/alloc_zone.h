@@ -52,6 +52,6 @@ size_t						alloc_zone_print(struct s_alloc_zone const *z);
 ** Get
 */
 
-struct s_free_node const	*get_first_fit(struct s_alloc_zone *z, size_t s);
+struct s_free_node			*get_first_fit(struct s_alloc_zone *z, size_t s);
 
 #endif
