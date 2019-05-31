@@ -13,7 +13,6 @@
 #include "free_node.h"
 #include "constants.h"
 #include "malloc_structures.h"
-#include "malloc_intern_debug.h"
 #include "rb_tree.h"
 #include "list.h"
 #include <stdint.h>
@@ -46,23 +45,6 @@ static int	address_is_valid(void const *address)
 	return (address_exists_in_page(address, page) && address_is_taken(address));
 }
 
-static int	same_page(void const *page, struct s_list const *page_list_node)
-{
-	return (page == page_from_list_node(page_list_node));
-}
-
-static int	remove_from_incomplete_pages(struct s_alloc_zone const *page)
-{
-	size_t	index;
-
-	index = 0;
-	while (index < 2
-			&& NULL == list_remove_if(
-				&g_alloc_zones.partially_used_pages[index], page, same_page))
-		index++;
-	return (index < 2);
-}
-
 void		free(void *address)
 {
 	struct s_alloc_zone			*cleared_page;
@@ -73,14 +55,17 @@ void		free(void *address)
 	assert(address_is_valid(address));
 	cleared_page = free_defrag(address);
 	if (cleared_page != NULL
-			&& (cleared_page->biggest_free_size == LARGE_MAGIC_NUMBER
-			|| remove_from_incomplete_pages(cleared_page)))
+			&& ((is_tiny(cleared_page)
+					&& &cleared_page->list != g_alloc_zones.tinies)
+				|| (is_small(cleared_page)
+					&& &cleared_page->list != g_alloc_zones.smalls))
+	 )
 	{
+		d_list_remove(&cleared_page->list);
 		cleared_page = rbtree_remove(
 				&g_alloc_zones.page_tree, address, address_page_position);
 		assert(cleared_page != NULL);
 		ret_val = munmap(cleared_page, cleared_page->size);
 		assert(ret_val == 0);
 	}
-	assert(!large_in_bad_places(&g_alloc_zones));
 }
