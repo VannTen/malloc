@@ -24,21 +24,22 @@ static int					page_is_good_candidate(
 }
 
 struct s_free_node const	*get_address(
-		struct s_double_list const *const list,
+		struct s_double_list *const list,
 		void const *const v_size)
 {
-	struct s_alloc_zone *const	page = page_from_list(list);
+	struct s_alloc_zone *const	page = page_from_list_node(list);
 	size_t const				size = *(size_t const *)v_size;
 
 	if (page_is_good_candidate(page, size))
 		return (get_first_fit(page, size));
+	else
+		return (NULL);
 }
 
 struct s_free_node const	*alloc_tiny_small(size_t const size)
 {
 	struct s_free_node const	*new_address;
 	struct s_double_list		**alloc_type;
-	struct s_free_node			*new_address;
 	struct s_alloc_zone			*new_page;
 
 	alloc_type = size <= tiny_size_limit()

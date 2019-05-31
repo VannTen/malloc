@@ -13,10 +13,11 @@
 #include "alloc_zone.h"
 #include <stddef.h>
 
-struct s_alloc_zone const	*page_from_list_node(struct s_list const *node)
+struct s_alloc_zone	*page_from_list_node(
+		struct s_double_list const *node)
 {
 	if (node == NULL)
 		return (NULL);
-	return ((void const*)(
+	return ((struct s_alloc_zone*)(
 			((char const*)node) - offsetof(struct s_alloc_zone, list)));
 }

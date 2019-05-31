@@ -12,10 +12,9 @@
 
 #ifndef ALLOC_ZONE_H
 # define ALLOC_ZONE_H
-# include "free_node.h"
 # include "bool.h"
 # include "rb_tree.h"
-# include "list.h"
+# include "double_list.h"
 # include <stddef.h>
 
 struct						s_alloc_zone {
@@ -40,8 +39,8 @@ struct s_free_node			*get_first_node(struct s_alloc_zone const *zone);
 size_t						nb_free_node(struct s_alloc_zone const *z);
 size_t						nb_node(struct s_alloc_zone const *z);
 void						*end_of_zone(struct s_alloc_zone const *z);
-struct s_alloc_zone const	*page_from_list_node(
-		struct s_list const *list_node);
+struct s_alloc_zone			*page_from_list_node(
+		struct s_double_list const *list_node);
 int							alloc_zone_cmp(void const *lhs, void const *rhs);
 size_t						page_size_category(struct s_alloc_zone const *page);
 int							address_exists_in_page(
