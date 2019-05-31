@@ -35,53 +35,12 @@ static void			carve_node(
 	assert(node_size(node) >= size_required && node->free);
 }
 
-static size_t		new_page_category(size_t max_size, size_t old_cat)
-{
-	if (max_size >= page_smallest_category(old_cat))
-		return (max_size);
-	else
-		return (0);
-}
-
-static void			update_page_cat(
-		struct s_alloc_zone *zone,
-		struct s_free_node const *node)
-{
-	size_t	max_size;
-
-	max_size = 0;
-	while (node_size_category(node) < zone->biggest_free_size || !node->free)
-	{
-		if (node->free)
-			max_size = size_t_max(node_size_category(node), max_size);
-		if (is_last_node(node))
-			break ;
-		node = next_node(node);
-	}
-	if (node_size_category(node) < zone->biggest_free_size || !node->free)
-		zone->biggest_free_size = new_page_category(
-				max_size,
-				zone->biggest_free_size);
-}
-
-static int			page_needs_update(
-		struct s_free_node const *node,
-		size_t const biggest_cat_page)
-{
-	size_t const cat_taken = node_size_category(node);
-
-	return (!node->free
-			&& ((cat_taken == biggest_cat_page
-					&& (is_last_node(node) || !next_node(node)->free))
-				|| (next_node(node)->free && node_size_category(
-						next_node(node)) < biggest_cat_page)));
-}
-
 struct s_free_node	*get_first_fit(
 		struct s_alloc_zone *zone,
 		size_t size_required)
 {
 	struct s_free_node	*node;
+	size_t				size_taken;
 
 	node = get_first_node(zone);
 	while (!is_last_node(node)
@@ -89,11 +48,15 @@ struct s_free_node	*get_first_fit(
 		node = next_node(node);
 	if (node->free && node_size(node) >= size_required)
 	{
+		size_taken = 0;
 		if (node_size_category(node) > size_to_size_category(size_required))
+		{
 			carve_node(node, size_required);
+			size_taken += sizeof(*node);
+		}
 		node->free = FALSE;
-		if (page_needs_update(node, zone->biggest_free_size))
-			update_page_cat(zone, node);
+		size_taken += node_size(node);
+		zone->total_free_size -= size_taken;
 	}
 	else
 		node = NULL;
