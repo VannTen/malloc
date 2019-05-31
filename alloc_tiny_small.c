@@ -23,7 +23,7 @@ static int					page_is_good_candidate(
 	return (page->total_free_size >= size);
 }
 
-void	*get_address(
+static void					*get_address(
 		struct s_double_list const *const list,
 		void const *const v_size)
 {
