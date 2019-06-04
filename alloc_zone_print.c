@@ -18,7 +18,7 @@
 #include <assert.h>
 #include <unistd.h>
 
-char const		*select_type_string(struct s_alloc_zone const *zone)
+static char const	*select_type_string(struct s_alloc_zone const *zone)
 {
 	char const					*type_string;
 
@@ -33,7 +33,7 @@ char const		*select_type_string(struct s_alloc_zone const *zone)
 	return (type_string);
 }
 
-static size_t	write_pointer(void const *ptr, char *string)
+static size_t		write_pointer(void const *ptr, char *string)
 {
 	size_t len;
 
@@ -45,7 +45,7 @@ static size_t	write_pointer(void const *ptr, char *string)
 	return (len + 1);
 }
 
-static size_t	write_node(struct s_free_node const *node, char *const string)
+static size_t		write_node(struct s_free_node const *node, char *const string)
 {
 	size_t string_index;
 
@@ -62,7 +62,7 @@ static size_t	write_node(struct s_free_node const *node, char *const string)
 	return (string_index + sizeof(" octets\n"));
 }
 
-size_t			alloc_zone_print(struct s_alloc_zone const *zone)
+size_t				alloc_zone_print(struct s_alloc_zone const *zone)
 {
 	char const *const			type_string = select_type_string(zone);
 	size_t						size;

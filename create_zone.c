@@ -36,7 +36,7 @@ size_t				round_up_to_multiple(size_t n, size_t multiple)
 	return (n + multiple - 1 - (n + multiple - 1) % multiple);
 }
 
-void				write_initial_metadata(struct s_alloc_zone *zone)
+static void			write_initial_metadata(struct s_alloc_zone *zone)
 {
 	struct s_free_node	*const first_node = get_first_node(zone);
 
