@@ -58,8 +58,7 @@ void		free(void *address)
 			&& ((is_tiny(cleared_page)
 					&& &cleared_page->list != g_alloc_zones.tinies)
 				|| (is_small(cleared_page)
-					&& &cleared_page->list != g_alloc_zones.smalls))
-	 )
+					&& &cleared_page->list != g_alloc_zones.smalls)))
 	{
 		d_list_remove(&cleared_page->list);
 		cleared_page = rbtree_remove(
