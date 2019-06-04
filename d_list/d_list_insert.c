@@ -21,9 +21,9 @@ static void	d_list_insert_at(
 {
 	new_node->next = origin;
 	new_node->previous = origin->previous;
+	new_node->next->previous = new_node;
+	new_node->previous->next = new_node;
 	origin->previous = new_node;
-	if (origin->next == origin)
-		origin->next = new_node;
 	assert(d_list_sanity_checks(origin));
 	assert(d_list_sanity_checks(new_node));
 }
