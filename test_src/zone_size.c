@@ -22,7 +22,8 @@ static int	small_size(void)
 	index = 0;
 	while (get_first_fit(zone, small_size_limit()) != NULL)
 		index++;
-	printf("Zone small contains %zu allocations of maximal size.\n", index);
+	printf("zone small contains %zu allocations of maximal size (%zu octets).\n"
+			, index, small_size_limit());
 	return (index >= 100);
 }
 
@@ -34,7 +35,8 @@ static int	tiny_size(void)
 	index = 0;
 	while (get_first_fit(zone, tiny_size_limit()) != NULL)
 		index++;
-	printf("Zone tiny contains %zu allocations of maximal size.\n", index);
+	printf("zone tiny contains %zu allocations of maximal size (%zu octets).\n"
+			, index, tiny_size_limit());
 	return (index >= 100);
 }
 
