@@ -27,7 +27,7 @@ void	*d_list_find(struct s_double_list *const first_node,
 	{
 		result = match(node, data);
 		node = node->next;
-		if (node == first_node)
+		if (node == first_node || result != NULL)
 			break ;
 	}
 	return (result);
@@ -47,7 +47,7 @@ void	*d_list_find_back(struct s_double_list *const first_node,
 	{
 		result = match(node, data);
 		node = node->previous;
-		if (node == first_node)
+		if (node == first_node || result != NULL)
 			break ;
 	}
 	return (result);
