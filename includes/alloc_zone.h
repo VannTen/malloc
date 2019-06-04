@@ -17,9 +17,16 @@
 # include "double_list.h"
 # include <stddef.h>
 
+enum						e_page_type {
+	TINY,
+	SMALL,
+	LARGE
+};
+
 struct						s_alloc_zone {
 
 	struct s_rbtree			tree_node;
+	enum e_page_type		page_type;
 	size_t					size;
 	size_t					total_free_size;
 	struct s_double_list	list;

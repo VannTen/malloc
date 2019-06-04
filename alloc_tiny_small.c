@@ -51,6 +51,8 @@ struct s_free_node const	*alloc_tiny_small(size_t const size)
 					? TINY_MAX : SMALL_MAX));
 		if (new_page != NULL)
 		{
+			new_page->page_type = (alloc_type == &g_alloc_zones.tinies
+					? TINY : SMALL);
 			d_list_insert_back(alloc_type, &new_page->list);
 			new_address = d_list_find_back(*alloc_type, get_address, &size);
 		}

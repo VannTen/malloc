@@ -29,6 +29,7 @@ static struct s_free_node	*alloc_large(size_t const size)
 	new_page = create_zone(page_size);
 	if (new_page != NULL)
 	{
+		new_page->page_type = LARGE;
 		get_first_node(new_page)->free = FALSE;
 		return (get_first_node(new_page));
 	}

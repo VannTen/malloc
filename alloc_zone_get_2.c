@@ -21,19 +21,15 @@ void	*end_of_zone(struct s_alloc_zone const *const start_of_zone)
 
 int		is_large(struct s_alloc_zone const *const page)
 {
-	return (is_last_node(get_first_node(page)));
+	return (page->page_type == LARGE);
 }
 
 int		is_tiny(struct s_alloc_zone const *const page)
 {
-	return (page->size == tiny_page_size()
-			&& (!is_last_node(get_first_node(page))
-				|| get_first_node(page)->free));
+	return (page->page_type == TINY);
 }
 
 int		is_small(struct s_alloc_zone const *const page)
 {
-	return (page->size == small_page_size()
-			&& (!is_last_node(get_first_node(page))
-				|| get_first_node(page)->free));
+	return (page->page_type == SMALL);
 }
