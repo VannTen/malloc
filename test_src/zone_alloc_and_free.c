@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "alloc_zone.h"
+#include "free_node.h"
 #include <assert.h>
 #include <stddef.h>
 
