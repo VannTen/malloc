@@ -26,8 +26,8 @@
 */
 
 # define ALIGNMENT 16
-# define TINY_MAX 2
-# define SMALL_MAX 16
+# define TINY_MAX 8
+# define SMALL_MAX 80
 # define LARGE_MAGIC_NUMBER 10000000
 # define MIN_FREE_NODE_PER_PAGE 100
 
