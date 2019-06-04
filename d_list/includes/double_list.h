@@ -12,6 +12,7 @@
 
 #ifndef DOUBLE_LIST_H
 # define DOUBLE_LIST_H
+# include <stddef.h>
 
 struct	s_double_list {
 	struct s_double_list	*previous;
@@ -47,5 +48,11 @@ void	*d_list_find_back(
 
 void	d_list_remove(struct s_double_list *list);
 void	d_list_init(struct s_double_list *list);
+
+/*
+** Count
+*/
+
+size_t	d_list_elem_count(struct s_double_list const *list);
 
 #endif

@@ -31,6 +31,7 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 options := CFLAGS
 
 SRCS := \
+	count.c \
 	d_list_delete.c \
 	d_list_find.c \
 	d_list_init.c \
