@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   d_list_delete.c                                    :+:      :+:    :+:   */
+/*   sanity_checks.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/31 13:45:42 by                   #+#    #+#             */
-/*   Updated: 2019/05/31 13:45:42 by                  ###   ########.fr       */
+/*   Created: 2019/06/04 13:14:59 by                   #+#    #+#             */
+/*   Updated: 2019/06/04 13:14:59 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "double_list.h"
 #include "double_list_debug.h"
-#include <stddef.h>
-#include <assert.h>
 
-void	d_list_remove(struct s_double_list *list)
+int	d_list_sanity_checks(struct s_double_list const *const list)
 {
-	assert(list != NULL);
-	list->next->previous = list->previous;
-	list->previous->next = list->next;
-	d_list_init(list);
-	assert(d_list_sanity_checks(list));
+	return ((list->previous == list
+			&& list->next == list)
+			|| (list->previous != list
+				&& list->next != list));
 }

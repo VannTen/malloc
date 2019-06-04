@@ -34,7 +34,8 @@ SRCS := \
 	d_list_delete.c \
 	d_list_find.c \
 	d_list_init.c \
-	d_list_insert.c
+	d_list_insert.c \
+	sanity_checks.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes

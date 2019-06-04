@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "double_list.h"
+#include "double_list_debug.h"
 #include <stddef.h>
+#include <assert.h>
 
 static void	d_list_insert_at(
 		struct s_double_list *origin,
@@ -22,6 +24,8 @@ static void	d_list_insert_at(
 	origin->previous = new_node;
 	if (origin->next == origin)
 		origin->next = new_node;
+	assert(d_list_sanity_checks(origin));
+	assert(d_list_sanity_checks(new_node));
 }
 
 void	d_list_insert_front(
