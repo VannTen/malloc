@@ -26,7 +26,7 @@ size_t	page_size(size_t align_multiple)
 			+ sizeof(struct s_alloc_zone))
 				/ getpagesize() + 1)
 			* getpagesize();
-	assert(size <= SHRT_MAX);
+	assert(size <= INT_MAX);
 	return (size);
 }
 

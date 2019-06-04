@@ -18,7 +18,7 @@
 
 struct				s_free_node	{
 
-	short	next_offset;
+	int		next_offset;
 	t_bool	free:1;
 };
 
