@@ -29,7 +29,7 @@ void	malloc_write_address(int **numbers_addr)
 			index_write = index - WRITE_ONCE_EVERY;
 			while (index_write != index)
 			{
-				*numbers_addr[index] = PERFECTLY_RANDOM_NUMBER;
+				*(numbers_addr[index]) = PERFECTLY_RANDOM_NUMBER;
 				index_write++;
 			}
 		}
