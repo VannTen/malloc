@@ -52,7 +52,7 @@ struct s_free_node const	*alloc_tiny_small(size_t const size)
 		if (new_page != NULL)
 		{
 			d_list_insert_back(alloc_type, &new_page->list);
-			d_list_find_back(*alloc_type, get_address, &size);
+			new_address = d_list_find_back(*alloc_type, get_address, &size);
 		}
 	}
 	return (new_address);

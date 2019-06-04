@@ -11,10 +11,8 @@
 /* ************************************************************************** */
 
 #include "small_tiny_alloc.h"
-#include "malloc_structures.h"
 #include "alloc_zone.h"
 #include "constants.h"
-#include "rb_tree.h"
 #include <stddef.h>
 #include <assert.h>
 #include <unistd.h>
@@ -31,8 +29,6 @@ static struct s_free_node	*alloc_large(size_t const size)
 	new_page = create_zone(page_size);
 	if (new_page != NULL)
 	{
-		rbtree_insert(&g_alloc_zones.page_tree,
-				&new_page->tree_node, alloc_zone_cmp);
 		get_first_node(new_page)->free = FALSE;
 		return (get_first_node(new_page));
 	}

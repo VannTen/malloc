@@ -13,6 +13,8 @@
 #include "alloc_zone.h"
 #include "free_node.h"
 #include "constants.h"
+#include "malloc_structures.h"
+#include "rb_tree.h"
 #include <sys/mman.h>
 #include <mach/vm_statistics.h>
 
@@ -60,5 +62,8 @@ struct s_alloc_zone	*create_zone(size_t size)
 	write_initial_metadata(alloc_zone);
 	alloc_zone->size = size;
 	alloc_zone->total_free_size = node_size(get_first_node(alloc_zone));
+	rbtree_init_node(&alloc_zone->tree_node);
+	rbtree_insert(&g_alloc_zones.page_tree,
+			&alloc_zone->tree_node, alloc_zone_cmp);
 	return (zone_start);
 }
