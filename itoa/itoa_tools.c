@@ -18,6 +18,8 @@ size_t	itoa_len_signed(intmax_t number, int base)
 {
 	size_t	size;
 
+	if (number == 0)
+		return (1);
 	size = 0;
 	while (number != 0)
 	{
@@ -31,6 +33,8 @@ size_t	itoa_len_unsigned(uintmax_t number, unsigned int base)
 {
 	size_t	size;
 
+	if (number == 0)
+		return (1);
 	size = 0;
 	while (number != 0)
 	{
@@ -45,13 +49,12 @@ void	itoa_write_signed(char *str, intmax_t number, const unsigned int base,
 {
 	int	digit;
 
-	if (number == 0)
-		return ;
 	digit = number % base;
 	if (number < 0)
 		digit = -digit;
 	*str = base_digits[digit];
-	itoa_write_signed(str - 1, number / base, base, base_digits);
+	if (number / base != 0)
+		itoa_write_signed(str - 1, number / base, base, base_digits);
 }
 
 void	itoa_write_unsigned(char *str, uintmax_t number,
@@ -59,9 +62,8 @@ void	itoa_write_unsigned(char *str, uintmax_t number,
 {
 	int digit;
 
-	if (number == 0)
-		return ;
 	digit = number % base;
 	*str = base_digits[digit];
-	itoa_write_unsigned(str - 1, number / base, base, base_digits);
+	if (number / base != 0)
+		itoa_write_unsigned(str - 1, number / base, base, base_digits);
 }
