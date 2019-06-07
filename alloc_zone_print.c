@@ -45,7 +45,9 @@ static size_t		write_pointer(void const *ptr, char *string)
 	return (len + 1);
 }
 
-static size_t		write_node(struct s_free_node const *node, char *const string)
+static size_t		write_node(
+		struct s_free_node const *node,
+		char *const string)
 {
 	size_t string_index;
 
