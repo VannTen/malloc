@@ -35,8 +35,8 @@ void		show_alloc_mem(void)
 			print_page_summary, &total_size);
 	ft_strcpy(buffer, strings[0]);
 	index = ft_strlen(strings[0]);
-	index += itoa_len_unsigned(total_size, 10) - 1;
-	itoa_write_unsigned(buffer + index, total_size, 10, DECIMAL_DIGITS);
+	index += itoa_len_unsigned(total_size, 10);
+	itoa_write_unsigned(buffer + index - 1, total_size, 10, DECIMAL_DIGITS);
 	ft_strcpy(buffer + index, strings[1]);
 	index += ft_strlen(strings[1]);
 	write(STDOUT_FILENO, buffer, index);
