@@ -13,12 +13,17 @@
 #include "free_node.h"
 #include <stddef.h>
 
-void const	*get_public_address(struct s_free_node const *const node)
+void const			*get_public_address(struct s_free_node const *const node)
 {
 	return (node + (node != NULL));
 }
 
-void const	*end_of_node(struct s_free_node const *const node)
+struct s_free_node	*get_node_from_address(void *const address)
+{
+	return (((struct s_free_node *)address) - (address != NULL));
+}
+
+void const			*end_of_node(struct s_free_node const *const node)
 {
 	return (((char const *)get_public_address(node)) + node_size(node));
 }

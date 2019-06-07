@@ -27,6 +27,7 @@ struct				s_free_node	{
 */
 
 void const			*get_public_address(struct s_free_node const *n);
+struct s_free_node	*get_node_from_address(void *address);
 void const			*end_of_node(struct s_free_node const *n);
 size_t				node_size(struct s_free_node const *n);
 t_bool				is_last_node(struct s_free_node const *n);
@@ -38,6 +39,7 @@ int					address_is_taken(void const *address);
 */
 
 void				free_node(void *address);
+void				merge_with_next_nodes(struct s_free_node *node);
 struct s_alloc_zone	*free_defrag(void *address);
 
 #endif

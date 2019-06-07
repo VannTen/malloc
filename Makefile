@@ -50,6 +50,7 @@ SRCS := \
 	malloc.c \
 	node_size_constants.c \
 	page_size_constants.c \
+	realloc.c \
 	show_alloc_mem.c \
 	size_category.c
 

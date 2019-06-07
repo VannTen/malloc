@@ -16,12 +16,17 @@
 #include <assert.h>
 #include <stddef.h>
 
+void						merge_with_next_nodes(struct s_free_node *node)
+{
+	while (next_node(node)->free && !is_last_node(node))
+		node->next_offset += next_node(node)->next_offset;
+}
+
 static void					defrag_to_last_node(
 		struct s_free_node *node)
 {
 	assert(node->free);
-	while (next_node(node)->free && !is_last_node(node))
-		node->next_offset += next_node(node)->next_offset;
+	merge_with_next_nodes(node);
 }
 
 static struct s_alloc_zone	*defragment_node(struct s_free_node *node)
