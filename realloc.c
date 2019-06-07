@@ -37,7 +37,10 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 	if (node != NULL && resize_node(node, size))
 		return (allocated_ptr);
 	new_ptr = malloc(size);
-	ft_memcpy(new_ptr, allocated_ptr, node_size(node));
-	free(allocated_ptr);
+	if (allocated_ptr != NULL)
+	{
+		ft_memcpy(new_ptr, allocated_ptr, node_size(node));
+		free(allocated_ptr);
+	}
 	return (new_ptr);
 }
