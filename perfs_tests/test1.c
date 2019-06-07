@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 
-int main()
+int	main(void)
 {
 	int		i;
 	char	*addr;

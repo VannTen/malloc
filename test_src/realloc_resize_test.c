@@ -26,7 +26,7 @@ static void	alloc_ints(void **address)
 	}
 }
 
-int	main(void)
+int			main(void)
 {
 	void	*address[SIZE_TEST];
 	size_t	index;

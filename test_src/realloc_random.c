@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "memutils.h"
+#include <stdlib.h>
 #define SIZE_TEST 50000
 #define MAX_ALLOC_SIZE 10000
 #define FILL_BYTE '$'
@@ -31,7 +31,7 @@ static void	alloc_ints(void **address)
 	}
 }
 
-int	main(void)
+int			main(void)
 {
 	void	*address[SIZE_TEST];
 	size_t	index;
