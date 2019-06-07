@@ -12,6 +12,7 @@
 
 #ifndef MEMUTILS_H
 # define MEMUTILS_H
+# include <stddef.h>
 
 void	*ft_memcpy(void *dst, const void *src, size_t len);
 void	*ft_memset(void *mem, int uchar_value, size_t len);
