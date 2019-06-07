@@ -34,7 +34,7 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
 	void						*new_ptr;
 
-	if (node != NULL && resize_node(node, size))
+	if (node != NULL && (size <= node_size(node) || resize_node(node, size)))
 		return (allocated_ptr);
 	new_ptr = malloc(size);
 	if (allocated_ptr != NULL && new_ptr != NULL)
