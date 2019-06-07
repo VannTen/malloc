@@ -15,7 +15,7 @@
 
 size_t	d_list_elem_count(struct s_double_list const *const list)
 {
-	struct s_double_list const *node;
+	struct s_double_list const	*node;
 	size_t						count;
 
 	if (list == NULL)

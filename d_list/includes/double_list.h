@@ -36,11 +36,12 @@ void	d_list_insert_back(
 
 void	*d_list_find(
 		struct s_double_list *list,
-		void *(*match)(struct s_double_list const *, void const*), void const *data);
+		void *(*match)(struct s_double_list const *, void const*),
+		void const *data);
 void	*d_list_find_back(
 		struct s_double_list *list,
-		void *(*match)(struct s_double_list const *, void const*), void const *data);
-
+		void *(*match)(struct s_double_list const *, void const*),
+		void const *data);
 
 /*
 ** Delete

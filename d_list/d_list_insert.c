@@ -28,7 +28,7 @@ static void	d_list_insert_at(
 	assert(d_list_sanity_checks(new_node));
 }
 
-void	d_list_insert_front(
+void		d_list_insert_front(
 		struct s_double_list **origin,
 		struct s_double_list *new_node)
 {
@@ -45,7 +45,7 @@ void	d_list_insert_front(
 	}
 }
 
-void	d_list_insert_back(
+void		d_list_insert_back(
 		struct s_double_list **origin,
 		struct s_double_list *new_node)
 {
