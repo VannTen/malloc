@@ -31,6 +31,7 @@ TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 
 SRCS := \
 	ft_memcpy.c \
+	ft_memset.c \
 	max.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
