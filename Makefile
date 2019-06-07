@@ -74,7 +74,7 @@ $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 $(OBJ_DIR) $(TEST_DIR):
 	$(MKDIR) $@
 
-$(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c $(NAME) | $(TEST_DIR)
+$(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(TEST_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 $(TESTS): %.passed:% | $(TEST_DIR)
