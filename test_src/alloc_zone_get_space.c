@@ -21,7 +21,9 @@ int	main(void)
 		- offset_zone_start_first_address();
 	size_t						node_taken;
 	size_t const				node_to_take = 10;
+	size_t						size;
 
+	size = alloc_zone_free_space(zone);
 	if (alloc_zone_free_space(zone) != expected_initial_size)
 		return (1);
 	node_taken = 0;

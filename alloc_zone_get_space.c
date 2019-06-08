@@ -24,10 +24,11 @@ static size_t	alloc_zone_space(struct s_alloc_zone const *const zone,
 	size_total = 0;
 	while (1)
 	{
-		if ((!counting_free) ^ (!node->free))
+		if ((!counting_free) ^ (!!node->free))
 			size_total += node_size(node);
 		if (is_last_node(node))
 			break ;
+		node = next_node(node);
 	}
 	return (size_total);
 }
