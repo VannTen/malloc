@@ -61,4 +61,15 @@ int							is_large(struct s_alloc_zone const *z);
 int							is_tiny(struct s_alloc_zone const *z);
 int							is_small(struct s_alloc_zone const *z);
 
+/*
+** Space taken info
+*/
+
+size_t						alloc_zone_free_space(
+		struct s_alloc_zone const *const zone);
+size_t						alloc_zone_taken_space(
+		struct s_alloc_zone const *const zone);
+size_t						alloc_zone_all_space(
+		struct s_alloc_zone const *const zone);
+
 #endif
