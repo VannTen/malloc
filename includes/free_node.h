@@ -39,7 +39,7 @@ int					address_is_taken(void const *address);
 */
 
 void				carve_node(struct s_free_node *node, size_t size_required);
-void				merge_with_next_nodes(struct s_free_node *node);
+size_t				merge_with_next_nodes(struct s_free_node *node);
 struct s_alloc_zone	*free_defrag(void *address);
 
 #endif

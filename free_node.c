@@ -16,39 +16,55 @@
 #include <assert.h>
 #include <stddef.h>
 
-void						merge_with_next_nodes(struct s_free_node *node)
+size_t						merge_with_next_nodes(struct s_free_node *node)
 {
+	size_t	freed_space;
+
+	freed_space = 0;
 	while (next_node(node)->free && !is_last_node(node))
+	{
 		node->next_offset += next_node(node)->next_offset;
+		freed_space += sizeof(*node);
+	}
+	return (freed_space);
 }
 
-static void					defrag_to_last_node(
+static size_t				defrag_to_last_node(
 		struct s_free_node *node)
 {
 	assert(node->free);
-	merge_with_next_nodes(node);
+	return (merge_with_next_nodes(node));
 }
 
-static struct s_alloc_zone	*defragment_node(struct s_free_node *node)
+static struct s_free_node	*defragment_page_from(
+		struct s_free_node *node, size_t *const freed_space)
 {
-	struct s_free_node	*first_node;
-
-	assert(node->free);
-	defrag_to_last_node(node);
-	if (next_node(node)->free)
+	while (1)
 	{
-		first_node = next_node(node);
-		defrag_to_last_node(first_node);
-		if (is_last_node(first_node))
-			return (get_page_from_first_node(first_node));
+		if (node->free)
+			*freed_space += defrag_to_last_node(node);
+		if (is_last_node(node))
+			break ;
+		node = next_node(node);
 	}
-	return (NULL);
+	return (node);
 }
 
 struct s_alloc_zone			*free_defrag(void *ptr)
 {
-	struct s_free_node *const node = (struct s_free_node *)ptr - 1;
+	struct s_free_node	*node;
+	struct s_free_node	*first_node;
+	struct s_alloc_zone	*page;
+	size_t				freed_space;
 
+	node = ((struct s_free_node *)ptr) - 1;
 	node->free = TRUE;
-	return (defragment_node(node));
+	freed_space = node_size(node);
+	node = defragment_page_from(node, &freed_space);
+	assert(is_last_node(node));
+	first_node = next_node(node);
+	page = get_page_from_first_node(first_node);
+	(void)defragment_page_from(first_node, &freed_space);
+	page->total_free_size += freed_space;
+	return (is_last_node(first_node) ? page : NULL);
 }
