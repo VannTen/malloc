@@ -50,7 +50,7 @@ void		free(void *address)
 	struct s_alloc_zone			*cleared_page;
 	int							ret_val;
 
-	if (address == NULL)
+	if (address == NULL || !address_is_valid(address))
 		return ;
 	assert(address_is_valid(address));
 	cleared_page = free_defrag(address);
