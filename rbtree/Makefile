@@ -28,6 +28,7 @@ TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 
 SRCS := \
+	btree_preorder_search.c \
 	btree_operations.c \
 	rbtree_init.c \
 	rbtree_ops.c \

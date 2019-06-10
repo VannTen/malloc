@@ -56,6 +56,9 @@ void					rbtree_inorder_traversal(
 		struct s_rbtree const *tree,
 		void (*f)(void const *node, void *extern_context),
 		void *extern_context);
+struct s_rbtree const	*btree_preorder_search(struct s_rbtree const *node,
+		void const *ref_data,
+		int (*match)(struct s_rbtree const *node, void const *ref_data));
 int						tree_is_inorder(struct s_rbtree const *tree);
 void					left_rotate(struct s_rbtree **root);
 void					right_rotate(struct s_rbtree **root);
