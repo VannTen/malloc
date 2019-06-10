@@ -13,7 +13,9 @@
 #include "free_node.h"
 #include "constants.h"
 #include "memutils.h"
+#include "malloc.h"
 #include <stdlib.h>
+#include <assert.h>
 
 static int	grow_node(struct s_free_node *const node, size_t const size)
 {
@@ -59,6 +61,7 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 		ft_memcpy(new_ptr, allocated_ptr, node_size(node));
 		free(allocated_ptr);
 	}
+	assert(malloc_pages_in_good_state());
 	return (new_ptr);
 }
 
@@ -78,6 +81,7 @@ void		*reallocf(void *const allocated_ptr, size_t const size)
 	if (allocated_ptr != NULL && new_ptr != NULL)
 		ft_memcpy(new_ptr, allocated_ptr, node_size(node));
 	free(allocated_ptr);
+	assert(malloc_pages_in_good_state());
 	return (new_ptr);
 }
 

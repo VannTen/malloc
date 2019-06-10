@@ -13,6 +13,7 @@
 #include "free_node.h"
 #include "constants.h"
 #include "malloc_structures.h"
+#include "malloc.h"
 #include "rb_tree.h"
 #include "list.h"
 #include <stdint.h>
@@ -67,4 +68,5 @@ void		free(void *address)
 		ret_val = munmap(cleared_page, cleared_page->size);
 		assert(ret_val == 0);
 	}
+	assert(malloc_pages_in_good_state());
 }

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "malloc.h"
 #include "small_tiny_alloc.h"
 #include "alloc_zone.h"
 #include "constants.h"
@@ -45,5 +46,6 @@ void						*malloc(size_t const size)
 		selected_node = alloc_large(size);
 	else
 		selected_node = alloc_tiny_small(size);
+	assert(malloc_pages_in_good_state());
 	return ((void*)get_public_address(selected_node));
 }

@@ -22,7 +22,7 @@ static int	s_bad_page(
 	return (bad_page((struct s_alloc_zone const*)page));
 }
 
-int	malloc_pages_in_good_states()
+int	malloc_pages_in_good_state()
 {
 	return (btree_preorder_search(
 				g_alloc_zones.page_tree, NULL, s_bad_page) == NULL);
