@@ -29,7 +29,7 @@ TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.c)
 TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
 PERF_TEST_DIR := perfs_tests_result
-PERF_TEST_SRC_DIR := perfs_tests
+PERF_TEST_SRC_DIR := perf_tests_src
 PERF_TEST_SRC := $(wildcard $(PERF_TEST_SRC_DIR)/*.c)
 PERF_TESTS := $(patsubst $(PERF_TEST_SRC_DIR)/%.c,$(PERF_TEST_DIR)/%.passed,$(PERF_TEST_SRC))
 PERF_TEST_EXE := $(patsubst $(PERF_TEST_SRC_DIR)/%.c,$(PERF_TEST_DIR)/%,$(PERF_TEST_SRC))
@@ -87,19 +87,18 @@ $(TESTS): %.passed:% | $(TEST_DIR)
 	./$< $(TEST_OUT)
 	touch $@
 
-$(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c $(NAME) | $(PERF_TEST_DIR)
+$(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c | $(PERF_TEST_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
 
-$(PERF_TESTS): %.passed:% | $(PERF_TEST_DIR)
+$(PERF_TESTS): %.passed:% $(NAME) | $(PERF_TEST_DIR)
 	./run.sh /usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
 	/usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
 
 test: $(TESTS) perf_tests
 
-$(info $(PERF_TESTS))
 perf_tests: $(PERF_TESTS)
 
-.PHONY: test perfs_tests $(PERF_TESTS)
+.PHONY: test perf_tests $(PERF_TESTS)
 
 
 ##### Special targets
