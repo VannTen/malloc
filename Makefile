@@ -43,6 +43,7 @@ SRCS := \
 	alloc_zone_get_2.c \
 	alloc_zone_get_space.c \
 	alloc_zone_print.c \
+	alloc_zone_sanity_checks.c \
 	assert_create_zone.c \
 	compute_pointers_offsets.c \
 	constants.c \
@@ -54,6 +55,7 @@ SRCS := \
 	get_first_fit.c \
 	globals.c \
 	malloc.c \
+	malloc_sanity_checks.c \
 	node_size_constants.c \
 	page_size_constants.c \
 	realloc.c \

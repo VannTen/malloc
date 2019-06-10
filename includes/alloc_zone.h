@@ -72,4 +72,10 @@ size_t						alloc_zone_taken_space(
 size_t						alloc_zone_all_space(
 		struct s_alloc_zone const *const zone);
 
+/*
+** Sanity checks
+*/
+
+int							bad_page(struct s_alloc_zone const *page);
+
 #endif

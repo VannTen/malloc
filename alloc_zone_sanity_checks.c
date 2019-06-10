@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   placeholder.c                                      :+:      :+:    :+:   */
+/*   alloc_zone_sanity_checks.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
+/*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 11:10:44 by mgautier          #+#    #+#             */
-/*   Updated: 2019/05/28 11:10:44 by mgautier         ###   ########.fr       */
+/*   Created: 2019/06/10 15:57:23 by                   #+#    #+#             */
+/*   Updated: 2019/06/10 15:57:23 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#include "alloc_zone.h"
 
-void	show_alloc_mem(void);
-int		malloc_pages_in_good_state(void);
-
-#endif
+int	bad_page(struct s_alloc_zone const *const page)
+{
+	return (alloc_zone_free_space(page) != page->total_free_size);
+}
