@@ -11,10 +11,11 @@
 /* ************************************************************************** */
 
 #include "free_node.h"
+#include "constants.h"
 #include "memutils.h"
 #include <stdlib.h>
 
-static int	resize_node(struct s_free_node *const node, size_t const size)
+static int	grow_node(struct s_free_node *const node, size_t const size)
 {
 	if (!is_last_node(node) && next_node(node)->free)
 	{
@@ -29,12 +30,23 @@ static int	resize_node(struct s_free_node *const node, size_t const size)
 	return (0);
 }
 
+static int	reduce_node(struct s_free_node *const node, size_t const size)
+{
+	if (size <= node_size(node))
+	{
+		if (node_size_category(node) > size_to_size_category(size))
+			carve_node(node, size);
+		return (1);
+	}
+	return (0);
+}
+
 void		*realloc(void *const allocated_ptr, size_t const size)
 {
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
 	void						*new_ptr;
 
-	if (node != NULL && (size <= node_size(node) || resize_node(node, size)))
+	if (node != NULL && (reduce_node(node, size) || grow_node(node, size)))
 		return (allocated_ptr);
 	new_ptr = malloc(size);
 	if (allocated_ptr != NULL && new_ptr != NULL)
@@ -43,4 +55,18 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 		free(allocated_ptr);
 	}
 	return (new_ptr);
+}
+
+void		*calloc(size_t const count, size_t const size)
+{
+	void	*ptr;
+
+	ptr = NULL;
+	if (SIZE_MAX / count > size)
+	{
+		ptr = malloc(count * size);
+		if (ptr != NULL)
+			ft_memset(ptr, 0x0, size);
+	}
+	return (ptr);
 }

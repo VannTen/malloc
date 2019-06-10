@@ -19,12 +19,11 @@
 #include <assert.h>
 #include <stdint.h>
 
-static void			carve_node(
-		struct s_free_node *node, size_t size_required)
+void				carve_node(
+		struct s_free_node *const node, size_t const size_required)
 {
 	struct s_free_node *new_node;
 
-	assert(node->free);
 	assert(node_size_category(node) > size_to_size_category(size_required));
 	new_node = (struct s_free_node *)((char*)(node)
 			+ (size_to_size_category(size_required)) * ALIGNMENT);
@@ -32,7 +31,16 @@ static void			carve_node(
 	new_node->free = TRUE;
 	node->next_offset = (char*)new_node - (char*)node;
 	assert((uintptr_t)get_public_address(new_node) % ALIGNMENT == 0);
-	assert(node_size(node) >= size_required && node->free);
+	assert(node_size(node) >= size_required);
+}
+
+static void			carve_free_node(
+		struct s_free_node *const node,
+		size_t const size_required)
+{
+	assert(node->free);
+	carve_node(node, size_required);
+	assert(node->free);
 }
 
 struct s_free_node	*get_first_fit(
@@ -51,7 +59,7 @@ struct s_free_node	*get_first_fit(
 		size_taken = 0;
 		if (node_size_category(node) > size_to_size_category(size_required))
 		{
-			carve_node(node, size_required);
+			carve_free_node(node, size_required);
 			size_taken += sizeof(*node);
 		}
 		node->free = FALSE;
