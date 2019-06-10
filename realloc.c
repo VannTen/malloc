@@ -46,7 +46,12 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
 	void						*new_ptr;
 
-	if (node != NULL && (reduce_node(node, size) || grow_node(node, size)))
+	if (size == 0)
+	{
+		free(allocated_ptr);
+		return (NULL);
+	}
+	else if (node != NULL && (reduce_node(node, size) || grow_node(node, size)))
 		return (allocated_ptr);
 	new_ptr = malloc(size);
 	if (allocated_ptr != NULL && new_ptr != NULL)
@@ -54,6 +59,25 @@ void		*realloc(void *const allocated_ptr, size_t const size)
 		ft_memcpy(new_ptr, allocated_ptr, node_size(node));
 		free(allocated_ptr);
 	}
+	return (new_ptr);
+}
+
+void		*reallocf(void *const allocated_ptr, size_t const size)
+{
+	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
+	void						*new_ptr;
+
+	if (size == 0)
+	{
+		free(allocated_ptr);
+		return (NULL);
+	}
+	else if (node != NULL && (reduce_node(node, size) || grow_node(node, size)))
+		return (allocated_ptr);
+	new_ptr = malloc(size);
+	if (allocated_ptr != NULL && new_ptr != NULL)
+		ft_memcpy(new_ptr, allocated_ptr, node_size(node));
+	free(allocated_ptr);
 	return (new_ptr);
 }
 
