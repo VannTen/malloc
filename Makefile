@@ -91,8 +91,8 @@ $(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c $(NAME) | $(PERF_
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 $(PERF_TESTS): %.passed:% | $(PERF_TEST_DIR)
-	./run.sh /usr/bin/time -l $<
-	/usr/bin/time -l $<
+	./run.sh /usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
+	/usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
 
 test: $(TESTS) perf_tests
 
