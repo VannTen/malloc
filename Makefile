@@ -28,6 +28,11 @@ TEST_SRC_DIR := test_src
 TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.c)
 TESTS := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%.passed,$(TEST_SRC))
 TEST_EXE := $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_DIR)/%,$(TEST_SRC))
+PERF_TEST_DIR := perfs_tests_result
+PERF_TEST_SRC_DIR := perfs_tests
+PERF_TEST_SRC := $(wildcard $(PERF_TEST_SRC_DIR)/*.c)
+PERF_TESTS := $(patsubst $(PERF_TEST_SRC_DIR)/%.c,$(PERF_TEST_DIR)/%.passed,$(PERF_TEST_SRC))
+PERF_TEST_EXE := $(patsubst $(PERF_TEST_SRC_DIR)/%.c,$(PERF_TEST_DIR)/%,$(PERF_TEST_SRC))
 options := CFLAGS
 
 SRCS := \
@@ -36,7 +41,6 @@ SRCS := \
 	alloc_zone_data_struct.c \
 	alloc_zone_get.c \
 	alloc_zone_get_2.c \
-	alloc_zone_get_space.c \
 	alloc_zone_get_space.c \
 	alloc_zone_print.c \
 	assert_create_zone.c \
@@ -73,7 +77,7 @@ $(NAME): CFLAGS := $(CFLAGS) -fPIC
 $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR) $(TEST_DIR):
+$(OBJ_DIR) $(TEST_DIR) $(PERF_TEST_DIR):
 	$(MKDIR) $@
 
 $(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(TEST_DIR)
@@ -83,9 +87,19 @@ $(TESTS): %.passed:% | $(TEST_DIR)
 	./$< $(TEST_OUT)
 	touch $@
 
-test: $(TESTS)
+$(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(PERF_TEST_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
-.PHONY: test
+$(PERF_TESTS): %.passed:% | $(PERF_TEST_DIR)
+	./$< $(TEST_OUT)
+
+
+test: $(TESTS) perf_tests
+
+$(info $(PERF_TESTS))
+perf_tests: $(PERF_TESTS)
+
+.PHONY: test perfs_tests $(PERF_TESTS)
 
 
 ##### Special targets
