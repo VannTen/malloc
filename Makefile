@@ -87,12 +87,12 @@ $(TESTS): %.passed:% | $(TEST_DIR)
 	./$< $(TEST_OUT)
 	touch $@
 
-$(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(PERF_TEST_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+$(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c $(NAME) | $(PERF_TEST_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 $(PERF_TESTS): %.passed:% | $(PERF_TEST_DIR)
-	./$< $(TEST_OUT)
-
+	./run.sh /usr/bin/time -l $<
+	/usr/bin/time -l $<
 
 test: $(TESTS) perf_tests
 
