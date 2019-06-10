@@ -32,6 +32,7 @@ static struct s_free_node	*alloc_large(size_t const size)
 	{
 		new_page->page_type = LARGE;
 		get_first_node(new_page)->free = FALSE;
+		new_page->total_free_size = 0;
 		return (get_first_node(new_page));
 	}
 	else
