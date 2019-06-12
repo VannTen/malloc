@@ -101,6 +101,8 @@ void						*rbtree_remove(
 	removed = NULL;
 	if (remove_recurse(tree, criterion, &removed, diff)
 			== TREE_HAS_ONE_BLACK_LESS)
+	{
 		;
+	}
 	return ((void*)removed);
 }
