@@ -10,7 +10,7 @@
 #*                                                                            *#
 #* ************************************************************************** *#
 
-CFLAGS := -g3 -Wall -Wextra -Werror -pedantic
+CFLAGS := -g3 -Wall -Wextra -Werror -pedantic -DNDEBUG
 LDFLAGS := -shared
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
@@ -98,8 +98,8 @@ $(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c | $(PERF_TEST_DIR
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 $(PERF_TESTS): %.passed:% $(NAME) | $(PERF_TEST_DIR)
-	./run.sh $(TIME) ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
-	$(TIME) ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
+	./run.sh $(TIME) ./$< 2>&1 >&- | grep -e "set size\|page\|context"
+	$(TIME) ./$< 2>&1 >&- | grep -e "set size\|page\|context"
 
 test: $(TESTS) perf_tests
 
