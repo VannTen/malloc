@@ -85,7 +85,9 @@ void		*realloc_intern(
 	void						*new_ptr;
 	size_t						size_diff;
 
-	if (!address_is_valid(allocated_ptr))
+	if (allocated_ptr == NULL)
+		return (malloc(size));
+	else if (address_is_valid(allocated_ptr))
 		return (NULL);
 	if (size == 0)
 	{
