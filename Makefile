@@ -86,7 +86,7 @@ $(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(TEST_D
 	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 $(TESTS): %.passed:% | $(TEST_DIR)
-	./$< $(TEST_OUT)
+	LD_LIBRARY_PATH=. ./$< $(TEST_OUT)
 	touch $@
 
 $(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c | $(PERF_TEST_DIR)

@@ -15,8 +15,12 @@
 #include "constants.h"
 #include "malloc_structures.h"
 #include "rb_tree.h"
+#ifdef __APPLE__
+# include <mach/vm_statistics.h>
+#else
+# define VM_MAKE_TAG(X) 0
+#endif
 #include <sys/mman.h>
-#include <mach/vm_statistics.h>
 
 /*
 ** - allocate a mapping

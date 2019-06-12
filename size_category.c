@@ -23,7 +23,7 @@ size_t	size_category_to_size(size_t size_category)
 
 size_t	size_to_size_category(size_t size)
 {
-	size_t static const cat_1_size = ALIGNMENT - sizeof(struct s_free_node);
+	static size_t const cat_1_size = ALIGNMENT - sizeof(struct s_free_node);
 
 	return (1 + (size > cat_1_size ?
 				(size - cat_1_size) / ALIGNMENT
