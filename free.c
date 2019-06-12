@@ -32,7 +32,7 @@ static int	address_page_position(void const *v_page, void const *address)
 		return (-1);
 }
 
-static int	address_is_valid(void const *address)
+int			address_is_valid(void const *address)
 {
 	struct s_alloc_zone const	*page;
 

@@ -57,8 +57,9 @@ SRCS := \
 	malloc.c \
 	malloc_sanity_checks.c \
 	node_size_constants.c \
+	other_alloc.c \
 	page_size_constants.c \
-	realloc.c \
+	realloc_intern.c \
 	show_alloc_mem.c \
 	size_category.c
 

@@ -10,37 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_NODE_H
-# define FREE_NODE_H
-# include <stddef.h>
-# include "bool.h"
-# define LOG_2_ALIGN 4
+#include "memutils.h"
+#include "intern_alloc_helpers.h"
+#include <stdint.h>
+#include <stdlib.h>
 
-struct				s_free_node	{
+void		*realloc(void *const allocated_ptr, size_t const new_size)
+{
+	return (realloc_intern(allocated_ptr, new_size, 0));
+}
+void		*reallocf(void *const allocated_ptr, size_t const new_size)
+{
+	return (realloc_intern(allocated_ptr, new_size, 1));
+}
 
-	int		next_offset;
-	t_bool	free:1;
-};
+void		*calloc(size_t const count, size_t const size)
+{
+	void	*ptr;
 
-/*
-** Get (const)
-*/
-
-void const			*get_public_address(struct s_free_node const *n);
-struct s_free_node	*get_node_from_address(void *address);
-void const			*end_of_node(struct s_free_node const *n);
-size_t				node_size(struct s_free_node const *n);
-t_bool				is_last_node(struct s_free_node const *n);
-struct s_free_node	*next_node(struct s_free_node const *node);
-int					address_is_taken(void const *address);
-int					address_is_valid(void const *address);
-
-/*
-** Modify
-*/
-
-void				carve_node(struct s_free_node *node, size_t size_required);
-size_t				merge_with_next_nodes(struct s_free_node *node);
-struct s_alloc_zone	*free_defrag(void *address);
-
-#endif
+	ptr = NULL;
+	if (SIZE_MAX / count > size)
+	{
+		ptr = malloc(count * size);
+		if (ptr != NULL)
+			ft_memset(ptr, 0x0, size);
+	}
+	return (ptr);
+}
