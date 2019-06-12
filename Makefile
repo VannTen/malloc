@@ -14,7 +14,11 @@ CFLAGS := -g3 -Wall -Wextra -Werror -pedantic
 LDFLAGS := -shared
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
+UNAME_S := $(shell uname -s)
 MKDIR := mkdir
+TIME_OPTIONS := $(if $(findstring Linux,$(UNAME_S)),-v,-l)
+$(info $(findstring Linux,$(UNAME_S)))
+TIME := /usr/bin/time $(TIME_OPTIONS)
 LIBS := rbtree list utils itoa string d_list
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
@@ -94,8 +98,8 @@ $(PERF_TEST_EXE): $(PERF_TEST_DIR)/%: $(PERF_TEST_SRC_DIR)/%.c | $(PERF_TEST_DIR
 	$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 $(PERF_TESTS): %.passed:% $(NAME) | $(PERF_TEST_DIR)
-	./run.sh /usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
-	/usr/bin/time -l ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
+	./run.sh $(TIME) ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
+	$(TIME) ./$< 2>&1 >&- | grep -e "set size\|page reclaims\|context"
 
 test: $(TESTS) perf_tests
 
