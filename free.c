@@ -49,7 +49,7 @@ int			address_is_valid(void const *address)
 void		free(void *address)
 {
 	struct s_alloc_zone			*cleared_page;
-	int							ret_val;
+	int							ret_val __attribute__((unused));
 
 	if (address == NULL || !address_is_valid(address))
 		return ;

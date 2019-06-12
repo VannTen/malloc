@@ -87,7 +87,7 @@ void		*realloc_intern(
 
 	if (allocated_ptr == NULL)
 		return (malloc(size));
-	else if (address_is_valid(allocated_ptr))
+	else if (!address_is_valid(allocated_ptr))
 		return (NULL);
 	if (size == 0)
 	{
