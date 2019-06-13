@@ -63,7 +63,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 */
 
 char	*ft_strchr(const char *s, int c);
-t_bool	string_has_char(const char *str, int c);
 char	*ft_strrchr(const char *s, int c);
 char	last_char_of(const char *str);
 

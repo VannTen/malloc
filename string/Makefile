@@ -32,7 +32,9 @@ options := CFLAGS
 
 SRCS := \
 	ft_strcpy.c \
-	ft_strlen.c
+	ft_strlen.c \
+	ft_putstr.c \
+	ft_putstr_fd.c
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
