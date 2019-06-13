@@ -23,7 +23,8 @@ LIBS := rbtree list utils itoa string d_list
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
-NAME := libft_malloc.so
+HOSTTYPE ?= $(shell uname -m)_$(shell uname -s)
+NAME := libft_malloc_$(HOSTTYPE).so
 LIBS_FILES := $(foreach lib,$(LIBS), $(lib)/lib$(lib).a)
 
 OBJ_DIR := objs
@@ -73,6 +74,9 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
+libft_malloc.so: | $(NAME)
+	ln -s $| $@
+
 $(NAME): $(OBJS) $(LIBS_FILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
@@ -90,7 +94,7 @@ $(OBJ_DIR) $(TEST_DIR) $(PERF_TEST_DIR):
 	$(MKDIR) $@
 
 $(TEST_EXE): $(TEST_DIR)/%: $(TEST_SRC_DIR)/%.c $(NAME) $(LIBS_FILES) | $(TEST_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ -lpthread
 
 $(TESTS): %.passed:% | $(TEST_DIR)
 	LD_LIBRARY_PATH=. ./$< $(TEST_OUT)

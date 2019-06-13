@@ -83,29 +83,20 @@ void		*realloc_intern(
 {
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
 	size_t						size_diff;
-	void						*final_addr;
 
 	if (allocated_ptr == NULL)
 		return (malloc(size));
 	malloc_write_lock();
 	if (!address_is_valid(allocated_ptr))
-		final_addr = NULL;
-	else
 	{
-		if (size == 0)
-		{
-			free(allocated_ptr);
-			final_addr = NULL;
-		}
-		else
-		{
-			size_diff = reduce_node(node, size);
-			if (size_diff == 0)
-				size_diff = grow_node(node, size);
-			if (size_diff != 0)
-				adjust_page_size(node, size_diff);
-		}
+		malloc_unlock();
+		return (allocated_ptr);
 	}
+	size_diff = reduce_node(node, size);
+	if (size_diff == 0)
+		size_diff = grow_node(node, size);
+	if (size_diff != 0)
+		adjust_page_size(node, size_diff);
 	malloc_unlock();
 	assert(malloc_pages_in_good_state());
 	return (node_size(node) >= size
