@@ -32,7 +32,7 @@ static int			post_red_sibling(struct s_rbtree **const tree, int side)
 
 static void			red_sibling(struct s_rbtree **tree, int side)
 {
-	int done;
+	int done __attribute__((unused));
 
 	(*tree)->color = RED;
 	(*tree)->children[!side]->color = BLACK;
