@@ -25,19 +25,18 @@ static int	grow_node(struct s_free_node *const node, size_t const size)
 	saved_space = 0;
 	if (!is_last_node(node) && next_node(node)->free)
 	{
-
 		saved_space = merge_with_next_nodes(next_node(node));
 		if (node_size(node) + node_size(next_node(node)) + sizeof(*node)
-				>= size)
+			>= size)
 			saved_space += merge_with_next_nodes(node);
 	}
-	return (node_size(node) - original_size - saved_space);
+	return (original_size - (node_size(node) - saved_space));
 }
 
 static int	reduce_node(struct s_free_node *const node, size_t const size)
 {
 	int const	original_size = node_size(node);
-	size_t			gained_size;
+	size_t		gained_size;
 
 	if (size <= node_size(node)
 			&& node_size_category(node) > size_to_size_category(size))
@@ -82,7 +81,6 @@ void		*realloc_intern(
 		int const reallocf)
 {
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
-	void						*new_ptr;
 	size_t						size_diff;
 
 	if (allocated_ptr == NULL)
@@ -94,16 +92,12 @@ void		*realloc_intern(
 		free(allocated_ptr);
 		return (NULL);
 	}
-	new_ptr = NULL;
 	size_diff = reduce_node(node, size);
 	if (size_diff == 0)
 		size_diff = grow_node(node, size);
 	if (size_diff != 0)
-	{
 		adjust_page_size(node, size_diff);
-		new_ptr = allocated_ptr;
-	}
 	assert(malloc_pages_in_good_state());
-	return (new_ptr != NULL
-			? new_ptr : move_alloc(allocated_ptr, size, reallocf));
+	return (node_size(node) >= size
+			? allocated_ptr : move_alloc(allocated_ptr, size, reallocf));
 }
