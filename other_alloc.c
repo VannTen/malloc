@@ -34,7 +34,7 @@ void		*calloc(size_t const count, size_t const size)
 	{
 		ptr = malloc(count * size);
 		if (ptr != NULL)
-			ft_memset(ptr, 0x0, size);
+			ft_memset(ptr, 0x0, size * count);
 	}
 	return (ptr);
 }
