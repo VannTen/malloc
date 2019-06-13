@@ -11,7 +11,7 @@
 #* ************************************************************************** *#
 
 CFLAGS := -g3 -Wall -Wextra -Werror -pedantic -DNDEBUG
-LDFLAGS := -shared
+LDFLAGS := -shared -lpthread
 CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 
 UNAME_S := $(shell uname -s)
@@ -59,6 +59,7 @@ SRCS := \
 	get_first_fit.c \
 	globals.c \
 	malloc.c \
+	malloc_lock.c \
 	malloc_sanity_checks.c \
 	node_size_constants.c \
 	other_alloc.c \

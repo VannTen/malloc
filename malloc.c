@@ -13,6 +13,7 @@
 #include "malloc.h"
 #include "small_tiny_alloc.h"
 #include "alloc_zone.h"
+#include "malloc_lock.h"
 #include "constants.h"
 #include <stddef.h>
 #include <assert.h>
@@ -22,21 +23,24 @@ static struct s_free_node	*alloc_large(size_t const size)
 {
 	struct s_alloc_zone	*new_page;
 	size_t				page_size;
+	struct s_free_node	*alloc_node;
 
 	page_size =
 		((offset_zone_start_first_address() + size - 1)
 		/ getpagesize() + 1)
 		* getpagesize();
+	alloc_node = NULL;
+	malloc_write_lock();
 	new_page = create_zone(page_size);
 	if (new_page != NULL)
 	{
 		new_page->page_type = LARGE;
 		get_first_node(new_page)->free = FALSE;
 		new_page->total_free_size = 0;
-		return (get_first_node(new_page));
+		alloc_node = get_first_node(new_page);
 	}
-	else
-		return (NULL);
+	malloc_unlock();
+	return (alloc_node);
 }
 
 void						*malloc(size_t const size)

@@ -12,6 +12,7 @@
 
 #ifndef MALLOC_STRUCTURES_H
 # define MALLOC_STRUCTURES_H
+# include <pthread.h>
 
 /*
 ** The doubly linked lists shall hold page which have at least one free node
@@ -28,6 +29,7 @@ struct	s_alloc_categorie
 	struct s_rbtree			*page_tree;
 	struct s_double_list	*tinies;
 	struct s_double_list	*smalls;
+	pthread_rwlock_t		lock;
 };
 
 extern struct s_alloc_categorie g_alloc_zones;

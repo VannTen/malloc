@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "malloc_structures.h"
 #include "malloc.h"
+#include "malloc_lock.h"
 #include "rb_tree.h"
 #include "list.h"
 #include <stdint.h>
@@ -51,6 +52,7 @@ void		free(void *address)
 	struct s_alloc_zone			*cleared_page;
 	int							ret_val __attribute__((unused));
 
+	malloc_write_lock();
 	if (address == NULL || !address_is_valid(address))
 		return ;
 	assert(address_is_valid(address));
@@ -68,5 +70,6 @@ void		free(void *address)
 		ret_val = munmap(cleared_page, cleared_page->size);
 		assert(ret_val == 0);
 	}
+	malloc_unlock();
 	assert(malloc_pages_in_good_state());
 }

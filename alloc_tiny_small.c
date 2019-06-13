@@ -12,6 +12,7 @@
 
 #include "small_tiny_alloc.h"
 #include "malloc_structures.h"
+#include "malloc_lock.h"
 #include "constants.h"
 #include <stddef.h>
 #include <assert.h>
@@ -42,6 +43,7 @@ struct s_free_node const	*alloc_tiny_small(size_t const size)
 	struct s_double_list		**alloc_type;
 	struct s_alloc_zone			*new_page;
 
+	malloc_write_lock();
 	alloc_type = size <= tiny_size_limit()
 		? &g_alloc_zones.tinies : &g_alloc_zones.smalls;
 	new_address = d_list_find(*alloc_type, get_address, &size);
@@ -57,5 +59,6 @@ struct s_free_node const	*alloc_tiny_small(size_t const size)
 			new_address = d_list_find_back(*alloc_type, get_address, &size);
 		}
 	}
+	malloc_unlock();
 	return (new_address);
 }

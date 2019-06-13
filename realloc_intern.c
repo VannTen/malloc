@@ -14,6 +14,7 @@
 #include "malloc.h"
 #include "free_node.h"
 #include "constants.h"
+#include "malloc_lock.h"
 #include <assert.h>
 #include <stdlib.h>
 
@@ -82,21 +83,30 @@ void		*realloc_intern(
 {
 	struct s_free_node *const	node = get_node_from_address(allocated_ptr);
 	size_t						size_diff;
+	void						*final_addr;
 
 	if (allocated_ptr == NULL)
 		return (malloc(size));
-	else if (!address_is_valid(allocated_ptr))
-		return (NULL);
-	if (size == 0)
+	malloc_write_lock();
+	if (!address_is_valid(allocated_ptr))
+		final_addr = NULL;
+	else
 	{
-		free(allocated_ptr);
-		return (NULL);
+		if (size == 0)
+		{
+			free(allocated_ptr);
+			final_addr = NULL;
+		}
+		else
+		{
+			size_diff = reduce_node(node, size);
+			if (size_diff == 0)
+				size_diff = grow_node(node, size);
+			if (size_diff != 0)
+				adjust_page_size(node, size_diff);
+		}
 	}
-	size_diff = reduce_node(node, size);
-	if (size_diff == 0)
-		size_diff = grow_node(node, size);
-	if (size_diff != 0)
-		adjust_page_size(node, size_diff);
+	malloc_unlock();
 	assert(malloc_pages_in_good_state());
 	return (node_size(node) >= size
 			? allocated_ptr : move_alloc(allocated_ptr, size, reallocf));

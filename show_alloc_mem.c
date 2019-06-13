@@ -12,6 +12,7 @@
 
 #include "alloc_zone.h"
 #include "malloc_structures.h"
+#include "malloc_lock.h"
 #include "rb_tree.h"
 #include "string.h"
 #include "itoa_tools.h"
@@ -31,8 +32,10 @@ void		show_alloc_mem(void)
 	static const char	*strings[] = {"Total : ", " octets\n"};
 
 	total_size = 0;
+	malloc_read_lock();
 	rbtree_inorder_traversal(g_alloc_zones.page_tree,
 			print_page_summary, &total_size);
+	malloc_unlock();
 	ft_strcpy(buffer, strings[0]);
 	index = ft_strlen(strings[0]);
 	index += itoa_len_unsigned(total_size, 10);

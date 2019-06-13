@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   placeholder.c                                      :+:      :+:    :+:   */
+/*   malloc_lock.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
+/*   By:  <>                                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/28 11:10:44 by mgautier          #+#    #+#             */
-/*   Updated: 2019/05/28 11:10:44 by mgautier         ###   ########.fr       */
+/*   Created: 2019/06/13 13:17:00 by                   #+#    #+#             */
+/*   Updated: 2019/06/13 13:17:00 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc_structures.h"
-#include <pthread.h>
+#ifndef MALLOC_LOCK_H
+# define MALLOC_LOCK_H
 
-struct s_alloc_categorie	g_alloc_zones = {
-	NULL,
-	NULL,
-	NULL,
-	PTHREAD_RWLOCK_INITIALIZER};
+int	malloc_write_lock(void);
+int	malloc_read_lock(void);
+int	malloc_unlock(void);
+
+#endif
