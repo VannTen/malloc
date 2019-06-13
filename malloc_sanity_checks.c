@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc_sanity_checks.c                             :+:      :+:    :+:   */
+/*   placeholder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By:  <>                                        +#+  +:+       +#+        */
+/*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/10 15:59:22 by                   #+#    #+#             */
-/*   Updated: 2019/06/10 15:59:22 by                  ###   ########.fr       */
+/*   Created: 2019/05/28 11:10:44 by mgautier          #+#    #+#             */
+/*   Updated: 2019/05/28 11:10:44 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 
 static int	s_bad_page(
 		struct s_rbtree const *const page,
-		void const *data __attribute__((unused)))
+		void const *data)
 {
+	(void)data;
 	return (bad_page((struct s_alloc_zone const*)page));
 }
 
-int	malloc_pages_in_good_state()
+int			malloc_pages_in_good_state(void)
 {
 	return (btree_preorder_search(
 				g_alloc_zones.page_tree, NULL, s_bad_page) == NULL);
