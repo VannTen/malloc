@@ -30,7 +30,7 @@ void		*calloc(size_t const count, size_t const size)
 	void	*ptr;
 
 	ptr = NULL;
-	if (SIZE_MAX / count > size)
+	if (count != 0 && SIZE_MAX / count > size)
 	{
 		ptr = malloc(count * size);
 		if (ptr != NULL)
