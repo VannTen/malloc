@@ -61,7 +61,7 @@ static void	*move_alloc(
 		size_t const new_size,
 		int const reallocf)
 {
-	void * const	new_ptr = malloc(new_size);
+	void *const	new_ptr = malloc(new_size);
 
 	if (new_ptr != NULL)
 	{

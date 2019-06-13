@@ -33,17 +33,17 @@ static size_t	alloc_zone_space(struct s_alloc_zone const *const zone,
 	return (size_total);
 }
 
-size_t		alloc_zone_free_space(struct s_alloc_zone const *const zone)
+size_t			alloc_zone_free_space(struct s_alloc_zone const *const zone)
 {
 	return (alloc_zone_space(zone, 1));
 }
 
-size_t		alloc_zone_taken_space(struct s_alloc_zone const *const zone)
+size_t			alloc_zone_taken_space(struct s_alloc_zone const *const zone)
 {
 	return (alloc_zone_space(zone, 1));
 }
 
-size_t		alloc_zone_all_space(struct s_alloc_zone const *const zone)
+size_t			alloc_zone_all_space(struct s_alloc_zone const *const zone)
 {
 	return (alloc_zone_free_space(zone) + alloc_zone_taken_space(zone));
 }

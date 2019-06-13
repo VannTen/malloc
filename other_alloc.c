@@ -19,6 +19,7 @@ void		*realloc(void *const allocated_ptr, size_t const new_size)
 {
 	return (realloc_intern(allocated_ptr, new_size, 0));
 }
+
 void		*reallocf(void *const allocated_ptr, size_t const new_size)
 {
 	return (realloc_intern(allocated_ptr, new_size, 1));

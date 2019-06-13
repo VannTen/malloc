@@ -26,7 +26,7 @@ static void	free_addr(long **tab, size_t const size)
 	}
 }
 
-int main(void)
+int			main(void)
 {
 	long	*address[SIZE_TEST];
 	size_t	index;

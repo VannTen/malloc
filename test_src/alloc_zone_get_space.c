@@ -13,12 +13,15 @@
 #include "alloc_zone.h"
 #include "constants.h"
 
+static size_t	init_size(size_t cat_max)
+{
+	return (page_size(cat_max) - offset_zone_start_first_address());
+}
+
 static int	test_tiny(void)
 {
 	struct s_alloc_zone	*const	zone = create_zone(tiny_page_size());
-	size_t const				expected_initial_size =
-		tiny_page_size()
-		- offset_zone_start_first_address();
+	size_t const				expected_initial_size = init_page(TINY_MAX);
 	size_t						node_taken;
 	size_t const				node_to_take = 10;
 
@@ -38,9 +41,7 @@ static int	test_tiny(void)
 static int	test_small(void)
 {
 	struct s_alloc_zone	*const	zone = create_zone(small_page_size());
-	size_t const				expected_initial_size =
-		small_page_size()
-		- offset_zone_start_first_address();
+	size_t const				expected_initial_size = init_size(SMALL_MAX);
 	size_t						node_taken;
 	size_t const				node_to_take = 10;
 
