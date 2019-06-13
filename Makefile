@@ -86,6 +86,7 @@ $(LIBS_FILES): force
 .PHONY: force
 
 $(NAME): CFLAGS := $(CFLAGS) -fPIC
+$(NAME): LDFLAGS += $(CFLAGS) -fPIC
 
 $(OBJS): $(OBJ_DIR)/%.o: %.c Makefile $(HEADERS) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
