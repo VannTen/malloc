@@ -17,7 +17,6 @@ CPPFLAGS = $(foreach include,$(INCLUDES_DIR),-iquote $(include))
 UNAME_S := $(shell uname -s)
 MKDIR := mkdir
 TIME_OPTIONS := $(if $(findstring Linux,$(UNAME_S)),-v,-l)
-$(info $(findstring Linux,$(UNAME_S)))
 TIME := /usr/bin/time $(TIME_OPTIONS)
 LIBS := rbtree utils itoa string d_list
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
@@ -77,7 +76,6 @@ HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 $(NAME): %.so : | %_$(HOSTTYPE).so
 	ln -s $| $@
 
-$(info $(basename $(NAME))_$(HOSTTYPE).so)
 $(basename $(NAME))_$(HOSTTYPE).so: $(OBJS) $(LIBS_FILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
@@ -114,6 +112,31 @@ test: $(TESTS) perf_tests
 perf_tests: $(PERF_TESTS)
 
 .PHONY: test perf_tests $(PERF_TESTS)
+
+# Cleaners
+
+clean:
+	$(RM) $(OBJS)
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+
+fclean:
+	$(RM) $(NAME) $(basename $(NAME)_$(HOSTTYPE))
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+
+re: fclean all
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+
+all: $(NAME)
+
+.DEFAULT_GOAL := all
+
+.PHONY: clean fclean all re
+
+ifneq '' '$(filter clean fclean re, $(MAKECMDGOALS))'
+.NOTPARALLEL:
+
+$(info Disabling parallelism for clean rules)
+endif
 
 
 ##### Special targets

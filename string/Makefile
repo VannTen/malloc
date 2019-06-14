@@ -65,6 +65,15 @@ test: $(TESTS)
 
 .PHONY: test
 
+clean:
+	$(RM) $(OBJS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean $(NAME)
+
+.PHONY: re clean fclean
 
 ##### Special targets
 
