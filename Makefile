@@ -129,7 +129,7 @@ clean:
 	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
 
 fclean:
-	$(RM) $(NAME) $(basename $(NAME)_$(HOSTTYPE))
+	$(RM) $(NAME) $(basename $(NAME))_$(HOSTTYPE).so
 	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
 
 re: fclean all
