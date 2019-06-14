@@ -19,7 +19,7 @@ MKDIR := mkdir
 TIME_OPTIONS := $(if $(findstring Linux,$(UNAME_S)),-v,-l)
 $(info $(findstring Linux,$(UNAME_S)))
 TIME := /usr/bin/time $(TIME_OPTIONS)
-LIBS := rbtree list utils itoa string d_list
+LIBS := rbtree utils itoa string d_list
 INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
@@ -77,7 +77,8 @@ HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 $(NAME): %.so : | %_$(HOSTTYPE).so
 	ln -s $| $@
 
-$(basename $(NAME))_%(HOSTTYPE).so: $(OBJS) $(LIBS_FILES)
+$(info $(basename $(NAME))_$(HOSTTYPE).so)
+$(basename $(NAME))_$(HOSTTYPE).so: $(OBJS) $(LIBS_FILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(LIBS_FILES): force
