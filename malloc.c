@@ -18,6 +18,12 @@
 #include <stddef.h>
 #include <assert.h>
 #include <unistd.h>
+#include <stdint.h>
+
+static int					size_overflow(size_t const size)
+{
+	return (SIZE_MAX - offset_zone_start_first_address() < size);
+}
 
 static struct s_free_node	*alloc_large(size_t const size)
 {
@@ -25,6 +31,8 @@ static struct s_free_node	*alloc_large(size_t const size)
 	size_t				page_size;
 	struct s_free_node	*alloc_node;
 
+	if (size_overflow(size))
+		return (NULL);
 	page_size =
 		((offset_zone_start_first_address() + size - 1)
 		/ getpagesize() + 1)
