@@ -126,14 +126,15 @@ perf_tests: $(PERF_TESTS)
 
 clean:
 	$(RM) $(OBJS)
-	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+	$(MAKE) -C $(dir $@) $(foreach opt,$(options),'$(opt)=$($(opt))')
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@ $(foreach opt,$(options),'$(opt)=$($(opt))');)
 
 fclean:
 	$(RM) $(NAME) $(basename $(NAME))_$(HOSTTYPE).so
-	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@ $(foreach opt,$(options),'$(opt)=$($(opt))');)
 
 re: fclean all
-	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@;)
+	$(foreach lib,$(LIBS),$(MAKE) -C $(lib) $@ $(foreach opt,$(options),'$(opt)=$($(opt))');)
 
 all: $(NAME)
 
