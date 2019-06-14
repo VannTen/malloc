@@ -22,7 +22,7 @@
 
 static int	address_page_position(void const *v_page, void const *address)
 {
-	struct s_alloc_zone const *page = v_page;
+	struct s_alloc_zone const * const page = v_page;
 
 	if ((uintptr_t)page > (uintptr_t)address)
 		return (1);
