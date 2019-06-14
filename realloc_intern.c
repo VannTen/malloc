@@ -95,7 +95,7 @@ void		*realloc_intern(
 	if (!address_is_valid(allocated_ptr))
 	{
 		malloc_unlock();
-		return (allocated_ptr);
+		return (NULL);
 	}
 	size_diff = reduce_node(node, size);
 	if (size_diff == 0)
