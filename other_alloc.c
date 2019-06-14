@@ -15,24 +15,24 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void		*realloc(void *const allocated_ptr, size_t const new_size)
+void			*realloc(void *const allocated_ptr, size_t const new_size)
 {
 	return (realloc_intern(allocated_ptr, new_size, 0));
 }
 
-void		*reallocf(void *const allocated_ptr, size_t const new_size)
+void			*reallocf(void *const allocated_ptr, size_t const new_size)
 {
 	return (realloc_intern(allocated_ptr, new_size, 1));
 }
 
-void		*calloc(size_t const count, size_t const size)
+void			*calloc(size_t const count, size_t const size)
 {
 	void	*ptr;
 
 	ptr = NULL;
-	if (count != 0 && SIZE_MAX / count > size)
+	if (size == 0 || SIZE_MAX / size > count)
 	{
-		ptr = malloc(count * size);
+		ptr = malloc(size * count);
 		if (ptr != NULL)
 			ft_memset(ptr, 0x0, size * count);
 	}
