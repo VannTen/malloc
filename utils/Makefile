@@ -36,7 +36,9 @@ SRCS := \
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
-HEADERS := $(wildcard $(HEADER_DIR)/*.h)
+HEADERS := \
+	includes/max.h \
+	includes/memutils.h
 
 $(NAME): $(OBJS)
 	ar -rcu $@ $^

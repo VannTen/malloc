@@ -40,7 +40,9 @@ SRCS := \
 
 OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
-HEADERS := $(wildcard $(HEADER_DIR)/*.h)
+HEADERS := \
+	includes/double_list.h \
+	includes/double_list_debug.h
 
 $(NAME): $(OBJS)
 	ar -rcu $@ $^
