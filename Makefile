@@ -24,7 +24,7 @@ INCLUDES_DIR := includes $(foreach lib,$(LIBS), $(lib)/includes)
 #######
 
 HOSTTYPE ?= $(shell uname -m)_$(shell uname -s)
-NAME := libft_malloc_$(HOSTTYPE).so
+NAME := libft_malloc.so
 LIBS_FILES := $(foreach lib,$(LIBS), $(lib)/lib$(lib).a)
 
 OBJ_DIR := objs
@@ -74,10 +74,10 @@ OBJS := $(addprefix $(OBJ_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 HEADER_DIR := includes
 HEADERS := $(wildcard $(HEADER_DIR)/*.h)
 
-libft_malloc.so: | $(NAME)
+$(NAME): %.so : | %_$(HOSTTYPE).so
 	ln -s $| $@
 
-$(NAME): $(OBJS) $(LIBS_FILES)
+$(basename $(NAME))_%(HOSTTYPE).so: $(OBJS) $(LIBS_FILES)
 	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 $(LIBS_FILES): force
